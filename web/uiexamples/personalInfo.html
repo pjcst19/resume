@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+
+    <title>SAS</title><!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css"><!-- Bootstrap theme -->
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"><!-- Custom styles for this template -->
+    <link href="css/theme.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span></button> <a class="navbar-brand" href="#">Student Resume System</a>
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="index.php">Home</a></li>
+                    <li><a href="#">Create Resume</a></li>
+                    <li><a href="#">Edit Resume</a></li>
+                    <li><a href="#">View Resume</a></li>
+
+
+                    
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+
+    <div class="container theme-showcase" style="width:900px; padding-top: 100px;">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>Create Your Resume</strong></h3>
+            </div>
+
+            <div class="panel-body">
+                
+                <div class="page-header">
+                    <form class="form-signin" method="post" action="">
+                        <h2 class="form-signin-heading">Personal Information</h2><br>
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" autofocus=""><br>
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="LastName" ><br>
+                        <input type="text" class="form-control" id="address1" name="address1" placeholder="Street Address"><br>
+                        <input type="text" class="form-control" id="address2" name="address2" placeholder="Address"><br>
+                        <input type="text" class="form-control" id="city" name="city" placeholder="City" style="width:50%; display:inline">
+                        <input type="text" class="form-control" id="state" name="state" placeholder="State" style="width:29%; display:inline">
+                        <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip" style="width:20%; display:inline"><br><br>
+                        <input type="tel" class="form-control" id="homePhone" name="homePhone" placeholder="Home Phone" style="width:49%; display:inline">
+                        <input type="tel" class="form-control" id="cellPhone" name="cellPhone" placeholder="Cell Phone" style="width:50%; display:inline"><br><br>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email"><br>
+
+                        <button class="btn btn-lg btn-primary" type="button" style="paddding-bottom: 50px;" onclick="window.location.href='objectives.html'">Next</button>
+                    </form><br>
+                    
+                </div>
+            </div><!-- /container -->
+        </div>
+    </div>
+</body>
+</html>

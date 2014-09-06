@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+        <link href="css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="js/star-rating.js" type="text/javascript"></script>
+        <title>Sign in</title><!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css"><!-- Bootstrap theme -->
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"><!-- Custom styles for this template -->
+        <link href="css/theme.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
+
+
+    </head>
+
+
+    <body>
+        <form class="navbar-form navbar-left" role="search">
+            <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span></button> <a class="navbar-brand" href="#">Student Resume System</a>
+                    </div>
+
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class=""><a href="register.html"></a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </form>     
+
+        <div class="bs-example" align="center">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">User Information</div>
+                <div class="panel-body">
+                    Staff Rate/Approve/Deny Student Resumes
+                </div>
+                <!-- Table -->
+                <table class="table">
+                    <thead >
+                        <tr>
+                            <th>Resume ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Rating</th>
+                            <th>Approve/Deny</th>
+                            <th>View Resume</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>8b055866-416c-11e3-a2df-6cdd11ba7310</td>
+                            <td>John Carter</td>
+                            <td>jcarter@gmail.com</td>
+                            <td>
+                                <input id="rating-system" type="number" class="rating" min="1" max="5" step="1">
+                            </td>
+                            <td>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios1" id="optionsRadios1" value="option1" >
+                                    Approve
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios1" id="optionsRadios2" value="option2">
+                                    Deny
+                                </div>
+                            <td>
+                                <div>
+                                    <button  class="btn btn-sm btn-primary btn-block" type="submit" style="width: 100px;">View Resume</button>
+                                </div>
+                            </td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td>c3c5e4ba-8157-11e3-a83d-e814a91670f2</td>
+                            <td>Colin Scott</td>
+                            <td>cscott@gmail.com</td>
+                            <td>
+                                <input id="rating-system" type="number" class="rating" min="1" max="5" step="1">
+                            </td>
+                            <td>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios2" id="optionsRadios3" value="option1" >
+                                    Approve
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios2" id="optionsRadios4" value="option2">
+                                    Deny
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <button  class="btn btn-sm btn-primary btn-block" type="submit" style="width: 100px;">View Resume</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>8b888866-416c-11e3-a2df-6cdd11ba7310</td>
+                            <td>Ron Davis</td>
+                            <td>jdavis@gmail.com</td>
+                            <td>
+                                <input id="rating-system" type="number" class="rating" min="1" max="5" step="1">
+                            </td>
+                            <td>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios3" id="optionsRadios5" value="option1" >
+                                    Approve
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios3" id="optionsRadios6" value="option2">
+                                    Deny
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <button  class="btn btn-sm btn-primary btn-block" type="submit" style="width: 100px;">View Resume</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>6r955866-416c-11e3-a2df-6cdd11ba7310</td>
+                            <td>Melissa Graham</td>
+                            <td>mgraham@gmail.com</td>
+                            <td>
+                                <input id="rating-system" type="number" class="rating" min="1" max="5" step="1">
+                            </td>
+                            <td>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios4" id="optionsRadios7" value="option1" >
+                                    Approve
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios4" id="optionsRadios8" value="option2">
+                                    Deny
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <button  class="btn btn-sm btn-primary btn-block" type="submit" style="width: 100px;">View Resume</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>8b044466-416c-11e3-a2df-6cdd11ba7310</td>
+                            <td>Sean Colyer</td>
+                            <td>scolyer@gmail.com</td>
+                            <td>
+                                <input id="rating-system" type="number" class="rating" min="1" max="5" step="1">
+                            </td>
+                            <td>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios5" id="optionsRadios9" value="option1" >
+                                    Approve
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios5" id="optionsRadios10" value="option2">
+                                    Deny
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <button  class="btn btn-sm btn-primary btn-block" type="submit" style="width: 100px;">View Resume</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>b5055866-416c-11e3-a2df-6cdd11ba7310</td>
+                            <td>Jess Murphy</td>
+                            <td>jmurphy@gmail.com</td>
+                            <td>
+                                <input id="rating-system" type="number" class="rating" min="1" max="5" step="1">
+                            </td>
+                            <td>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios6" id="optionsRadios11" value="option1">
+                                    Approve
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios6" id="optionsRadios12" value="option2">
+                                    Deny
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <button  class="btn btn-sm btn-primary btn-block" type="submit" style="width: 100px;">View Resume</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>8b545866-416c-11e3-a2df-6cdd11ba7310</td>
+                            <td>Matt Todd</td>
+                            <td>mtodd@gmail.com</td>
+                            <td>
+                                <input id="rating-system" type="number" class="rating" min="1" max="5" step="1">
+                            </td>
+                            <td>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios7" id="optionsRadios13" value="option1">
+                                    Approve
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios7" id="optionsRadios14" value="option2">
+                                    Deny
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <button  class="btn btn-sm btn-primary btn-block" type="submit" style="width: 100px;">View Resume</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody> 
+                </table>
+            </div>
+        </div>
+        <div class="submit_button">
+
+            <div align="center">
+                <button  class="btn btn-lg btn-primary btn-block" type="submit" style="width: 400px;">Submit</button>
+            </div>
+            <br> 
+
+        </div>
+
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+    </body>
+</html>
