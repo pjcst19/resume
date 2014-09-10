@@ -26,7 +26,7 @@ import org.json.JSONException;
 
 /**
  *
- * @author Mandy
+ * @author Mandy Kendall
  */
 @WebServlet(name = "resumews", urlPatterns = {"/rest/resumews"})
 public class resumews extends HttpServlet {
