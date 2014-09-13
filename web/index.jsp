@@ -1,4 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    String errorMessage = "";
+    if(session.getAttribute("errorMessage") != null && session != null){
+        errorMessage = "<div class=\"alert alert-warning\" role=\"alert\">" + session.getAttribute("errorMessage") + "</div>";
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -41,6 +47,7 @@
                 </div><div class="panel-body"><div class="page-header">
                         <form class="form-signin" method="post" action="login">
                             <h2 class="form-signin-heading">Login</h2><br>
+                            <% out.print(errorMessage); %>
                             <input type="email" name="txtEmailAddress" id="txtEmailAddress" class="form-control" placeholder="Email address" required="required" autofocus>
                             <br>
                             <input type="password" name="txtPassword" id="txtPassword" class="form-control" placeholder="Password" required="required">

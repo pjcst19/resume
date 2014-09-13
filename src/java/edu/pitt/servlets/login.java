@@ -43,18 +43,19 @@ public class login extends HttpServlet {
             User user;
             
             if(!request.getParameter("txtEmailAddress").equals("") && !request.getParameter("txtPassword").equals("")){
+                HttpSession session = request.getSession(true);
                 emailAddress = request.getParameter("txtEmailAddress");
                 password = request.getParameter("txtPassword");
-                out.println("LOGIN NAME " + emailAddress + "<br/>");
-                out.println("LOGIN PASSWORD " + password + "<br/>");
+//                out.println("LOGIN NAME " + emailAddress + "<br/>");
+//                out.println("LOGIN PASSWORD " + password + "<br/>");
                 
                 user = new User(emailAddress, password);
                 
-                if(user.getUserID().equals("")){
-                    out.println("Invalid Login");
+                if(user.getUserID() == null){
+                    session.setAttribute("errorMessage", "Invalid Login");
+                    response.sendRedirect("index.jsp");
                 }
                 else{
-                    HttpSession session = request.getSession(true);
                     out.println("Valid Login");
                     session.setAttribute("authenticatedUser", user);
                     session.setAttribute("authenticatedUserIP",request.getRemoteAddr());
