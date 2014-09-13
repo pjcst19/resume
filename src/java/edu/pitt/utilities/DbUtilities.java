@@ -44,10 +44,6 @@ public class DbUtilities {
      * Default constructor creates a connection to database at the time of instantiation.
      */
     public DbUtilities() {
-        this.hostName = "jordanfeld.com:3306";
-        this.dbName = "rms";
-        this.dbUserName = "rmsSystem";
-        this.dbPassword = "hGy0LuFb508R8KWZ89B20W8Z4Pe8DJ5SnXAp52lzDoIau4q650QxV0SX9v2JuyJ";
         createDbConnection();
     }
 
@@ -78,18 +74,18 @@ public class DbUtilities {
      */
     private void createDbConnection() {
         
-//        Properties prop = new Properties(); 
-//		try {
-//                        String configFilePath = DbUtilities.class.getResource("dbconfig.properties").getFile();
-//                        prop.load(new FileInputStream(configFilePath));
-//			hostName = prop.getProperty("hostName");
-//                        dbName = prop.getProperty("dbName");
-//                        dbUserName = prop.getProperty("dbUserName");
-//                        dbPassword = prop.getProperty("dbPassword");
-//		} catch (Exception e) {
-// 
-//			e.printStackTrace();
-//		}
+        Properties prop = new Properties(); 
+        try {
+                String configFilePath = DbUtilities.class.getResource("dbconfig.properties").getFile();
+                prop.load(new FileInputStream(configFilePath));
+                hostName = prop.getProperty("hostName");
+                dbName = prop.getProperty("dbName");
+                dbUserName = prop.getProperty("dbUserName");
+                dbPassword = prop.getProperty("dbPassword");
+        } catch (Exception e) {
+
+                e.printStackTrace();
+        }
                
            
         
