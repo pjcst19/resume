@@ -11,6 +11,7 @@ package edu.pitt.resumecore;
  */
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.ErrorLogger;
+import edu.pitt.utilities.Security;
 import edu.pitt.utilities.StringUtilities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 public class User {
 
     private DbUtilities db;
+    private String inputPassword;
     private String userID;
     private String lastName;
     private String firstName;
@@ -78,7 +80,8 @@ public class User {
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.User JOIN rms.UserAddress ON userID = fk_userID ";
         sql += "JOIN rms.Address ON fk_addressID = addressID ";
-        sql += "WHERE email = '" + email + "' AND password = '" + password + "';";
+        sql += "WHERE email = '" + email + "';";
+        inputPassword = password;
         setAllUserProperties(sql);
     }
 
@@ -139,22 +142,27 @@ public class User {
         try {
             ResultSet rs1 = this.getDb().getResultSet(sql1);
             while (rs1.next()) {
-                this.userID = (rs1.getString("userID"));
-                this.lastName = (rs1.getString("lastName"));
-                this.firstName = (rs1.getString("firstName"));
-                this.middleInitial = (rs1.getString("middleInitial"));
-                this.login = (rs1.getString("login"));
-                this.password = (rs1.getString("password"));
-                this.email = (rs1.getString("email"));
-                this.phoneNumber = (rs1.getString("phoneNumber"));
-                Address address = new Address(rs1.getString("addressID"));
-                this.addresses.add(address);
+                if (Security.checkPassword(this.inputPassword, rs1.getString("password"))) {
+                    this.userID = (rs1.getString("userID"));
+                    this.lastName = (rs1.getString("lastName"));
+                    this.firstName = (rs1.getString("firstName"));
+                    this.middleInitial = (rs1.getString("middleInitial"));
+                    this.login = (rs1.getString("login"));
+                    this.password = (rs1.getString("password"));
+                    this.email = (rs1.getString("email"));
+                    this.phoneNumber = (rs1.getString("phoneNumber"));
+                    Address address = new Address(rs1.getString("addressID"));
+                    this.addresses.add(address);
+                } else {
+                    return;
+                }
+
             }
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occured in setAllUserProperties() method of User class. " + ex.getMessage());
             ErrorLogger.log(sql1);
         }
-        
+
         String sql2 = "SELECT * FROM rms.Student WHERE fk_userID = '" + this.userID + "';";
         try {
             ResultSet rs2 = this.getDb().getResultSet(sql2);
@@ -165,7 +173,7 @@ public class User {
             ErrorLogger.log("An error has occured in setAllUserProperties() method of User class. " + ex.getMessage());
             ErrorLogger.log(sql2);
         }
-        
+
         String sql3 = "SELECT * FROM rms.Staff WHERE fk_userID = '" + this.userID + "';";
         try {
             ResultSet rs3 = this.getDb().getResultSet(sql3);
@@ -186,7 +194,7 @@ public class User {
             ErrorLogger.log("An error has occured in setAllUserProperties() method of User class. " + ex.getMessage());
             ErrorLogger.log(sql4);
         }
-        
+
         String sql5 = "SELECT * FROM rms.Resume WHERE fk_userID = '" + this.userID + "';";
         try {
             ResultSet rs5 = this.getDb().getResultSet(sql5);
@@ -215,9 +223,9 @@ public class User {
             ErrorLogger.log(sql);
         }
         addresses.add(address);
-        
+
     }
-    
+
     /**
      * Removes an address to this list of user addresses
      *
@@ -232,12 +240,10 @@ public class User {
             ErrorLogger.log("An error has occurred in the insert query inside of addAddress method. " + ex.getMessage());
             ErrorLogger.log(sql);
         }
-        
+
         addresses.remove(address);
     }
 
-   
-    
     /**
      * Returns the user information as a JSON Object
      *
@@ -267,15 +273,15 @@ public class User {
             for (Address address : addresses) {
                 userAddressList.put(address.getAddressAsJson());
             }
-            
+
             user.put("addresses", userAddressList);
 
             for (String role : roles) {
                 userRoleList.put(role);
             }
             user.put("roles", userRoleList);
-            
-            for(Resume resume : resumes){
+
+            for (Resume resume : resumes) {
                 userResumeList.put(resume.getResumeAsJson());
             }
             user.put("resumes", userResumeList);
@@ -303,7 +309,7 @@ public class User {
      * @param addresses the addresses to set
      */
     private void setAddresses(ArrayList<Address> addresses) {
-        
+
         for (Address address : addresses) {
             String sql = "INSERT INTO rms.UserAddress";
             sql += "(fk_userID, fk_addressID)";
@@ -316,7 +322,7 @@ public class User {
                 ErrorLogger.log("An error has occurred with the insert query inside of the setAddresses method. " + ex.getMessage());
                 ErrorLogger.log(sql);
             }
-            
+
             this.addresses = addresses;
         }
     }
@@ -327,7 +333,6 @@ public class User {
     public String getUserID() {
         return userID;
     }
-
 
     /**
      * @return the lastName
@@ -721,7 +726,7 @@ public class User {
         }
         this.position = position;
     }
-    
+
     /**
      * @return the employeeID
      */
@@ -735,11 +740,12 @@ public class User {
      * @param resume
      */
     public void setResumes(ArrayList<Resume> resumes) {
-        for(Resume resume: resumes)
-        resumes.add(resume);
-        
+        for (Resume resume : resumes) {
+            resumes.add(resume);
+        }
+
     }
-    
+
     /**
      * Adds a resume to the list of user resumes
      *
@@ -747,9 +753,9 @@ public class User {
      */
     public void addResume(Resume resume) {
         resumes.add(resume);
-        
+
     }
-    
+
     /**
      * Removes a resume from the list of user resumes
      *
@@ -763,10 +769,8 @@ public class User {
             ErrorLogger.log("An error has occurred in the insert query inside of removeResume method. " + ex.getMessage());
             ErrorLogger.log(sql);
         }
-        
+
         resumes.remove(resume);
     }
 
-    
-    
 }

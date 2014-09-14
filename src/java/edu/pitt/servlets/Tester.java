@@ -6,7 +6,6 @@
 
 package edu.pitt.servlets;
 
-import edu.pitt.resumecore.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,14 +13,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 /**
  *
- * @author jordanstevenfeldman
+ * @author jordansfeldman
  */
-@WebServlet(name = "login", urlPatterns = {"/login"})
-public class login extends HttpServlet {
+@WebServlet(name = "Tester", urlPatterns = {"/Tester"})
+public class Tester extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,34 +36,21 @@ public class login extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Tester</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Tester at " + request.getContextPath() + "</h1>");
             
-            String emailAddress;
-            String password;
-            User user;
             
-            if(!request.getParameter("txtEmailAddress").equals("") && !request.getParameter("txtPassword").equals("")){
-                HttpSession session = request.getSession(true);
-                emailAddress = request.getParameter("txtEmailAddress");
-                password = request.getParameter("txtPassword");
-                
-                user = new User(emailAddress, password);
-                
-                if(user.getUserID() == null){
-                    session.setAttribute("errorMessage", "Invalid Login");
-                    response.sendRedirect("index.jsp");
-                }
-                else{
-                    out.println("Valid Login");
-                    session.setAttribute("authenticatedUser", user);
-                    session.setAttribute("authenticatedUserIP",request.getRemoteAddr());
-                    session.setAttribute("authenticatedUserBrowser", request.getHeader("User-Agent"));
-                    response.sendRedirect("menu.jsp");
-                }
-            }
-            else{
-                out.println("You must provide credentials to login");
-            }
+            ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+            String encryptedPassword = passwordEncryptor.encryptPassword("password1");
+            out.println(encryptedPassword);
             
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
