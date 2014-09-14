@@ -73,7 +73,7 @@ public class User {
     /**
      * Creates a new instance of User based on user's login name and password
      *
-     * @param login
+     * @param email
      * @param password
      */
     public User(String email, String password) {
@@ -142,7 +142,7 @@ public class User {
         try {
             ResultSet rs1 = this.getDb().getResultSet(sql1);
             while (rs1.next()) {
-                if (Security.checkPassword(this.inputPassword, rs1.getString("password"))) {
+                if (this.password == null || Security.checkPassword(this.inputPassword, rs1.getString("password"))) {
                     this.userID = (rs1.getString("userID"));
                     this.lastName = (rs1.getString("lastName"));
                     this.firstName = (rs1.getString("firstName"));
@@ -177,7 +177,7 @@ public class User {
         String sql3 = "SELECT * FROM rms.Staff WHERE fk_userID = '" + this.userID + "';";
         try {
             ResultSet rs3 = this.getDb().getResultSet(sql3);
-            if (rs3.next()) {
+            while (rs3.next()) {
                 this.roles.add("staff");
             }
         } catch (SQLException ex) {
@@ -187,7 +187,7 @@ public class User {
         String sql4 = "SELECT * FROM rms.Employer WHERE fk_userID = '" + this.userID + "';";
         try {
             ResultSet rs4 = this.getDb().getResultSet(sql4);
-            if (rs4.next()) {
+            while (rs4.next()) {
                 this.roles.add("employer");
             }
         } catch (SQLException ex) {
@@ -198,7 +198,7 @@ public class User {
         String sql5 = "SELECT * FROM rms.Resume WHERE fk_userID = '" + this.userID + "';";
         try {
             ResultSet rs5 = this.getDb().getResultSet(sql5);
-            if (rs5.next()) {
+            while (rs5.next()) {
                 Resume resume = new Resume(rs5.getString("resumeID"));
                 this.resumes.add(resume);
             }

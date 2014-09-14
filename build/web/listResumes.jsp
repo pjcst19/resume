@@ -47,15 +47,15 @@
 
             function jsonToHtmlTable(data) {
                 $table = $('#tblUserList');
-                $table.empty();
-
-                $table.append("<tr><th>Last Name</th><th>First Name</th><th>Resume Name</th></tr>");
-                for (var i = 0; i < data.length; i++) {
+                $lastName = data[0].lastName;
+                $firstName = data[0].firstName;
+           
+                for (var i = 0; i < data[0]['resumes'].length; i++) {
                     var $row = $('<tr />');
-                    $row.append('<td>' + data[i].lastName + '</td>');
-                    $row.append('<td>' + data[i].firstName + '</td>');
-//                  $row.append('<td><a href="viewResume.jsp?resumeID=' + data[i].userID + '">View</a></td>');
-                    $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[i].userID + '">View</a></td>');
+                    $row.append('<td>' + $lastName + '</td>');
+                    $row.append('<td>' + $firstName + '</td>');
+                    $row.append('<td>' + data[0]['resumes'][i].resumeID + '</td>');
+                    $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[0]['resumes'][i].resumeID + '">View</a></td>');
                     $row.append('</tr>');
                     $table.append($row);
                 }
@@ -94,7 +94,8 @@
                             <tr>
                                 <th>Last Name</th>
                                 <th>First Name</th>
-                                <th>Resume Name</th>
+                                <th>Resume ID</th>
+                                <th>View Resume</th>
                             </tr>
                     </table>
                 </div>

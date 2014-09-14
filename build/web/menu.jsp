@@ -31,7 +31,7 @@
 
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.php">Home</a></li>
+                        <li class="active"><a href="index.jsp">Home</a></li>
 
                         <li><a href="#about">Help</a></li>
                     </ul>

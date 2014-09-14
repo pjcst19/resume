@@ -57,19 +57,19 @@ public class userlistws extends HttpServlet {
             String sql = "";
             
             if(request.getParameter("lastName") != null){
-                lastName = request.getParameter("lastName").toString();
+                lastName = request.getParameter("lastName");
             }
             if(request.getParameter("userID") != null){
-                userID = request.getParameter("userID").toString();
+                userID = request.getParameter("userID");
             }
             if(request.getParameter("field") != null){
-                field = request.getParameter("field").toString();
+                field = request.getParameter("field");
             }
             if(request.getParameter("gpa") != null){
-                gpa = request.getParameter("gpa").toString();
+                gpa = request.getParameter("gpa");
             }
             if(request.getParameter("jobDescription") != null){
-                jobDescription = request.getParameter("jobDescription").toString();
+                jobDescription = request.getParameter("jobDescription");
             }
                
             DbUtilities db = new DbUtilities();

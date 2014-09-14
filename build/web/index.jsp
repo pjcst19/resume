@@ -31,7 +31,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown"><ul class="nav navbar-nav">
-                                <li class=""><a href="register.html">Create Account</a></li>
+                                <li class=""><a href="register.jsp">Create Account</a></li>
                             </ul>
                         </li>
                     </ul>
