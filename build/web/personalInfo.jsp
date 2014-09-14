@@ -7,10 +7,10 @@
 <%@page import="edu.pitt.utilities.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-//    Security security = new Security();
-//    if (!security.checkHijackedSession(session, request)){
-//	response.sendRedirect("index.jsp");
-//}
+    Security security = new Security();
+    if (!security.checkHijackedSession(session, request)){
+	response.sendRedirect("index.jsp");
+}
 %>
 <!DOCTYPE html>
 

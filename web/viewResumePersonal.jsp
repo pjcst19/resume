@@ -6,12 +6,12 @@
 <%@page import="edu.pitt.utilities.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-//    if (Security.checkHijackedSession(session, request)) {
-//        response.sendRedirect("index.jsp");
-//    }
-//    else{
-//        
-//    }
+    if (Security.checkHijackedSession(session, request)) {
+        response.sendRedirect("index.jsp");
+    }
+    else{
+        
+    }
 %>
 <!DOCTYPE html>
 <html>
