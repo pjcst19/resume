@@ -43,6 +43,7 @@ public class userlistws extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
+        DbUtilities db = null;
         if(Security.checkHijackedSession(request.getSession(false), request)){
             response.sendRedirect("rest/index.jsp");
          }
@@ -72,7 +73,7 @@ public class userlistws extends HttpServlet {
                 jobDescription = request.getParameter("jobDescription");
             }
                
-            DbUtilities db = new DbUtilities();
+            db = new DbUtilities();
             
             if(!lastName.equals("")){
                 
@@ -132,6 +133,8 @@ public class userlistws extends HttpServlet {
             
         } catch (SQLException ex) {
             Logger.getLogger(userlistws.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeMySQLConnection();
         }
     }
 

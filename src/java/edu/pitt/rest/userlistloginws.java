@@ -43,6 +43,7 @@ public class userlistloginws extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
+        DbUtilities db = null;
         if(Security.checkHijackedSession(request.getSession(false), request)){
             response.sendRedirect("index.jsp");
          }
@@ -56,7 +57,7 @@ public class userlistloginws extends HttpServlet {
                         
             if(!login.equals("") && !password.equals("")){
                 
-                DbUtilities db = new DbUtilities();
+                db = new DbUtilities();
                 String sql = "SELECT * FROM rms.User ";
                 sql += "WHERE login = '" + login + "' AND password = '" + password + "'";
                 
@@ -76,6 +77,8 @@ public class userlistloginws extends HttpServlet {
             
         } catch (SQLException ex) {
             Logger.getLogger(userlistloginws.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeMySQLConnection();
         }
     }
 

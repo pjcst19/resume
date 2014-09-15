@@ -18,6 +18,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javax.servlet.SessionTrackingMode.URL;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -240,6 +242,14 @@ public class DbUtilities {
             tbl += "</tr>";
         }
         return tbl;
+    }
+    
+    public void closeMySQLConnection(){
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DbUtilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     

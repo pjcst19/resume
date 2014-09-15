@@ -24,7 +24,8 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
         <script language="javascript">
-            var $restPath = "rest/userlistws?lastName="
+            var $restPath = "rest/userlistws?lastName=";
+            var xhr;
             $(document).ready(function() {                
                 $('#searchOption').on('change', function() {
                     $option = $("#searchOption :selected").text();
@@ -45,6 +46,7 @@
      
                 $('#txtSearchbox').keyup(function() {
                     if ($("#txtSearchbox").val().length > 0) {
+                        abortAjax(xhr);
                         $searchTxt = $('#txtSearchbox').val();
                         $tempFullPath = $restPath + $searchTxt;
                         getJsonFromWebService($tempFullPath);
@@ -54,7 +56,7 @@
             });
             function getJsonFromWebService(targetUrl) {
                 console.log(targetUrl);
-                jQuery.ajax({
+                xhr = jQuery.ajax({
                     type: "GET",
                     url: targetUrl,
                     contentType: "application/json; charset=utf-8",
@@ -108,6 +110,11 @@
 
                 for (var i = 0; i < data.length; i++) {
                     $select.append('<option value="' + data[i].userID + '">' + data[i].lastName + ', ' + data[i].firstName + '</option>');
+                }
+            }
+            function abortAjax(xhr) {
+                if(xhr && xhr.readystate != 4){
+                    xhr.abort();
                 }
             }
         </script>

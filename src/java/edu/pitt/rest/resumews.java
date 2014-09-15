@@ -43,6 +43,7 @@ public class resumews extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
+        DbUtilities db = null;
         if(Security.checkHijackedSession(request.getSession(false), request)){
             response.sendRedirect("./index.jsp");
          }
@@ -66,7 +67,7 @@ public class resumews extends HttpServlet {
                 jobDescription = request.getParameter("jobDescription").toString();
             }
             
-            DbUtilities db = new DbUtilities();
+            db = new DbUtilities();
             String sql = "";
             
             if(!resumeID.equals("")){
@@ -103,6 +104,8 @@ public class resumews extends HttpServlet {
             
         } catch (SQLException ex) {
             Logger.getLogger(resumews.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            db.closeMySQLConnection();
         }
     }
 
