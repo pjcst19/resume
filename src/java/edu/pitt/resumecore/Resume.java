@@ -26,6 +26,8 @@ public class Resume {
 
     private String resumeID;
     private int rating;
+    private String created;
+    private String modified;
     private ArrayList<Education> educationList = new ArrayList<Education>();;
     private ArrayList<Award> awardList = new ArrayList<Award>();;
     private ArrayList<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();;
@@ -55,11 +57,11 @@ public class Resume {
         this.resumeID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Resume ";
-        sql += "(resumeID,fk_userID,rating)";
+        sql += "(resumeID,fk_userID,rating,created,modified)";
         sql += " VALUES (";
         sql += "'" + this.resumeID + "', ";
         sql += "'" + userID + "', ";
-        sql += "'" + rating + "')";
+        sql += "'" + rating + "',NULL,NULL);";
         System.out.println(sql);
         try {
             db.executeQuery(sql);
@@ -78,6 +80,8 @@ public class Resume {
             ResultSet rs = db.getResultSet(sql1);
             if (rs.next()) {
                 this.rating = rs.getInt("rating");
+                this.created = rs.getTimestamp("created").toString();
+                this.modified = rs.getTimestamp("modified").toString();
             }
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Resume(String resumeID) constructor of Resume class. " + ex.getMessage());
@@ -202,6 +206,8 @@ public class Resume {
         try {
             resume.put("resumeID", this.resumeID);
             resume.put("rating", this.rating);
+            resume.put("created", this.created);
+            resume.put("modified", this.modified);
             
             if (this.educationList != null) {
                 for (Education education : this.educationList) {

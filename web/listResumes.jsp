@@ -47,13 +47,12 @@
 
             function jsonToHtmlTable(data) {
                 $table = $('#tblUserList');
-                $lastName = data[0].lastName;
-                $firstName = data[0].firstName;
-           
                 for (var i = 0; i < data[0]['resumes'].length; i++) {
                     var $row = $('<tr />');
-                    $row.append('<td>' + $lastName + '</td>');
-                    $row.append('<td>' + $firstName + '</td>');
+                    $row.append('<td>' +  data[0].lastName + '</td>');
+                    $row.append('<td>' +  data[0].firstName + '</td>');
+                    $row.append('<td>' + data[0]['resumes'][i].created + '</td>');
+                    $row.append('<td>' + data[0]['resumes'][i].modified + '</td>');
                     $row.append('<td>' + data[0]['resumes'][i].resumeID + '</td>');
                     $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[0]['resumes'][i].resumeID + '">View</a></td>');
                     $row.append('</tr>');
@@ -94,6 +93,8 @@
                             <tr>
                                 <th>Last Name</th>
                                 <th>First Name</th>
+                                <th>Created</th>
+                                <th>Modified</th>
                                 <th>Resume ID</th>
                                 <th>View Resume</th>
                             </tr>
