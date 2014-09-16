@@ -97,7 +97,6 @@
                     var $row = $('<tr />');
                     $row.append('<td>' + data[i].lastName + '</td>');
                     $row.append('<td>' + data[i].firstName + '</td>');
-//                    $row.append('<td><a href="listResumes.jsp?userID=' + data[i].userID + '">View Resume</a></td>');
                     $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[i].userID + '">View</a></td>');
                     $row.append('</tr>');
                     $table.append($row);
@@ -180,6 +179,7 @@
                         <tr>
                             <th>Last Name</th>
                             <th>First Name</th>
+                            <th>Field</th>
                             <th>Resume(s)</th>
                         </tr>
                     </table>

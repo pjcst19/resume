@@ -47,16 +47,18 @@
 
             function jsonToHtmlTable(data) {
                 $table = $('#tblUserList');
-                for (var i = 0; i < data[0]['resumes'].length; i++) {
-                    var $row = $('<tr />');
-                    $row.append('<td>' +  data[0].lastName + '</td>');
-                    $row.append('<td>' +  data[0].firstName + '</td>');
-                    $row.append('<td>' + data[0]['resumes'][i].created + '</td>');
-                    $row.append('<td>' + data[0]['resumes'][i].modified + '</td>');
-                    $row.append('<td>' + data[0]['resumes'][i].resumeID + '</td>');
-                    $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[0]['resumes'][i].resumeID + '">View</a></td>');
-                    $row.append('</tr>');
-                    $table.append($row);
+                for (var i = 0; i < data.length; i++) {
+                    for (var j = 0; j < data[i]['resumes'].length; j++) {
+                        var $row = $('<tr />');
+                        $row.append('<td>' +  data[i].lastName + '</td>');
+                        $row.append('<td>' +  data[i].firstName + '</td>');
+                        $row.append('<td>' + data[i]['resumes'][j].created + '</td>');
+                        $row.append('<td>' + data[i]['resumes'][j].modified + '</td>');
+                        $row.append('<td>' + data[i]['resumes'][j].resumeID + '</td>');
+                        $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[i]['resumes'][j].resumeID + '">View</a></td>');
+                        $row.append('</tr>');
+                        $table.append($row);
+                    }
                 }
             }
         </script>
