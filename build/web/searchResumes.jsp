@@ -1,10 +1,10 @@
 <%@page import="edu.pitt.utilities.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    if (Security.checkHijackedSession(session, request)) {
-        System.out.println("Here");
-        response.sendRedirect("index.jsp");
-    }
+    //if (Security.checkHijackedSession(session, request)) {
+   //     System.out.println("Here");
+   //     response.sendRedirect("index.jsp");
+   // }
 %>
 <!DOCTYPE html>
 <html>
@@ -64,6 +64,7 @@
                         jsonToHtmlSelect(data);
                         jsonToHtmlTable(data);
                     },
+                    
                     error: function(jqXHR, status) {
                         console.log(status);
                     }
