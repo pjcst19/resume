@@ -27,6 +27,20 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $( "#datepickerStart" ).datepicker();
+        });
+    </script>
+    
+    <script>
+        $(function() {
+            $( "#datepickerEnd" ).datepicker();
+        });
+    </script>
 </head>
 
 <body>
@@ -64,15 +78,21 @@
                         
 
                         <label> Work Experience </label>
-                        <input type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer"autofocus=""><br>
-                        <input type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position"><br>
-                        <label style="display:inline"> Start Date</label><input type="date" class="form-control" id="txtStartDate" name="txtStartDate" style="width:30%; display:inline">
-                        <label style="display:inline"> End Date</label><input type="date" class="form-control" id="txtEndDate" name="txtEndDate" style="width:30%; display:inline"><br><br>
-                        <textarea class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience"></textarea><br>
-                        <label> Awards </label>
-                        <input type="text" class="form-control" id="txtAwardName" name="txtAwardName" placeholder="Award/Recognition" style="width:49%; display:inline"><br><br>
-                        <textarea class="form-control" rows="6" id="txtAwardDescription" name="txtAwardDescription" placeholder="Description of Award"></textarea><br>
+                        <input type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
+                        <input type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position" required><br>
+                        <label style="display:inline"> Start Date </label><input type="date" class="form-control" id="datepickerStart" name="txtStartDate" required style="width:20%; display:inline">
+                        <label style="display:inline"> End Date </label><input type="date" class="form-control" id="datepickerEnd" name="txtEndDate" required style="width:20%; display:inline">
+                        <label style="display:inline">Currently Employed? </label>
+                        <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="Yes" style="width:5%; display:inline"> Yes
+                        <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="No" style="width:5%; display:inline" checked> No<br><br>
                         
+                        <label style="display:inline"> Description of Work </label><br>
+                        <textarea class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience" required></textarea><br>
+                        
+                        <label> Awards </label><br>
+                        <input type="text" class="form-control" id="datepicker" name="txtAwardName" placeholder="Award/Recognition" style="width:49%; display:inline"><br><br>
+                        <textarea class="form-control" rows="6" id="datepicker" name="txtAwardDescription" placeholder="Description of Award"></textarea><br>
+                       
                         <br>
 
                        
