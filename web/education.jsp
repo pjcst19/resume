@@ -31,6 +31,16 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="css/custom.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $( "#datepicker" ).datepicker();
+        });
+    </script>
+    
+   
     
 </head>
 
@@ -68,11 +78,12 @@
                         <h2 class="form-signin-heading">Education</h2><br>
 
                         <label> University</label>
-                        <input type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" placeholder="University" required="" autofocus=""><br>
-                        <input type="text" class="form-control" id="txtDegreeType" name="txtDegreeType" placeholder="Type of Degree" style="width:29%; display:inline">
-                        <input type="text" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" style="width:29%; display:inline">
-                        <input type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" style="width:20%; display:inline">
-                        <input type="date" class="form-control" id="dteGradDate" name="dteGradDate" placeholder="Graduation Date" required="" style="width:20%; display:inline">
+                        <input type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" placeholder="University" required autofocus=""><br>
+                        <input type="text" class="form-control" id="txtDegreeType" name="txtDegreeType" placeholder="Type of Degree" required style="width:29%; display:inline">
+                        <input type="text" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:29%; display:inline">
+                        <input type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline">
+                        <input type="text" class="form-control" id="datepicker" name="txtGradDate" placeholder="Graduation Date" required="" style="width:20%; display:inline">
+                        
                         <br><br>
                    
                         <br>
