@@ -40,26 +40,24 @@ public class Resume {
      *
      * @param resumeID
      */
-    public Resume(String resumeID) {
-        this.resumeID = resumeID;
-        String sql = "SELECT * FROM rms.Resume WHERE resumeID = '" + resumeID + "'";
-        setAllResumeProperties(sql);
+    public Resume(String resumeID) {       
+        setAllResumeProperties(resumeID);
     }
 
     /**
      * Creates a Resume object based upon the parameters given and inserts it
      * into the database
      *
-     * @param resumeID
+     * @param userID
      * @param rating
      */
     public Resume(String userID, int rating) {
-        this.resumeID = UUID.randomUUID().toString();
+        resumeID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Resume ";
         sql += "(resumeID,fk_userID,rating,created,modified)";
         sql += " VALUES (";
-        sql += "'" + this.resumeID + "', ";
+        sql += "'" + resumeID + "', ";
         sql += "'" + userID + "', ";
         sql += "'" + rating + "',NULL,NULL);";
         System.out.println(sql);
@@ -68,12 +66,13 @@ public class Resume {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in the insert query inside of the Resume constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            setAllResumeProperties(resumeID);
         }
-
-        this.rating = rating;
+        
     }
-
-    private void setAllResumeProperties(String sql1) {
+    private void setAllResumeProperties(String resumeID) {
+        String sql1 = "SELECT * FROM rms.Resume WHERE resumeID = '" + resumeID + "'";
         System.out.println(sql1);
         db = new DbUtilities();
         try {
@@ -86,6 +85,8 @@ public class Resume {
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Resume(String resumeID) constructor of Resume class. " + ex.getMessage());
             ErrorLogger.log(sql1);
+        }finally{
+            this.resumeID = resumeID;
         }
         
         String sql2 = "SELECT * FROM rms.ResumeAward WHERE fk_resumeID = '" + this.resumeID + "'";
