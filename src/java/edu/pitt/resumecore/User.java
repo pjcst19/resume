@@ -75,14 +75,14 @@ public class User {
     /**
      * Creates a new instance of User based on user's login name and password
      *
-     * @param username
+     * @param login
      * @param password
      */
-    public User(String username, String password) {
+    public User(String login, String password) {
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.User JOIN rms.UserAddress ON userID = fk_userID ";
         sql += "JOIN rms.Address ON fk_addressID = addressID ";
-        sql += "WHERE username = '" + username + "';";
+        sql += "WHERE login = '" + login + "';";
         inputPassword = password;
         setAllUserProperties(sql);
     }
