@@ -23,11 +23,34 @@ public class Award {
     private String awardID;
     private String name;
     private String description;
+    private String created;
+    private String modified;
 
     private DbUtilities db;
 
     public Award(String awardID) {
-        this.awardID = awardID;
+        setAllAwardProperties(awardID);
+    }
+    
+    public Award(String name, String description){
+        awardID = UUID.randomUUID().toString();
+        db = new DbUtilities();
+        String sql = "INSERT INTO rms.Award ";
+        sql += "(awardID,name,description,created,modified)";
+        sql += " VALUES (";
+        sql += "'" + this.awardID + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(name) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(description) + "',NULL,NULL)";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of the Award constructor. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }finally{
+            setAllAwardProperties(awardID);
+        }
+    }
+    private void setAllAwardProperties(String awardID){
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.Award WHERE awardID = '" + awardID + "'";
         try {
@@ -35,33 +58,16 @@ public class Award {
             if (rs.next()) {
                 this.name = rs.getString("name");
                 this.description = rs.getString("description");
+                this.created = rs.getTimestamp("created").toString();
+                this.modified = rs.getTimestamp("modified").toString();
             }
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Award(String awardID) constructor of Award class. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            this.awardID = awardID;
         }
     }
-    
-    public Award(String name, String description){
-        this.awardID = UUID.randomUUID().toString();
-        db = new DbUtilities();
-        String sql = "INSERT INTO rms.Award ";
-        sql += "(awardID,name,description)";
-        sql += " VALUES (";
-        sql += "'" + this.awardID + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(name) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(description) + "')";
-        try {
-            db.executeQuery(sql);
-        } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of the Award constructor. " + ex.getMessage());
-            ErrorLogger.log(sql);
-        }
-        
-        this.name = name;
-        this.description = description;
-    }
-    
     public void setName(String name){
         String sql = "UPDATE Award SET name = '" + name + "' WHERE awardID = '" + this.awardID + "';";
         try {
@@ -104,6 +110,8 @@ public class Award {
             award.put("awardID", this.awardID);
             award.put("name", this.name);
             award.put("description", this.description);
+            award.put("created", this.created);
+            award.put("modified", this.modified);
         } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within getAwardAsJSON. " + ex.getMessage());
         }
