@@ -66,8 +66,8 @@ public class User {
      */
     public User(String userID) {
         db = new DbUtilities();
-        String sql = "SELECT * FROM rms.User JOIN rms.UserAddress ON userID = fk_userID ";
-        sql += "JOIN rms.Address ON fk_addressID = addressID ";
+        String sql = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
+        sql += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
         sql += "WHERE userID = '" + userID + "'";
         setAllUserProperties(sql);
     }
@@ -80,10 +80,10 @@ public class User {
      */
     public User(String login, String password) {
         db = new DbUtilities();
-        String sql = "SELECT * FROM rms.User JOIN rms.UserAddress ON userID = fk_userID ";
-        sql += "JOIN rms.Address ON fk_addressID = addressID ";
+        String sql = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
+        sql += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
         sql += "WHERE login = '" + login + "';";
-        inputPassword = password;
+        this.inputPassword = password;
         setAllUserProperties(sql);
     }
 
@@ -120,8 +120,8 @@ public class User {
             ErrorLogger.log("An error has occurred in with the insert query inside of the User constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
         } finally{
-            String sql2 = "SELECT * FROM rms.User JOIN rms.UserAddress ON userID = fk_userID ";
-            sql2 += "JOIN rms.Address ON fk_addressID = addressID ";
+            String sql2 = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
+            sql2 += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
             sql2 += "WHERE userID = '" + userID + "'";
             setAllUserProperties(sql2);
         }
@@ -135,10 +135,11 @@ public class User {
      * database
      */
     private void setAllUserProperties(String sql1) {
+        System.out.println(sql1);
         try {
             ResultSet rs1 = this.getDb().getResultSet(sql1);
             while (rs1.next()) {
-                if (this.password == null || Security.checkPassword(this.inputPassword, rs1.getString("password"))) {
+                if (this.userID == null || Security.checkPassword(this.inputPassword, rs1.getString("password"))) {
                     this.userID = (rs1.getString("userID"));
                     this.lastName = (rs1.getString("lastName"));
                     this.firstName = (rs1.getString("firstName"));
