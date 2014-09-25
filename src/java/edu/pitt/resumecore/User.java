@@ -267,6 +267,8 @@ public class User {
             user.put("industry", this.getIndustry());
             user.put("employeeID", this.getEmployeeID());
             user.put("position", this.getPosition());
+            user.put("created", this.created);
+            user.put("modified", this.modified);
 
             for (Address address : addresses) {
                 userAddressList.put(address.getAddressAsJson());
