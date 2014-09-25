@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/jordansfeldman/Desktop/RMS/web/searchResumes.jsp</file>
-            <file>file:/Users/jordansfeldman/Desktop/RMS/web/viewResumePersonal.jsp</file>
+            <file>file:/Users/jordansfeldman/Desktop/RMS/src/java/edu/pitt/resumecore/Address.java</file>
+            <file>file:/Users/jordansfeldman/Desktop/RMS/src/java/edu/pitt/servlets/login.java</file>
             <file>file:/Users/jordansfeldman/Desktop/RMS/web/listResumes.jsp</file>
-            <file>file:/Users/jordansfeldman/Desktop/RMS/src/java/edu/pitt/rest/resumews.java</file>
+            <file>file:/Users/jordansfeldman/Desktop/RMS/src/java/edu/pitt/resumecore/User.java</file>
         </group>
     </open-files>
 </project-private>
