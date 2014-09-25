@@ -49,9 +49,11 @@ public class User {
     private String industry;
     private String employeeID;
     private String position;
-    private ArrayList<Address> addresses = new ArrayList<Address>();
-    private ArrayList<Resume> resumes = new ArrayList<Resume>();
-    private ArrayList<String> roles = new ArrayList<String>();
+    private ArrayList<Address> addresses = new ArrayList<>();
+    private ArrayList<Resume> resumes = new ArrayList<>();
+    private ArrayList<String> roles = new ArrayList<>();
+    private String created;
+    private String modified;
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -73,14 +75,14 @@ public class User {
     /**
      * Creates a new instance of User based on user's login name and password
      *
-     * @param email
+     * @param username
      * @param password
      */
-    public User(String email, String password) {
+    public User(String username, String password) {
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.User JOIN rms.UserAddress ON userID = fk_userID ";
         sql += "JOIN rms.Address ON fk_addressID = addressID ";
-        sql += "WHERE email = '" + email + "';";
+        sql += "WHERE username = '" + username + "';";
         inputPassword = password;
         setAllUserProperties(sql);
     }
@@ -99,12 +101,12 @@ public class User {
      * @param phoneNumber
      */
     public User(String firstName, String lastName, String middleInitial, String login, String password, ArrayList<Address> addresses, String email, String phoneNumber) {
-        this.userID = UUID.randomUUID().toString();
+        userID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.User";
         sql += "(firstName,lastName,middleInitial,login password,email,phoneNumber";
         sql += " VALUES (";
-        sql += "'" + this.userID + "', ";
+        sql += "'" + userID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(firstName) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(lastName) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(middleInitial) + "', ";
@@ -117,19 +119,13 @@ public class User {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of the User constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally{
+            String sql2 = "SELECT * FROM rms.User JOIN rms.UserAddress ON userID = fk_userID ";
+            sql2 += "JOIN rms.Address ON fk_addressID = addressID ";
+            sql2 += "WHERE userID = '" + userID + "'";
+            setAllUserProperties(sql2);
         }
-
-        setAddresses(addresses);
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleInitial = middleInitial;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.addresses = addresses;
-
+        
     }
 
     /**
@@ -153,6 +149,8 @@ public class User {
                     this.phoneNumber = (rs1.getString("phoneNumber"));
                     Address address = new Address(rs1.getString("addressID"));
                     this.addresses.add(address);
+                    this.created = rs1.getTimestamp("created").toString();
+                    this.modified = rs1.getTimestamp("modified").toString();
                 } else {
                     return;
                 }
