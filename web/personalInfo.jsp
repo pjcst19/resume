@@ -9,8 +9,6 @@
 <%
     if (Security.checkHijackedSession(session, request)) {
         response.sendRedirect("index.jsp");
-    } else {
-
     }
 %>
 <!DOCTYPE html>
