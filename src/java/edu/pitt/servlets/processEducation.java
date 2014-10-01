@@ -42,15 +42,15 @@ public class processEducation extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        HttpSession session = request.getSession(true);
+        try (PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession(true);
 
 //        Security security = new Security();
 //        if (security.checkHijackedSession(session, request)) {
 //            response.sendRedirect("index.jsp");
 //        }
 
-        try (PrintWriter out = response.getWriter()) {
+        
 
             User user = (User) session.getAttribute("authenticatedUser");
             Resume resume = new Resume(user.getUserID(),0);
@@ -78,7 +78,7 @@ public class processEducation extends HttpServlet {
             
             session.setAttribute("currentResume", resume);
 
-            response.sendRedirect("workExperience.jsp?");
+            response.sendRedirect("workExperience.jsp");
         }
       
 

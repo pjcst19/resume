@@ -10,7 +10,7 @@
 <%
     Security security = new Security();
     
-    if (!security.checkHijackedSession(session, request)){
+    if (security.checkHijackedSession(session, request)){
 	response.sendRedirect("index.jsp");
 }
 %>
@@ -34,11 +34,46 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    
+    <!--Datepicker for graduation date-->
     <script>
         $(function() {
-            $( "#datepicker" ).datepicker();
+            $( ".datepicker" ).datepicker();
         });
     </script>
+    
+    <!--Adds an additional form to allow the user to input multiple education entries-->
+    <script type='text/javascript'>
+        $(document).ready(function (){
+            $('#btnAddEducation').click(function() {
+            $('#additionalEducation').append($('<div>').load('uiexamples/eduForm.html'));            
+            return false;
+            });
+    });
+    </script>
+    
+    <!--Submits all forms on page -->
+    <script>
+        function post_form_data(data) {
+            $.ajax({
+                type: 'POST',
+                url: 'processEducation',
+                data: data,
+                success: function (result) {},
+                error: function (result) {}
+            });
+        }//end of post_form_data
+        
+        
+        //When Next button is clicked, all forms on page are submitted for processing
+        $('btnSubmit').on('click', function () {
+            $('form').each(function () {
+                post_form_data($(this).serialize());
+            });
+        });
+    </script>
+
+
     
    
     
@@ -74,24 +109,31 @@
             <div class="panel-body">
                 
                 <div class="page-header">
-                    <form class="form-signin" method="post" action="processEducation">
-                        <h2 class="form-signin-heading">Education</h2><br>
+                    
+                        <form class="form-signin" method="post" action="processEducation">
+                            <h2 class="form-signin-heading">Education</h2><br>
 
-                        <label> University</label>
-                        <input type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" placeholder="University" required autofocus=""><br>
-                        <input type="text" class="form-control" id="txtDegreeType" name="txtDegreeType" placeholder="Type of Degree" required style="width:29%; display:inline">
-                        <input type="text" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:29%; display:inline">
-                        <input type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline">
-                        <input type="text" class="form-control" id="datepicker" name="txtGradDate" placeholder="Graduation Date" required="" style="width:20%; display:inline">
+                            <label> University</label>
+                            <input type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" placeholder="University" required autofocus=""><br>
+                            <input type="text" class="form-control" id="txtDegreeType" name="txtDegreeType" placeholder="Type of Degree" required style="width:29%; display:inline">
+                            <input type="text" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:29%; display:inline">
+                            <input type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline" required>
+                            <input type="text" class="form-control datepicker" name="txtGradDate" placeholder="Graduation Date" required style="width:20%; display:inline">
                         
-                        <br><br>
+                            <br><br>
+                            
+                            <div id="additionalEducation">
+                            </div><!--End of Div additionalEducation-->
+                        
                    
-                        <br>
-                        <button class="btn btn-lg btn-primary" type="btnEducation" id="btnEducation" onclick="window.location.href='objectives.jsp'">Back</button>
-                        <button class="btn btn-lg btn-primary" type="btnSubmit" id="btnSubmit">Next</button>
+                    <br>
+                    <button class="btn btn-lg btn-primary" type="button" id="btnEducation" onclick="window.location.href='personalInfo.jsp'">Back</button>
+                    <button class="btn btn-lg btn-primary" type="submit" id="btnAddEducation">Add Education</button>
+                    <button class="btn btn-lg btn-primary" type="submit" id="btnSubmit">Next</button>
                     </form><br>
                     
-                </div>
+                    
+                </div><!--End of div page-header-->
             </div><!-- /container -->
         </div>
     </div>

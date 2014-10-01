@@ -57,7 +57,7 @@ public class WorkExperience {
         db = new DbUtilities();
         String sql = "INSERT INTO rms.WorkExperience ";
         sql += "(workExperienceID,businessName,position,startDate,endDate,description)";
-        sql += " VALUES "; 
+        sql += " VALUES ("; 
         sql += "'" + this.workExperienceID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(businessName) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";

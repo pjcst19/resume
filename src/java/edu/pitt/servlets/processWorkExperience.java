@@ -53,23 +53,23 @@ public class processWorkExperience extends HttpServlet {
             String startDate = "";
             String endDate = "";
             String description = "";
-            String awardName = "";
-            String awardDescription = "";
+            //String awardName = "";
+            //String awardDescription = "";
 
             //What error handling do we want to do?
             businessName = request.getParameter("txtBusinessName");
             position = request.getParameter("txtPosition");
             startDate = request.getParameter("txtStartDate");//Date?
             endDate = request.getParameter("txtEndDate");//Date?
-            description = request.getParameter("txtDescription");
-            awardName = request.getParameter("txtAward");
-            awardDescription = request.getParameter("txtDesription");
+            description = request.getParameter("txtWorkDescription");
+            //awardName = request.getParameter("txtAward");
+            //awardDescription = request.getParameter("txtDesription");
 
             WorkExperience workExperience = new WorkExperience(businessName, position, startDate, endDate, description);
             resume.addWorkExperience(workExperience);
 
-            Award award = new Award(awardName, awardDescription);
-            resume.addAward(award);
+            //Award award = new Award(awardName, awardDescription);
+            //resume.addAward(award);
             
             System.out.println(workExperience.getWorkExperienceID());
             

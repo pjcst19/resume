@@ -8,7 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     Security security = new Security();
-    if (!security.checkHijackedSession(session, request)){
+    if (security.checkHijackedSession(session, request)){
 	response.sendRedirect("index.jsp");
 }
 %>
@@ -30,17 +30,46 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    
+    <!--Presents a date picker for the Start and End Date fields-->
     <script>
         $(function() {
-            $( "#datepickerStart" ).datepicker();
+            $( ".datepicker" ).datepicker();
         });
     </script>
     
-    <script>
-        $(function() {
-            $( "#datepickerEnd" ).datepicker();
-        });
+ 
+    
+    <!--When "Add Work Experience" button is pressed, adds an additional form to allow the user to input multiple work entries-->
+     <script type='text/javascript'>
+        $(document).ready(function (){
+            $('#btnAddWorkExp').click(function() {
+            $('#additionalWorkExp').append($('<div>').load('workExpForm.html'));            
+            return false;
+            });
+    });
     </script>
+    
+     <!--Submits all forms on page -->
+    <!--<script>
+        function post_form_data(data) {
+            $.ajax({
+                type: 'POST',
+                url: 'processWorkExperience',
+                data: data,
+                success: function () {},
+                error: function () {}
+            });
+        }//end of post_form_data
+        
+        
+        //When Next button is clicked, all forms on page are submitted for processing
+        $('btnSubmit').on('click', function () {
+            $('form').each(function () {
+                post_form_data($(this).serialize());
+            });
+        });
+    </script><-->
 </head>
 
 <body>
@@ -74,14 +103,14 @@
                 
                 <div class="page-header">
                     <form class="form-signin" method="post" action="processWorkExperience">
-                        <h2 class="form-signin-heading">Work Experience and Awards</h2><br>
+                        <h2 class="form-signin-heading">Work Experience</h2><br>
                         
 
                         <label> Work Experience </label>
                         <input type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
                         <input type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position" required><br>
-                        <label style="display:inline"> Start Date </label><input type="date" class="form-control" id="datepickerStart" name="txtStartDate" required style="width:20%; display:inline">
-                        <label style="display:inline"> End Date </label><input type="date" class="form-control" id="datepickerEnd" name="txtEndDate" required style="width:20%; display:inline">
+                        <label style="display:inline"> Start Date </label><input type="date" class="form-control datepicker" id="txtStartDate" name="txtStartDate" required style="width:20%; display:inline">
+                        <label style="display:inline"> End Date </label><input type="date" class="form-control datepicker" id="txtEndDate" name="txtEndDate" required style="width:20%; display:inline">
                         <label style="display:inline">Currently Employed? </label>
                         <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="Yes" style="width:5%; display:inline"> Yes
                         <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="No" style="width:5%; display:inline" checked> No<br><br>
@@ -89,15 +118,21 @@
                         <label style="display:inline"> Description of Work </label><br>
                         <textarea class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience" required></textarea><br>
                         
-                        <label> Awards </label><br>
+                        <!--<label> Awards </label><br>
                         <input type="text" class="form-control" id="datepicker" name="txtAwardName" placeholder="Award/Recognition" style="width:49%; display:inline"><br><br>
                         <textarea class="form-control" rows="6" id="datepicker" name="txtAwardDescription" placeholder="Description of Award"></textarea><br>
+                        -->
                        
                         <br>
+                        
+                        <div id="additionalWorkExp">
+                            
+                        </div>
 
                        
                         <button class="btn btn-lg btn-primary" type="button" onclick="window.location.href='education.jsp'">Back</button>
-                        <button class="btn btn-lg btn-primary" type="button" onclick="window.location.href='menu.jsp'">Next</button> <!--Where do we go from here? -->
+                        <button class="btn btn-lg btn-primary" type="button" id="btnAddWorkExp">Add Work Experience</button>
+                        <button class="btn btn-lg btn-primary" type="submit">Next</button> <!--Where do we go from here? -->
                     </form><br>
                     
                 </div>
