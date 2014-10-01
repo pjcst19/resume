@@ -28,13 +28,40 @@ public class Education {
     private String field;
     private double gpa;
     private String graduationDate;
+    private String created;
+    private String modified;
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     private DbUtilities db;
 
     public Education(String educationID) {
-        this.educationID = educationID;
+        setAllEducationProperties(educationID);
+    }
+
+    public Education(String name, String type, String field, Double gpa, String graduationDate) {
+        educationID = UUID.randomUUID().toString();
+        db = new DbUtilities();
+        String sql = "INSERT INTO rms.Education ";
+        sql += "(educationID,name,type,field,gpa,graduationDate,created,modified)";
+        sql += " VALUES (";
+        sql += "'" + educationID + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(name) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(type) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(field) + "', ";
+        sql += "'" + gpa.toString() + "', ";
+        sql += "'" + graduationDate + "',NULL,NULL) ";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of the Education constructor. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally{
+            setAllEducationProperties(educationID);
+        }
+
+    }
+    private void setAllEducationProperties(String educationID){
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.Education WHERE educationID = '" + educationID + "'";
         try {
@@ -45,40 +72,16 @@ public class Education {
                 this.field = rs.getString("field");
                 this.gpa = rs.getDouble("gpa");
                 this.graduationDate = rs.getString("graduationDate");
+                this.created = rs.getTimestamp("created").toString();
+                this.modified = rs.getTimestamp("modified").toString();
             }
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Education(String educationID) constructor of Education class. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally{
+            this.educationID = educationID;
         }
-
     }
-
-    public Education(String name, String type, String field, Double gpa, String graduationDate) {
-        this.educationID = UUID.randomUUID().toString();
-        db = new DbUtilities();
-        String sql = "INSERT INTO rms.Education ";
-        sql += "(educationID,name,type,field,gpa,graduationDate)";
-        sql += " VALUES (";
-        sql += "'" + this.educationID + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(name) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(type) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(field) + "', ";
-        sql += "'" + gpa.toString() + "', ";
-        sql += "'" + graduationDate + "') ";
-        try {
-            db.executeQuery(sql);
-        } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of the Education constructor. " + ex.getMessage());
-            ErrorLogger.log(sql);
-        }
-
-        this.name = name;
-        this.type = type;
-        this.field = field;
-        this.gpa = gpa;
-        this.graduationDate = graduationDate;
-    }
-
     public void setName(String name) {
         String sql = "UPDATE Education SET name = '" + name + "' WHERE educationID = '" + this.educationID + "';";
         try {
@@ -169,6 +172,7 @@ public class Education {
             education.put("field", this.field);
             education.put("gpa", this.gpa);
             education.put("graduationDate", this.graduationDate);
+            
         } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within getEducationAsJSON. " + ex.getMessage());
         }

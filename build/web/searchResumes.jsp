@@ -24,28 +24,47 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
         <script language="javascript">
-            var $restPath = "rest/userlistws?lastName=";
+            var $restPath = "rest/searchws?lastName=";
+            var $searchField = "lastName";
+            $dataTitle = "Last Name";
             var xhr;
-            $(document).ready(function() {                
+            var $option;
+            $(document).ready(function() {   
+                
+                 $("#searchCol").text( $dataTitle);
+                
                 $('#searchOption').on('change', function() {
+                    $(".data").remove();
                     $option = $("#searchOption :selected").text();
 
                     if($option === "Last Name"){
-                        $restPath = "rest/userlistws?lastName=";
+                        $restPath = "rest/searchws?lastName=";
+                        $searchField = "lastName";
+                        $dataTitle = "Last Name";
+                        
                     }
-                    else if($option === "Field"){
-                        $restPath = "rest/userlistws?field=";
+                    else if($option === "Major/Minor"){
+                        $restPath = "rest/searchws?field=";
+                        $searchField = "field";
+                        $dataTitle = "Major/Minor";
                     }
                     else if($option === "GPA is greater than"){
-                        $restPath = "rest/userlistws?gpa=";
+                        $restPath = "rest/searchws?gpa=";
+                        $searchField = "gpa";
+                        $dataTitle = "GPA";
                     }
                     else if($option === "Job Description"){
-                        $restPath = "rest/userlistws?jobDescription=";
+                        $restPath = "rest/searchws?description=";
+                        $searchField = "description";
+                        $dataTitle = "Job Description";
                     }
+                    
+                    $("#searchCol").text( $dataTitle);
                 });
      
                 $('#txtSearchbox').keyup(function() {
                     if ($("#txtSearchbox").val().length > 0) {
+                         $(".data").remove();
                         abortAjax(xhr);
                         $searchTxt = $('#txtSearchbox').val();
                         $tempFullPath = $restPath + $searchTxt;
@@ -89,17 +108,20 @@
             }
 
             function jsonToHtmlTable(data) {
-                $table = $('#tblUserList');
-                $table.empty();
-
-                $table.append("<tr><th>Last Name</th><th>First Name</th><th>Resume(s)</th></tr>");
+                
+               $tableData = $('#tblUserList');
+               $('.data').empty();
                 for (var i = 0; i < data.length; i++) {
-                    var $row = $('<tr />');
-                    $row.append('<td>' + data[i].lastName + '</td>');
-                    $row.append('<td>' + data[i].firstName + '</td>');
-                    $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[i].userID + '">View</a></td>');
+                    var $row = $('<tr class ="data">');
+                    $row.append('<td>' +  data[i].lastName + '</td>');
+                    $row.append('<td>' +  data[i].firstName + '</td>');
+                    $row.append('<td>' + data[i].created + '</td>');
+                    $row.append('<td>' + data[i].modified + '</td>');
+                    $row.append('<td>' + data[i].resumeID + '</td>');
+                    $row.append('<td>' + data[i][$searchField]+ '</td>');
+                    $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[i].resumeID + '">View</a></td>');
                     $row.append('</tr>');
-                    $table.append($row);
+                    $tableData.append($row);
                 }
             }
 
@@ -112,7 +134,7 @@
                 }
             }
             function abortAjax(xhr) {
-                if(xhr && xhr.readystate != 4){
+                if(xhr && xhr.readystate !==  4){
                     xhr.abort();
                 }
             }
@@ -157,7 +179,7 @@
                                 <div class="col-xs-3">
                                     <select id="searchOption" class="form-control">
                                         <option value="lastName" selected>Last Name</option>
-                                        <option value="major">Field</option>
+                                        <option value="field">Major/Minor</option>
                                         <option value="gpa">GPA is greater than</option>
                                         <option value="jobDescription">Job Description</option>
                                     </select>
@@ -179,7 +201,10 @@
                         <tr>
                             <th>Last Name</th>
                             <th>First Name</th>
-                            <th>Field</th>
+                            <th>Created</td>
+                            <th>Modified</td>
+                            <th>Resume ID</td>
+                            <th id="searchCol"></th>
                             <th>Resume(s)</th>
                         </tr>
                     </table>

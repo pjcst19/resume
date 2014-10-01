@@ -29,6 +29,8 @@ public class Address {
     private String province;
     private String postalCode;
     private String country;
+    private String created;
+    private String modified;
 
     private DbUtilities db;
 
@@ -37,25 +39,7 @@ public class Address {
      * @param addressID
      */
     public Address(String addressID){
-        this.addressID = addressID;
-        db = new DbUtilities();
-        String sql = "SELECT * FROM rms.Address WHERE addressID = '" + addressID + "'";
-        try {
-            ResultSet rs = db.getResultSet(sql);
-            if(rs.next()){
-                this.addressLine1 = rs.getString("addressLine1");
-                this.addressLine2 = rs.getString("addressLine2");
-                this.city = rs.getString("city");
-                this.state = rs.getString("state");
-                this.province = rs.getString("province");
-                this.postalCode = rs.getString("postalCode");
-                this.country = rs.getString("country");
-            }
-        } catch (SQLException ex) {
-            ErrorLogger.log("An error has occurred in Address(String addressID) constructor of Address class. " + ex.getMessage());
-            ErrorLogger.log(sql);
-        }
-        
+        setAllAddressProperties(addressID);  
     }
     
     /**
@@ -70,35 +54,57 @@ public class Address {
      */
     public Address(String addressLine1, String addressLine2, String city, String state, 
             String province, String postalCode, String country){
-        this.addressID = UUID.randomUUID().toString();
+        addressID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Address ";
         sql += "(addressId,addressLine1,addressLine2,city,state,";
-        sql += "postalCode,country) VALUES (";
-        sql += "'" + this.addressID + "', ";
+        sql += "postalCode,country,created,modified) VALUES (";
+        sql += "'" + addressID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(addressLine1) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(addressLine2) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(city) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(state) + "', ";
 //        sql += "'" + StringUtilities.cleanMySqlInsert(province) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(postalCode) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(country) + "') ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(country) + "',NULL,NULL);";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of the Address constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            setAllAddressProperties(addressID);
         }
         
-        this.addressLine1 = addressLine1;
-        this.addressLine2 = addressLine2;
-        this.city = city;
-        this.state = state;
-        this.province = province;
-        this.postalCode = postalCode;
-        this.country = country;
+        
     }
-    
+    /**
+     * 
+     * @param addressID ID of address to be looked up and properties set from
+     */
+    private void setAllAddressProperties(String addressID){
+        db = new DbUtilities();
+        String sql = "SELECT * FROM rms.Address WHERE addressID = '" + addressID + "'";
+        try {
+            ResultSet rs = db.getResultSet(sql);
+            if(rs.next()){
+                this.addressLine1 = rs.getString("addressLine1");
+                this.addressLine2 = rs.getString("addressLine2");
+                this.city = rs.getString("city");
+                this.state = rs.getString("state");
+                this.province = rs.getString("province");
+                this.postalCode = rs.getString("postalCode");
+                this.country = rs.getString("country");
+                this.created = rs.getTimestamp("created").toString();
+                this.modified = rs.getTimestamp("modified").toString();
+            }
+        } catch (SQLException ex) {
+            ErrorLogger.log("An error has occurred in Address(String addressID) constructor of Address class. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }finally{
+            this.addressID = addressID;
+        }
+    }
     /**
      * @param addressLine1 the addressLine1 to set
      */
@@ -269,6 +275,8 @@ public class Address {
             address.put("province", this.province);
             address.put("postalCode", this.postalCode);
             address.put("country", this.country); 
+            address.put("created", this.created);
+            address.put("modified", this.modified);
         } catch (JSONException ex) {
             ErrorLogger.log("An error has occurred with getAddressAsJSON. " + ex.getMessage());
         }

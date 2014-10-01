@@ -28,12 +28,44 @@ public class WorkExperience {
     private String startDate;
     private String endDate;
     private String description;
+    private String created;
+    private String modified;
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     private DbUtilities db;
 
     public WorkExperience(String workExperienceID) {
+        setAllWorkExpereinceProperties(workExperienceID);
+    }
+    
+    public WorkExperience(String businessName, String position, String startDate, String endDate, String description){
+        workExperienceID = UUID.randomUUID().toString();
+        db = new DbUtilities();
+        String sql = "INSERT INTO rms.WorkExperience ";
+        sql += "(workExperienceID,businessName,position,startDate,endDate,description)";
+<<<<<<< HEAD
+        sql += " VALUES ("; 
+        sql += "'" + this.workExperienceID + "', ";
+=======
+        sql += " VALUES "; 
+        sql += "'" + workExperienceID + "', ";
+>>>>>>> jordanSprint2
+        sql += "'" + StringUtilities.cleanMySqlInsert(businessName) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";
+        sql += "'" + startDate + "', ";
+        sql += "'" + endDate + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(description) + "')";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of the WorkExperience constructor. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally{
+            setAllWorkExpereinceProperties(workExperienceID);
+        }
+    }
+    private void setAllWorkExpereinceProperties(String workExperienceID){
         this.workExperienceID = workExperienceID;
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.WorkExperience WHERE workExperienceID = '" + workExperienceID + "'";
@@ -45,39 +77,16 @@ public class WorkExperience {
                 this.startDate = rs.getString("startDate");
                 this.endDate = rs.getString("endDate");
                 this.description = rs.getString("description");
+                this.created = rs.getTimestamp("created").toString();
+                this.modified = rs.getTimestamp("modified").toString();
             }
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in WorkExperience(String workExperienceID) constructor of WorkExperience class. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally{
+            this.workExperienceID = workExperienceID;
         }
     }
-    
-    public WorkExperience(String businessName, String position, String startDate, String endDate, String description){
-        this.workExperienceID = UUID.randomUUID().toString();
-        db = new DbUtilities();
-        String sql = "INSERT INTO rms.WorkExperience ";
-        sql += "(workExperienceID,businessName,position,startDate,endDate,description)";
-        sql += " VALUES ("; 
-        sql += "'" + this.workExperienceID + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(businessName) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";
-        sql += "'" + startDate + "', ";
-        sql += "'" + endDate + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(description) + "')";
-        try {
-            db.executeQuery(sql);
-        } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of the WorkExperience constructor. " + ex.getMessage());
-            ErrorLogger.log(sql);
-        }
-        
-        this.businessName = businessName;
-        this.position = position;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.description = description;
-    }
-    
     public void setBusinessName(String businessName){
         String sql = "UPDATE WorkExperience SET businessName = '" + businessName + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
@@ -168,6 +177,8 @@ public class WorkExperience {
             workExperience.put("startDate", this.startDate);
             workExperience.put("endDate", this.endDate);
             workExperience.put("description", this.description);
+            workExperience.put("created", this.created);
+            workExperience.put("modified", this.modified);
         } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within getWorkExperiencenAsJSON. " + ex.getMessage());
         }
