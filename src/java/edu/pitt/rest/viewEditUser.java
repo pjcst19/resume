@@ -24,8 +24,8 @@ import org.json.JSONException;
  *
  * @author Jordan Feldman
  */
-@WebServlet(name = "userws", urlPatterns = {"/rest/userws"})
-public class userws extends HttpServlet {
+@WebServlet(name = "viewEditUser", urlPatterns = {"/rest/viewEditUser"})
+public class viewEditUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,17 +44,11 @@ public class userws extends HttpServlet {
             response.sendRedirect("./index.jsp");
         }
         try (PrintWriter out = response.getWriter()) {
-            String sql = "SELECT lastName, firstName, login, email, IF(peoplesoftID IS NOT NULL, 'true', 'false') AS Student, IF(employeeID IS NOT NULL, 'true', 'false') AS Staff, IF(placeOfWork IS NOT NULL, 'true', 'false') AS Employer, userID FROM rms.User U LEFT JOIN Student S ON U.userID = S.fk_userID LEFT JOIN Staff ST ON U.userID = ST.fk_userID LEFT JOIN Employer E ON U.userID = E.fk_userID";
+            String sql = "SELECT      lastName,     firstName,     login,     email,     IF(peoplesoftID IS NOT NULL,         'Student',         IF(employeeID IS NOT NULL,             'Staff',             IF(placeOfWork IS NOT NULL,                 'Employer',                 'N/A'))) AS userType,     userID, enabled FROM     rms.User U         LEFT JOIN     Student S ON U.userID = S.fk_userID         LEFT JOIN     Staff ST ON U.userID = ST.fk_userID         LEFT JOIN     Employer E ON U.userID = E.fk_userID";
 
-            if (request.getParameter("lastName") != null) {
-                String lastName = request.getParameter("lastName");
-                sql += String.format(" WHERE lastName  LIKE '%s%%'", lastName);
-            } else if (request.getParameter("login") != null) {
-                String login = request.getParameter("login");
-                sql += String.format(" WHERE login  LIKE '%s%%'", login);
-            } else if (request.getParameter("email") != null) {
-                String email = request.getParameter("email");
-                sql += String.format(" WHERE email  LIKE '%s%%'", email);
+            if (request.getParameter("userID") != null) {
+                String userID = request.getParameter("userID");
+                sql += String.format(" WHERE userID   = '%s'", userID);
             }
 
             db = new DbUtilities();
@@ -63,14 +57,14 @@ public class userws extends HttpServlet {
             try {
                 ja = db.getJsonDataTable(sql);
             } catch (JSONException ex) {
-                Logger.getLogger(userws.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(viewEditUser.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 out.print(ja);
                 System.out.println(sql);
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(userws.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewEditUser.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             db.closeMySQLConnection();
         }

@@ -108,14 +108,26 @@
                $tableData = $('#tblUserList');
                $('.data').empty();
                 for (var i = 0; i < data.length; i++) {
+                    var roles = "";
+                    if(data[i].Employer === "true"){
+                        roles += " Employer";
+                    }
+                    if(data[i].Staff === "true"){
+                        roles += " Staff";
+                    }
+                    if(data[i].Student === "true"){
+                        roles += " Student";
+                        
+                    }
+                    
                     var $row = $('<tr class ="data">');
                     $row.append('<td>' +  data[i].lastName + '</td>');
                     $row.append('<td>' +  data[i].firstName + '</td>');
                     $row.append('<td>' + data[i].login + '</td>');
                     $row.append('<td>' + data[i].email + '</td>');
-                    $row.append('<td>' + data[i].userType + '</td>');
+                    $row.append('<td>' + roles + '</td>');
                     $row.append('<td>' + data[i][$searchField]+ '</td>');
-                    $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[i].resumeID + '">View</a></td>');
+                    $row.append('<td><a href="viewEditUser.jsp?userID=' + data[i].userID + '">View/Edit</a></td>');
                     $row.append('</tr>');
                     $tableData.append($row);
                 }
@@ -192,6 +204,7 @@
                             <th>Email</td>
                             <th>Access Type</th>
                             <th id="searchCol"></th>
+                            <th>View/Edit</th>
                         </tr>
                     </table>
                 </div>

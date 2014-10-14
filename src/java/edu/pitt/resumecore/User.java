@@ -7,7 +7,7 @@ package edu.pitt.resumecore;
 
 /**
  *
- * @author Mandy
+ * @author Jordan Feldman
  */
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.ErrorLogger;
@@ -21,16 +21,11 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-//
 
-/**
- * User of the Student Resume System
- *
- * @author Mandy
- */
 public class User {
 
     private DbUtilities db;
@@ -54,6 +49,7 @@ public class User {
     private ArrayList<String> roles = new ArrayList<>();
     private String created;
     private String modified;
+    private int status;
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -119,13 +115,13 @@ public class User {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of the User constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
-        } finally{
+        } finally {
             String sql2 = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
             sql2 += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
             sql2 += "WHERE userID = '" + userID + "'";
             setAllUserProperties(sql2);
         }
-        
+
     }
 
     /**
@@ -152,6 +148,7 @@ public class User {
                     this.addresses.add(address);
                     this.created = rs1.getTimestamp("created").toString();
                     this.modified = rs1.getTimestamp("modified").toString();
+                    this.status = rs1.getInt("enabled");
                 } else {
                     return;
                 }
@@ -270,6 +267,7 @@ public class User {
             user.put("position", this.getPosition());
             user.put("created", this.created);
             user.put("modified", this.modified);
+            user.put("status", this.status);
 
             for (Address address : addresses) {
                 userAddressList.put(address.getAddressAsJson());
@@ -472,7 +470,9 @@ public class User {
      * @param password the password to set
      */
     public void setPassword(String password) {
-        String sql = "UPDATE rms.User SET password = '" + password + "' WHERE userID = '" + this.userID + "';";
+        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+        String encryptedPassword = passwordEncryptor.encryptPassword(password);
+        String sql = "UPDATE rms.User SET password = '" + encryptedPassword + "' WHERE userID = '" + this.userID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -524,7 +524,7 @@ public class User {
         String role = "employer";
         roles.add(role);
         this.setPlaceOfWork(placeOfWork);
-        this.setIndustry(industry);
+        //this.setIndustry(industry);
 
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Employer";
@@ -727,6 +727,35 @@ public class User {
         }
         this.position = position;
     }
+    /*
+    * Sets user status to enabled
+    */
+    public void setEnabled() {
+        String sql = "UPDATE rms.User SET enabled = 1  WHERE userID = '" + this.userID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred with the insert query inside of the setPosition method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.status = 1;
+    }
+
+    /*
+    * Sets user status to disabled
+    */
+
+    public void setDisabled() {
+        String sql = "UPDATE rms.User SET enabled = 0  WHERE userID = '" + this.userID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred with the insert query inside of the setPosition method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.status = 0;
+    }
+
 
     /**
      * @return the employeeID
