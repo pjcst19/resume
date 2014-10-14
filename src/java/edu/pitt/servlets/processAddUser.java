@@ -5,10 +5,12 @@
  */
 package edu.pitt.servlets;
 
+import edu.pitt.resumecore.Address;
 import edu.pitt.resumecore.User;
 import edu.pitt.utilities.Security;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,8 +23,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Jordan
  */
-@WebServlet(name = "processEditUser", urlPatterns = {"/processEditUser"})
-public class processEditUser extends HttpServlet {
+@WebServlet(name = "processAddUser", urlPatterns = {"/processAddUser"})
+public class processAddUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,57 +44,49 @@ public class processEditUser extends HttpServlet {
             if (Security.checkHijackedSession(session, request)) {
                 response.sendRedirect("index.jsp");
             } else {
+                String firstName = "";
+                String lastName = "";
+                String middleInitial = "";
+                String login = "";
+                String password = "";
+                ArrayList<Address> addresses = new ArrayList();
+                String email = "";
+                String phoneNumber = "";
                 
-                System.out.println(session.getAttribute("selectedUserID"));
-
-                User user = new User((String) session.getAttribute("selectedUserID"));
-
-                if (!request.getParameter("txtFirstName").isEmpty()){
-                    String firstName = request.getParameter("txtFirstName");
-                    user.setFirstName(firstName);
+                  if (!request.getParameter("txtFirstName").isEmpty()){
+                    firstName = request.getParameter("txtFirstName");
                 }
 
                 if (!request.getParameter("txtLastName").isEmpty()){
-                    String lastName = request.getParameter("txtLastName");
-                    user.setLastName(lastName);
-
+                    lastName = request.getParameter("txtLastName");
                 }
 
                 if (!request.getParameter("txtLogin").isEmpty()) {
-                    String login = request.getParameter("txtLogin");
-                    user.setLogin(login);
+                    login = request.getParameter("txtLogin");
                 }
 
                 if (!request.getParameter("txtEmail").isEmpty()) {
-                    String email = request.getParameter("txtEmail");
-                    user.setEmail(email);
+                    email = request.getParameter("txtEmail");
                 }
 
                 if (!request.getParameter("txtPassword").isEmpty()) {
-                    String password = request.getParameter("txtPassword");
-                    user.setPassword(password);
+                    password = request.getParameter("txtPassword");
                 }
+                
+                        
+                User user = new User(firstName, lastName, middleInitial, login, password, addresses, email, phoneNumber);
                 
                  if (request.getParameter("chkEmployer") != null) {
                      user.setRoleEmployer("", "");
                 }
-                 else{
-                     user.removeRole("employer");
-                 }
                  
                   if (request.getParameter("chkStaff") != null) {
                     user.setRoleStaff("", "");
                 }
-                  else{
-                     user.removeRole("staff");
-                 }
                   
                    if (request.getParameter("chkStudent") != null) {
                        user.setRoleStudent("", new Date());
                 }
-                   else{
-                     user.removeRole("student");
-                 }
                    
                    if(request.getParameter("radStatus") != null){
                        String status = request.getParameter("radStatus");
@@ -104,8 +98,7 @@ public class processEditUser extends HttpServlet {
                            user.setDisabled();
                        }
                    }
-                
-
+                   
                 response.sendRedirect("listUsers.jsp");
 
             }

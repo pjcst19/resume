@@ -120,12 +120,21 @@
                         
                     }
                     
+                    var status;
+                    if(data[i].enabled === 0){
+                        status = "Disabled";
+                    }
+                    else{
+                        status = "Enabled";
+                    }
+                    
                     var $row = $('<tr class ="data">');
                     $row.append('<td>' +  data[i].lastName + '</td>');
                     $row.append('<td>' +  data[i].firstName + '</td>');
                     $row.append('<td>' + data[i].login + '</td>');
                     $row.append('<td>' + data[i].email + '</td>');
                     $row.append('<td>' + roles + '</td>');
+                    $row.append('<td>' + status + '</td>');
                     $row.append('<td>' + data[i][$searchField]+ '</td>');
                     $row.append('<td><a href="viewEditUser.jsp?userID=' + data[i].userID + '">View/Edit</a></td>');
                     $row.append('</tr>');
@@ -203,6 +212,7 @@
                             <th>Login </td>
                             <th>Email</td>
                             <th>Access Type</th>
+                            <th>Status</th>
                             <th id="searchCol"></th>
                             <th>View/Edit</th>
                         </tr>
