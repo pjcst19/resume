@@ -36,7 +36,7 @@ public class WorkExperience {
     private DbUtilities db;
 
     public WorkExperience(String workExperienceID) {
-        setAllWorkExpereinceProperties(workExperienceID);
+        setAllWorkExperienceProperties(workExperienceID);
     }
     
     public WorkExperience(String businessName, String position, String startDate, String endDate, String description){
@@ -57,10 +57,10 @@ public class WorkExperience {
             ErrorLogger.log("An error has occurred in with the insert query inside of the WorkExperience constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
         } finally{
-            setAllWorkExpereinceProperties(workExperienceID);
+            setAllWorkExperienceProperties(workExperienceID);
         }
     }
-    private void setAllWorkExpereinceProperties(String workExperienceID){
+    private void setAllWorkExperienceProperties(String workExperienceID){
         this.workExperienceID = workExperienceID;
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.WorkExperience WHERE workExperienceID = '" + workExperienceID + "'";

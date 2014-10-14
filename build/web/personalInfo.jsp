@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : personalInfo
     Created on : Apr 15, 2014, 9:02:43 PM
     Author     : Mandy
@@ -7,16 +7,16 @@
 <%@page import="edu.pitt.utilities.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-<<<<<<< HEAD
+
     Security security = new Security();
     if (security.checkHijackedSession(session, request)){
 	response.sendRedirect("index.jsp");
 }
-=======
+
     if (Security.checkHijackedSession(session, request)) {
         response.sendRedirect("index.jsp");
     }
->>>>>>> jordanSprint2
+
 %>
 <!DOCTYPE html>
 

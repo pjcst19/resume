@@ -7,16 +7,16 @@
 <%@page import="edu.pitt.utilities.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-<<<<<<< HEAD
-    Security security = new Security();
-    if (security.checkHijackedSession(session, request)){
-	response.sendRedirect("index.jsp");
-}
-=======
-     if (Security.checkHijackedSession(session, request)) {
-        response.sendRedirect("index.jsp");
-    }
->>>>>>> jordanSprint2
+
+    //Security security = new Security();
+    //if (security.checkHijackedSession(session, request)){
+	//response.sendRedirect("index.jsp");
+//}
+
+     //if (Security.checkHijackedSession(session, request)) {
+        //response.sendRedirect("index.jsp");
+    //}
+
 %>
 <!DOCTYPE html>
 
@@ -56,26 +56,17 @@
     });
     </script>
     
-     <!--Submits all forms on page -->
-    <!--<script>
-        function post_form_data(data) {
-            $.ajax({
-                type: 'POST',
-                url: 'processWorkExperience',
-                data: data,
-                success: function () {},
-                error: function () {}
-            });
-        }//end of post_form_data
-        
-        
-        //When Next button is clicked, all forms on page are submitted for processing
-        $('btnSubmit').on('click', function () {
-            $('form').each(function () {
-                post_form_data($(this).serialize());
-            });
+    
+    <!--Iterates through forms and submits data from each one individually to the database-->
+    <script>
+    function submitWork() {
+        $('form').each(function() {
+        var work = $(this);
+        $.post(work.attr('action'), work.serialize());
         });
-    </script><-->
+        window.location.href='workExperience.jsp';    
+    }
+    </script>
 </head>
 
 <body>
@@ -138,7 +129,7 @@
                        
                         <button class="btn btn-lg btn-primary" type="button" onclick="window.location.href='education.jsp'">Back</button>
                         <button class="btn btn-lg btn-primary" type="button" id="btnAddWorkExp">Add Work Experience</button>
-                        <button class="btn btn-lg btn-primary" type="submit">Next</button> <!--Where do we go from here? -->
+                        <button class="btn btn-lg btn-primary" type="submit" onclick="submitWork();">Next</button> <!--Where do we go from here? -->
                     </form><br>
                     
                 </div>

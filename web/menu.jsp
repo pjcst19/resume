@@ -59,7 +59,8 @@
                             User user = (User) session.getAttribute("authenticatedUser");
                             if(user.getRoles().contains("student")){
                                 out.print("<li><a href='listResumes.jsp?userID=" + user.getUserID() + "'>Your Resumes</a></li>");
-                                out.print("<li><a href='personalInfo.jsp'>Enter a new Resume</a></li>");
+                                //Need to change this back to personalInfo.jsp
+                                out.print("<li><a href='education.jsp'>Enter a new Resume</a></li>");
                             }
                             else if(user.getRoles().contains("staff")){
                                 out.print("<li><a href='listResumes.jsp'>List all Resumes</a></li>");

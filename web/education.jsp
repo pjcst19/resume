@@ -8,17 +8,17 @@
 <%@page import="edu.pitt.utilities.Security"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-<<<<<<< HEAD
+
     Security security = new Security();
     
     if (security.checkHijackedSession(session, request)){
 	response.sendRedirect("index.jsp");
 }
-=======
+
      if (Security.checkHijackedSession(session, request)) {
         response.sendRedirect("index.jsp");
     }
->>>>>>> jordanSprint2
+
 %>
 
 
@@ -60,24 +60,37 @@
     
     <!--Submits all forms on page -->
     <script>
-        function post_form_data(data) {
-            $.ajax({
-                type: 'POST',
-                url: 'processEducation',
-                data: data,
-                success: function (result) {},
-                error: function (result) {}
-            });
-        }//end of post_form_data
+        //function post_form_data(data) {
+            //$.ajax({
+                //type: 'POST',
+                //url: 'processEducation',
+                //data: data,
+                //success: function (result) {},
+                //error: function (result) {}
+            //});
+        //}//end of post_form_data
         
         
         //When Next button is clicked, all forms on page are submitted for processing
-        $('btnSubmit').on('click', function () {
-            $('form').each(function () {
-                post_form_data($(this).serialize());
-            });
-        });
+        //$('btnSubmit').on('click', function () {
+            //$('form').each(function () {
+                //post_form_data($(this).serialize());
+           // });
+        //});
     </script>
+    
+    <!--Iterates through forms and submits data from each one individually to the database-->
+    <script>
+    function submitEdu() {
+        $('form').each(function() {
+        var edu = $(this);
+        $.post(edu.attr('action'), edu.serialize());
+        });
+        window.location.href='workExperience.jsp';
+        
+    }
+    </script>
+    
 
 
     
@@ -128,15 +141,17 @@
                         
                             <br><br>
                             
+                            </form>
+                            
                             <div id="additionalEducation">
                             </div><!--End of Div additionalEducation-->
                         
                    
                     <br>
                     <button class="btn btn-lg btn-primary" type="button" id="btnEducation" onclick="window.location.href='personalInfo.jsp'">Back</button>
-                    <button class="btn btn-lg btn-primary" type="submit" id="btnAddEducation">Add Education</button>
-                    <button class="btn btn-lg btn-primary" type="submit" id="btnSubmit">Next</button>
-                    </form><br>
+                    <button class="btn btn-lg btn-primary" type="button" id="btnAddEducation">Add Education</button>
+                    <button class="btn btn-lg btn-primary" type="submit" onclick="submitEdu();" id="btnSubmit">Next</button>
+                    <br>
                     
                     
                 </div><!--End of div page-header-->
