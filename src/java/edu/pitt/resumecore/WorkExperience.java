@@ -129,7 +129,7 @@ public class WorkExperience {
         this.endDate = endDate;
     }
     
-     public void setCurrentlyEmployed(int currentlyEmployed{
+     public void setCurrentlyEmployed(int currentlyEmployed){
         String sql = "UPDATE WorkExperience SET currentlyEmployed = '" + currentlyEmployed + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
