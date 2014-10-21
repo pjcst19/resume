@@ -8,14 +8,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 
-    Security security = new Security();
+   /* Security security = new Security();
     if (security.checkHijackedSession(session, request)){
 	response.sendRedirect("index.jsp");
 }
 
     if (Security.checkHijackedSession(session, request)) {
         response.sendRedirect("index.jsp");
-    }
+    }*/
 
 %>
 <!DOCTYPE html>
@@ -71,12 +71,79 @@
                         <input type="text" class="form-control" id="txtAddressLine1" name="txtAddressLine1" placeholder="Street Address" required><br>
                         <input type="text" class="form-control" id="txtAddressLine2" name="txtAddressLine2" placeholder="Address"><br>
                         <input type="text" class="form-control" id="txtCity" name="txtCity" placeholder="City" required style="width:50%; display:inline">
-                        <input type="text" class="form-control" id="txtState" name="txtState" placeholder="State" required style="width:49%; display:inline"><br><br>
+                                 
+                        <select class="form-control" id="txtState" name="txtState" required style="width:49%; display:inline">
+                            <option value="">State</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="DC">District Of Columbia</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+                            <option value="AS">American Samoa</option>
+                            <option value="GU">Guam</option>
+                            <option value="MP">Northern Mariana Islands</option>
+                            <option value="PR">Puerto Rico</option>
+                            <option value="UM">United States Minor Outlying Islands</option>
+                            <option value="VI">Virgin Islands</option>
+                        </select><br><br>
+                        
+                                             
+                        
                         <input type="text" class="form-control" id="txtProvince" name="txtProvince" placeholder="Province" style="width:40%; display:inline">
                         <input type="text" class="form-control" id="txtCountry" name="txtCountry" placeholder="Country" style="width:38%; display:inline">
                         <input type="text" class="form-control" id="txtPostalCode" name="txtPostalCode" placeholder="Postal Code" required style="width:20%; display:inline"><br><br>
                         <input type="tel" class="form-control" id="txtPhone" name="txtPhone" placeholder="Phone Number" required style="width:50%; display:inline">
                         <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Email" required style="width:49%; display:inline"><br><br>
+                        
+                        <label> Are You Legally Eligible to Work in the US?</label>
+                            <input type="radio" id="rdoUSEligible" name="rdoUSEligible" value="1" required> Yes
+                            <input type="radio" id="rdoUSEligible" name="rdoUSEligible" value="0" required> No<br><br>
 
                         <button class="btn btn-lg btn-primary" type="submit" name="btnSubmitPersonalInfo" id="btnSubmitPersonalInfo">Next</button>
                     </form><br>

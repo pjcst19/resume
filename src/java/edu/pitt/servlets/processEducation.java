@@ -58,14 +58,18 @@ public class processEducation extends HttpServlet {
             String degreeType = "";
             String major = "";
             Double gpa = null;
+            String stringGPA = "";
             String graduationDate = "";
 
+            stringGPA =  request.getParameter("txtGPA");
             
             schoolName = request.getParameter("txtSchoolName");
             degreeType = request.getParameter("txtDegreeType");
             major = request.getParameter("txtMajorType");
-            gpa = Double.parseDouble(request.getParameter("txtGPA"));
+            gpa = Double.parseDouble(stringGPA);
             graduationDate = request.getParameter("txtGraduationDate");
+            
+            // out.println(schoolName + "<br />");
             
 //            java.util.Date dt = new java.util.Date();
 //
@@ -78,7 +82,7 @@ public class processEducation extends HttpServlet {
             
             session.setAttribute("currentResume", resume);
 
-            response.sendRedirect("workExperience.jsp");
+            //response.sendRedirect("workExperience.jsp");
         }
       
 

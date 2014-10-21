@@ -50,7 +50,7 @@ public class Education {
         sql += "'" + StringUtilities.cleanMySqlInsert(type) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(field) + "', ";
         sql += "'" + gpa.toString() + "', ";
-        sql += "'" + graduationDate + "',NULL,NULL) ";
+        sql += "'" + graduationDate + "',NULL,NULL); ";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {

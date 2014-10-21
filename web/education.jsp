@@ -86,9 +86,19 @@
         var edu = $(this);
         $.post(edu.attr('action'), edu.serialize());
         });
-        window.location.href='workExperience.jsp';
+        // window.location.href='workExperience.jsp'; //This is redirecting before it gets to the next page
         
     }
+    </script>
+    
+    <script>
+        function submitEdu(){
+            $form.each(function(){
+                var edu = $(this);
+                $
+            }
+        }
+        
     </script>
     
 
@@ -141,7 +151,7 @@
                         
                             <br><br>
                             
-                            </form>
+                        </form>
                             
                             <div id="additionalEducation">
                             </div><!--End of Div additionalEducation-->

@@ -109,8 +109,8 @@
                         <label style="display:inline"> Start Date </label><input type="date" class="form-control datepicker" id="txtStartDate" name="txtStartDate" required style="width:20%; display:inline">
                         <label style="display:inline"> End Date </label><input type="date" class="form-control datepicker" id="txtEndDate" name="txtEndDate" required style="width:20%; display:inline">
                         <label style="display:inline">Currently Employed? </label>
-                        <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="Yes" style="width:5%; display:inline"> Yes
-                        <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="No" style="width:5%; display:inline" checked> No<br><br>
+                        <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="1" style="width:5%; display:inline"> Yes
+                        <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="0" style="width:5%; display:inline" checked> No<br><br>
                         
                         <label style="display:inline"> Description of Work </label><br>
                         <textarea class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience" required></textarea><br>
@@ -119,6 +119,8 @@
                         <input type="text" class="form-control" id="datepicker" name="txtAwardName" placeholder="Award/Recognition" style="width:49%; display:inline"><br><br>
                         <textarea class="form-control" rows="6" id="datepicker" name="txtAwardDescription" placeholder="Description of Award"></textarea><br>
                         -->
+                        
+                    </form>
                        
                         <br>
                         
