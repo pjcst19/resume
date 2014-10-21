@@ -26,6 +26,7 @@ public class Education {
     private String name;
     private String type;
     private String field;
+    private String minor;
     private double gpa;
     private String graduationDate;
     private String created;
@@ -39,7 +40,7 @@ public class Education {
         setAllEducationProperties(educationID);
     }
 
-    public Education(String name, String type, String field, Double gpa, String graduationDate) {
+    public Education(String name, String type, String field, String minor, Double gpa, String graduationDate) {
         educationID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Education ";
@@ -49,6 +50,7 @@ public class Education {
         sql += "'" + StringUtilities.cleanMySqlInsert(name) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(type) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(field) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(minor) + "', ";
         sql += "'" + gpa.toString() + "', ";
         sql += "'" + graduationDate + "',NULL,NULL); ";
         try {
@@ -70,6 +72,7 @@ public class Education {
                 this.name = rs.getString("name");
                 this.type = rs.getString("type");
                 this.field = rs.getString("field");
+                this.minor = rs.getString("minor");
                 this.gpa = rs.getDouble("gpa");
                 this.graduationDate = rs.getString("graduationDate");
                 this.created = rs.getTimestamp("created").toString();
@@ -115,6 +118,17 @@ public class Education {
         this.field = field;
     }
     
+    public void setMinor(String minor) {
+        String sql = "UPDATE Education SET minor = '" + minor + "' WHERE educationID = '" + this.educationID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setField. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.minor = minor;
+    }
+    
     public void setGPA(Double gpa) {
         String sql = "UPDATE Education SET gpa = '" + gpa.toString() + "' WHERE educationID = '" + this.educationID + "';";
         try {
@@ -151,6 +165,10 @@ public class Education {
     
     public String getField(){
         return field;
+    }
+    
+    public String getMinor(){
+        return minor;
     }
     
     public double getGPA(){

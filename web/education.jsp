@@ -9,7 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 
-    Security security = new Security();
+    /*Security security = new Security();
     
     if (security.checkHijackedSession(session, request)){
 	response.sendRedirect("index.jsp");
@@ -17,7 +17,7 @@
 
      if (Security.checkHijackedSession(session, request)) {
         response.sendRedirect("index.jsp");
-    }
+    }*/
 
 %>
 
@@ -52,10 +52,17 @@
     <script type='text/javascript'>
         $(document).ready(function (){
             $('#btnAddEducation').click(function() {
-            $('#additionalEducation').append($('<div>').load('uiexamples/eduForm.html'));            
+            $('#additionalEducation').append($('<div>').load('eduForm.html'));            
             return false;
             });
     });
+    </script>
+    
+    <!--Loads the Education Form-->
+    <script>
+        $(document).ready(function(){
+            $("#eduForm").load("eduForm.html");
+          });
     </script>
     
     <!--Submits all forms on page -->
@@ -91,18 +98,9 @@
     }
     </script>
     
-    <script>
-        function submitEdu(){
-            $form.each(function(){
-                var edu = $(this);
-                $
-            }
-        }
-        
-    </script>
     
-
-
+    
+    
     
    
     
@@ -139,22 +137,17 @@
                 
                 <div class="page-header">
                     
-                        <form class="form-signin" method="post" action="processEducation">
-                            <h2 class="form-signin-heading">Education</h2><br>
-
-                            <label> University</label>
-                            <input type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" placeholder="University" required autofocus=""><br>
-                            <input type="text" class="form-control" id="txtDegreeType" name="txtDegreeType" placeholder="Type of Degree" required style="width:29%; display:inline">
-                            <input type="text" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:29%; display:inline">
-                            <input type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline" required>
-                            <input type="text" class="form-control datepicker" name="txtGradDate" placeholder="Graduation Date" required style="width:20%; display:inline">
+                    <h2 class="form-signin-heading">Education</h2><br>
+                    
+                    <div id="eduForm">
                         
-                            <br><br>
+                        
+                    </div>
+                    
+                    
                             
-                        </form>
-                            
-                            <div id="additionalEducation">
-                            </div><!--End of Div additionalEducation-->
+                    <div id="additionalEducation">
+                    </div><!--End of Div additionalEducation-->
                         
                    
                     <br>

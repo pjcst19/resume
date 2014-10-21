@@ -50,15 +50,15 @@ public final class education_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
 
 
-    Security security = new Security();
+    /*Security security = new Security();
     
     if (security.checkHijackedSession(session, request)){
-	//response.sendRedirect("index.jsp");
+	response.sendRedirect("index.jsp");
 }
 
      if (Security.checkHijackedSession(session, request)) {
-        //response.sendRedirect("index.jsp");
-    }
+        response.sendRedirect("index.jsp");
+    }*/
 
 
       out.write("\r\n");
@@ -94,7 +94,7 @@ public final class education_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    <script type='text/javascript'>\r\n");
       out.write("        $(document).ready(function (){\r\n");
       out.write("            $('#btnAddEducation').click(function() {\r\n");
-      out.write("            $('#additionalEducation').append($('<div>').load('uiexamples/eduForm.html'));            \r\n");
+      out.write("            $('#additionalEducation').append($('<div>').load('eduForm.html'));            \r\n");
       out.write("            return false;\r\n");
       out.write("            });\r\n");
       out.write("    });\r\n");
@@ -128,10 +128,18 @@ public final class education_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        var edu = $(this);\r\n");
       out.write("        $.post(edu.attr('action'), edu.serialize());\r\n");
       out.write("        });\r\n");
-      out.write("        window.location.href='workExperience.jsp';\r\n");
+      out.write("        // window.location.href='workExperience.jsp'; //This is redirecting before it gets to the next page\r\n");
       out.write("        \r\n");
       out.write("    }\r\n");
       out.write("    </script>\r\n");
+      out.write("    \r\n");
+      out.write("    <script>\r\n");
+      out.write("        $(document).ready(function(){\r\n");
+      out.write("            $(\"#degreeType\").load(\"degreeType.html\");\r\n");
+      out.write("          });\r\n");
+      out.write("    </script>\r\n");
+      out.write("    \r\n");
+      out.write("    \r\n");
       out.write("    \r\n");
       out.write("\r\n");
       out.write("\r\n");
@@ -176,7 +184,33 @@ public final class education_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\r\n");
       out.write("                            <label> University</label>\r\n");
       out.write("                            <input type=\"text\" class=\"form-control\" id=\"txtSchoolName\" name=\"txtSchoolName\" placeholder=\"University\" required autofocus=\"\"><br>\r\n");
-      out.write("                            <input type=\"text\" class=\"form-control\" id=\"txtDegreeType\" name=\"txtDegreeType\" placeholder=\"Type of Degree\" required style=\"width:29%; display:inline\">\r\n");
+      out.write("                            <div class=\"degreeType\">\r\n");
+      out.write("                                \r\n");
+      out.write("                            </div>\r\n");
+      out.write("                                \r\n");
+      out.write("                                \r\n");
+      out.write("                                <!--Do we want all of these options?\r\n");
+      out.write("                                <option value=\"AA\">Associate of Arts</option>\r\n");
+      out.write("                                <option value=\"AS\">Associate of Science</option>\r\n");
+      out.write("                                <option value=\"AAS\">Associate of Applied Science</option>\r\n");
+      out.write("                                <option value=\"AE\">Associate of Engineering</option>\r\n");
+      out.write("                                <option value=\"AAA\">Associate of Applied Arts</option>\r\n");
+      out.write("                                <option value=\"APS\">Associate of Political Science</option>\r\n");
+      out.write("                                <option value=\"BA\">Bachelor of Arts</option>\r\n");
+      out.write("                                <option value=\"BS\">Bachelor of Science</option>\r\n");
+      out.write("                                <option value=\"BFA\">Bachelor of Fine Arts</option>\r\n");
+      out.write("                                <option value=\"BBA\">Bachelor of Business Administration</option>\r\n");
+      out.write("                                <option value=\"BArch\">Bachelor of Architecture</option>\r\n");
+      out.write("                                <option value=\"MA\">Master of Arts</option>\r\n");
+      out.write("                                <option value=\"MFA\">Master of Fine Arts</option>\r\n");
+      out.write("                                <option value=\"MS\">Master of Science</option>\r\n");
+      out.write("                                <option value=\"MRes\">Master of Research</option>\r\n");
+      out.write("                                <option value=\"MPhil\">Master of Philosophy</option>\r\n");
+      out.write("                                <option value=\"LLM\">Master of Laws</option>\r\n");
+      out.write("                                <option value=\"MBA\">Master of Business Administration</option>-->\r\n");
+      out.write("                                \r\n");
+      out.write("                                \r\n");
+      out.write("                           \r\n");
       out.write("                            <input type=\"text\" class=\"form-control\" id=\"txtMajorType\" name=\"txtMajorType\" placeholder=\"Major\" required style=\"width:29%; display:inline\">\r\n");
       out.write("                            <input type=\"number\" class=\"form-control\" id=\"txtGPA\" name=\"txtGPA\" placeholder=\"GPA\" min=\"0\" max=\"4\" step=\"0.1\" style=\"width:20%; display:inline\" required>\r\n");
       out.write("                            <input type=\"text\" class=\"form-control datepicker\" name=\"txtGradDate\" placeholder=\"Graduation Date\" required style=\"width:20%; display:inline\">\r\n");

@@ -57,6 +57,7 @@ public class processEducation extends HttpServlet {
             String schoolName = "";
             String degreeType = "";
             String major = "";
+            String minor = "";
             Double gpa = null;
             String stringGPA = "";
             String graduationDate = "";
@@ -66,6 +67,7 @@ public class processEducation extends HttpServlet {
             schoolName = request.getParameter("txtSchoolName");
             degreeType = request.getParameter("txtDegreeType");
             major = request.getParameter("txtMajorType");
+            minor = request.getParameter("txtMinorType");
             gpa = Double.parseDouble(stringGPA);
             graduationDate = request.getParameter("txtGraduationDate");
             
@@ -77,7 +79,7 @@ public class processEducation extends HttpServlet {
 //
 //            String currentTime = sdf.format(dt);
             
-            Education education = new Education(schoolName, degreeType, major, gpa, graduationDate);
+            Education education = new Education(schoolName, degreeType, major, minor, gpa, graduationDate);
             resume.addEducation(education);
             
             session.setAttribute("currentResume", resume);
