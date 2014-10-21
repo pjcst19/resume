@@ -30,6 +30,7 @@ public class WorkExperience {
     private String description;
     private String created;
     private String modified;
+    private int currentlyEmployed;
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -39,17 +40,18 @@ public class WorkExperience {
         setAllWorkExperienceProperties(workExperienceID);
     }
     
-    public WorkExperience(String businessName, String position, String startDate, String endDate, String description){
+    public WorkExperience(String businessName, String position, String startDate, String endDate, int currentlyEmployed, String description){
         workExperienceID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.WorkExperience ";
-        sql += "(workExperienceID,businessName,position,startDate,endDate,description)";
+        sql += "(workExperienceID,businessName,position,startDate,endDate,currentlyEmployed,description)";
         sql += " VALUES ("; 
         sql += "'" + this.workExperienceID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(businessName) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";
         sql += "'" + startDate + "', ";
         sql += "'" + endDate + "', ";
+        sql += "'" + currentlyEmployed + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(description) + "')";
         try {
             db.executeQuery(sql);
@@ -71,6 +73,7 @@ public class WorkExperience {
                 this.position = rs.getString("position");
                 this.startDate = rs.getString("startDate");
                 this.endDate = rs.getString("endDate");
+                this.currentlyEmployed = rs.getInt("currentlyEmployed");
                 this.description = rs.getString("description");
                 this.created = rs.getTimestamp("created").toString();
                 this.modified = rs.getTimestamp("modified").toString();
@@ -126,6 +129,17 @@ public class WorkExperience {
         this.endDate = endDate;
     }
     
+     public void setCurrentlyEmployed(int currentlyEmployed{
+        String sql = "UPDATE WorkExperience SET currentlyEmployed = '" + currentlyEmployed + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setEndDate. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.endDate = endDate;
+    }
+    
     public void setDescription(String description){
         String sql = "UPDATE WorkExperience SET description = '" + description + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
@@ -157,6 +171,9 @@ public class WorkExperience {
         return endDate;
     }
     
+    public int currentlyEmployed(){
+        return currentlyEmployed;
+    }
     public String getDescription(){
         return description;
     }

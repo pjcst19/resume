@@ -44,7 +44,7 @@ public class Education {
         educationID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Education ";
-        sql += "(educationID,name,type,field,gpa,graduationDate,created,modified)";
+        sql += "(educationID,name,type,field,minor,gpa,graduationDate,created,modified)";
         sql += " VALUES (";
         sql += "'" + educationID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(name) + "', ";

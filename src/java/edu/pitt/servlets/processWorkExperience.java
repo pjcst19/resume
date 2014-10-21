@@ -53,6 +53,8 @@ public class processWorkExperience extends HttpServlet {
             String startDate = "";
             String endDate = "";
             String description = "";
+            String stringCurrentlyEmployed = "";
+            Integer currentlyEmployed = null;
             //String awardName = "";
             //String awardDescription = "";
 
@@ -62,10 +64,12 @@ public class processWorkExperience extends HttpServlet {
             startDate = request.getParameter("txtStartDate");//Date?
             endDate = request.getParameter("txtEndDate");//Date?
             description = request.getParameter("txtWorkDescription");
+            description = request.getParameter("rdoCurrentlyEmployed");
+            
             //awardName = request.getParameter("txtAward");
             //awardDescription = request.getParameter("txtDesription");
 
-            WorkExperience workExperience = new WorkExperience(businessName, position, startDate, endDate, description);
+            WorkExperience workExperience = new WorkExperience(businessName, position, startDate, endDate, currentlyEmployed, description);
             resume.addWorkExperience(workExperience);
 
             //Award award = new Award(awardName, awardDescription);

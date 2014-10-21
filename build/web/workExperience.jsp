@@ -64,8 +64,15 @@
         var work = $(this);
         $.post(work.attr('action'), work.serialize());
         });
-        window.location.href='workExperience.jsp';    
+        //window.location.href='workExperience.jsp';    
     }
+    </script>
+    
+    <!--Loads the Education Form-->
+    <script>
+        $(document).ready(function(){
+            $("#workExpForm").load("workExpForm.html");
+          });
     </script>
 </head>
 
@@ -98,29 +105,14 @@
 
             <div class="panel-body">
                 
-                <div class="page-header">
-                    <form class="form-signin" method="post" action="processWorkExperience">
-                        <h2 class="form-signin-heading">Work Experience</h2><br>
-                        
+                <div id="page-header">
+                    
+                    <h2 class="form-signin-heading">Work Experience</h2><br>
 
-                        <label> Work Experience </label>
-                        <input type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
-                        <input type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position" required><br>
-                        <label style="display:inline"> Start Date </label><input type="date" class="form-control datepicker" id="txtStartDate" name="txtStartDate" required style="width:20%; display:inline">
-                        <label style="display:inline"> End Date </label><input type="date" class="form-control datepicker" id="txtEndDate" name="txtEndDate" required style="width:20%; display:inline">
-                        <label style="display:inline">Currently Employed? </label>
-                        <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="1" style="width:5%; display:inline"> Yes
-                        <input type="radio" class="form-control" id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="0" style="width:5%; display:inline" checked> No<br><br>
-                        
-                        <label style="display:inline"> Description of Work </label><br>
-                        <textarea class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience" required></textarea><br>
-                        
-                        <!--<label> Awards </label><br>
-                        <input type="text" class="form-control" id="datepicker" name="txtAwardName" placeholder="Award/Recognition" style="width:49%; display:inline"><br><br>
-                        <textarea class="form-control" rows="6" id="datepicker" name="txtAwardDescription" placeholder="Description of Award"></textarea><br>
-                        -->
-                        
-                    </form>
+                    
+                        <div id="workExpForm">
+
+                        </div>
                        
                         <br>
                         
@@ -132,7 +124,7 @@
                         <button class="btn btn-lg btn-primary" type="button" onclick="window.location.href='education.jsp'">Back</button>
                         <button class="btn btn-lg btn-primary" type="button" id="btnAddWorkExp">Add Work Experience</button>
                         <button class="btn btn-lg btn-primary" type="submit" onclick="submitWork();">Next</button> <!--Where do we go from here? -->
-                    </form><br>
+                   
                     
                 </div>
             </div><!-- /container -->
