@@ -144,6 +144,10 @@
                         <label> Are You Legally Eligible to Work in the US?</label>
                             <input type="radio" id="rdoUSEligible" name="rdoUSEligible" value="1" required> Yes
                             <input type="radio" id="rdoUSEligible" name="rdoUSEligible" value="0" required> No<br><br>
+                            
+                        <label> Can you provide evidence of your legal eligibility to work in the US? </label>
+                            <input type="radio" id="rdoWkEvidence" name="rdoWkEvidence" value="1" required> Yes
+                            <input type="radio" id="rdoWkEvidence" name="rdoWkEvidence" value="0" required> No<br><br>
 
                         <button class="btn btn-lg btn-primary" type="submit" name="btnSubmitPersonalInfo" id="btnSubmitPersonalInfo">Next</button>
                     </form><br>

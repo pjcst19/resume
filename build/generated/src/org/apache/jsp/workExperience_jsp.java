@@ -146,9 +146,12 @@ public final class workExperience_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("\r\n");
       out.write("            <div class=\"panel-body\">\r\n");
       out.write("                \r\n");
-      out.write("                <div class=\"page-header\">\r\n");
+      out.write("                <div id=\"page-header\">\r\n");
       out.write("                    \r\n");
-      out.write("                        <div class = \"workExpForm\">\r\n");
+      out.write("                    <h2 class=\"form-signin-heading\">Work Experience</h2><br>\r\n");
+      out.write("\r\n");
+      out.write("                    \r\n");
+      out.write("                        <div id=\"workExpForm\">\r\n");
       out.write("\r\n");
       out.write("                        </div>\r\n");
       out.write("                       \r\n");

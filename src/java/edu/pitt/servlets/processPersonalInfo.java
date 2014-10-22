@@ -57,8 +57,10 @@ public class processPersonalInfo extends HttpServlet {
             String postalCode = "";
             String phoneNumber = "";
             String email = "";
-            String stringWorkEligibility = "";
-            Integer workEligibility = null;
+            //String stringWorkEligibility = "";
+            //Integer workEligibility = null;
+            //String stringUSProof = "":
+            //Integer USProof = null;
             
 
 //            if (!request.getParameter("txtfirstName").equals("") && !request.getParameter("txtLastName").equals("")) {
@@ -74,7 +76,8 @@ public class processPersonalInfo extends HttpServlet {
                 postalCode = request.getParameter("txtPostalCode");
                 phoneNumber = request.getParameter("txtPhone");
                 email = request.getParameter("txtEmail");
-                workEligibility = Integer.parseInt(stringWorkEligibility);
+                //workEligibility = Integer.parseInt(stringWorkEligibility);
+                //USProof = Integer.parseInt(stringUSProof);
 
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
@@ -83,6 +86,7 @@ public class processPersonalInfo extends HttpServlet {
                 
                 /*Jordan - need to alter User for workEligibility
                 user.setWorkEligibility(workEligibility);
+                user.setUSProof(USProof);
                 */
 
                 Address address = new Address(addressLine1, addressLine2, city, state, province, postalCode, country);

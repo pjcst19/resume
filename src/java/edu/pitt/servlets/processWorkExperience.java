@@ -57,6 +57,8 @@ public class processWorkExperience extends HttpServlet {
             Integer currentlyEmployed = null;
             //String awardName = "";
             //String awardDescription = "";
+            
+             stringCurrentlyEmployed =  request.getParameter("rdoCurrentlyEmployed");
 
             //What error handling do we want to do?
             businessName = request.getParameter("txtBusinessName");
@@ -64,7 +66,8 @@ public class processWorkExperience extends HttpServlet {
             startDate = request.getParameter("txtStartDate");//Date?
             endDate = request.getParameter("txtEndDate");//Date?
             description = request.getParameter("txtWorkDescription");
-            description = request.getParameter("rdoCurrentlyEmployed");
+            currentlyEmployed = Integer.parseInt(stringCurrentlyEmployed);
+            
             
             //awardName = request.getParameter("txtAward");
             //awardDescription = request.getParameter("txtDesription");
@@ -77,7 +80,7 @@ public class processWorkExperience extends HttpServlet {
             
             System.out.println(workExperience.getWorkExperienceID());
             
-            response.sendRedirect("menu.jsp");
+            //response.sendRedirect("menu.jsp");
 
         }
     }

@@ -68,7 +68,7 @@
     }
     </script>
     
-    <!--Loads the Education Form-->
+    <!--Loads the WorkExperience Form-->
     <script>
         $(document).ready(function(){
             $("#workExpForm").load("workExpForm.html");
@@ -123,8 +123,7 @@
                        
                         <button class="btn btn-lg btn-primary" type="button" onclick="window.location.href='education.jsp'">Back</button>
                         <button class="btn btn-lg btn-primary" type="button" id="btnAddWorkExp">Add Work Experience</button>
-                        <button class="btn btn-lg btn-primary" type="submit" onclick="submitWork();">Next</button> <!--Where do we go from here? -->
-                   
+                        <button class="btn btn-lg btn-primary" type="submit">Next</button> <!--Where do we go from here? -->
                     
                 </div>
             </div><!-- /container -->
