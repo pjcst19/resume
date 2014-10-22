@@ -7,7 +7,7 @@ package edu.pitt.resumecore;
 
 /**
  *
- * @author Mandy
+ * @author Jordan Feldman
  */
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.ErrorLogger;
@@ -21,16 +21,11 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-//
 
-/**
- * User of the Student Resume System
- *
- * @author Mandy
- */
 public class User {
 
     private DbUtilities db;
@@ -54,6 +49,7 @@ public class User {
     private ArrayList<String> roles = new ArrayList<>();
     private String created;
     private String modified;
+    private int status;
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -104,7 +100,7 @@ public class User {
         userID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.User";
-        sql += "(firstName,lastName,middleInitial,login password,email,phoneNumber";
+        sql += "(userID,firstName,lastName,middleInitial,login,password,email,phoneNumber)";
         sql += " VALUES (";
         sql += "'" + userID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(firstName) + "', ";
@@ -119,13 +115,13 @@ public class User {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of the User constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
-        } finally{
+        } finally {
             String sql2 = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
             sql2 += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
-            sql2 += "WHERE userID = '" + userID + "'";
+            sql2 += "WHERE userID = '" + userID + '"';
             setAllUserProperties(sql2);
         }
-        
+
     }
 
     /**
@@ -152,6 +148,7 @@ public class User {
                     this.addresses.add(address);
                     this.created = rs1.getTimestamp("created").toString();
                     this.modified = rs1.getTimestamp("modified").toString();
+                    this.status = rs1.getInt("enabled");
                 } else {
                     return;
                 }
@@ -270,6 +267,7 @@ public class User {
             user.put("position", this.getPosition());
             user.put("created", this.created);
             user.put("modified", this.modified);
+            user.put("status", this.status);
 
             for (Address address : addresses) {
                 userAddressList.put(address.getAddressAsJson());
@@ -472,7 +470,9 @@ public class User {
      * @param password the password to set
      */
     public void setPassword(String password) {
-        String sql = "UPDATE rms.User SET password = '" + password + "' WHERE userID = '" + this.userID + "';";
+        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+        String encryptedPassword = passwordEncryptor.encryptPassword(password);
+        String sql = "UPDATE rms.User SET password = '" + encryptedPassword + "' WHERE userID = '" + this.userID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -495,24 +495,26 @@ public class User {
      *
      */
     public void setRoleStudent(String peopleSoftID, Date graduationYear) {
-        String role = "student";
-        roles.add(role);
-        this.setPeopleSoftID(peopleSoftID);
-        this.setGraduationYear(graduationYear);
+        if (!roles.contains("student")) {
+            String role = "student";
+            roles.add(role);
+            this.setPeopleSoftID(peopleSoftID);
+            this.setGraduationYear(graduationYear);
 
-        db = new DbUtilities();
-        String sql = "INSERT INTO rms.Student";
-        sql += "(peopleSoftID, graduationYear, fk_userID)";
-        sql += " VALUES (";
-        sql += "'" + StringUtilities.cleanMySqlInsert(peopleSoftID) + "', ";
-        sql += "'" + DATE_FORMAT.format(graduationYear) + "', ";
-        try {
-            db.executeQuery(sql);
-        } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred with the insert query inside of the setRoleStudent method. " + ex.getMessage());
-            ErrorLogger.log(sql);
+            db = new DbUtilities();
+            String sql = "INSERT INTO rms.Student";
+            sql += "(peopleSoftID, graduationYear, fk_userID)";
+            sql += " VALUES (";
+            sql += "'" + StringUtilities.cleanMySqlInsert(peopleSoftID) + "', ";
+            sql += "'" + DATE_FORMAT.format(graduationYear) + "', ";
+            sql += "'" + this.userID + "'); ";
+            try {
+                db.executeQuery(sql);
+            } catch (Exception ex) {
+                ErrorLogger.log("An error has occurred with the insert query inside of the setRoleStudent method. " + ex.getMessage());
+                ErrorLogger.log(sql);
+            }
         }
-
     }
 
     /**
@@ -521,25 +523,26 @@ public class User {
      * @param industry
      */
     public void setRoleEmployer(String placeOfWork, String industry) {
-        String role = "employer";
-        roles.add(role);
-        this.setPlaceOfWork(placeOfWork);
-        this.setIndustry(industry);
+        if (!roles.contains("emploer")) {
+            String role = "employer";
+            roles.add(role);
+            this.setPlaceOfWork(placeOfWork);
+            //this.setIndustry(industry);
 
-        db = new DbUtilities();
-        String sql = "INSERT INTO rms.Employer";
-        sql += "(placeOfWork, industry, fk_userID)";
-        sql += " VALUES (";
-        sql += "'" + StringUtilities.cleanMySqlInsert(placeOfWork) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(industry) + "', ";
-        sql += "'" + this.userID + "'); ";
-        try {
-            db.executeQuery(sql);
-        } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred with the insert query inside of the setRoleEmployer method. " + ex.getMessage());
-            ErrorLogger.log(sql);
+            db = new DbUtilities();
+            String sql = "INSERT INTO rms.Employer";
+            sql += "(placeOfWork, industry, fk_userID)";
+            sql += " VALUES (";
+            sql += "'" + StringUtilities.cleanMySqlInsert(placeOfWork) + "', ";
+            sql += "'" + StringUtilities.cleanMySqlInsert(industry) + "', ";
+            sql += "'" + this.userID + "'); ";
+            try {
+                db.executeQuery(sql);
+            } catch (Exception ex) {
+                ErrorLogger.log("An error has occurred with the insert query inside of the setRoleEmployer method. " + ex.getMessage());
+                ErrorLogger.log(sql);
+            }
         }
-
     }
 
     /**
@@ -548,25 +551,26 @@ public class User {
      * @param position
      */
     public void setRoleStaff(String employeeID, String position) {
-        String role = "staff";
-        roles.add(role);
-        this.setEmployeeID(employeeID);
-        this.setPosition(position);
+        if (!roles.contains("staff")) {
+            String role = "staff";
+            roles.add(role);
+            this.setEmployeeID(employeeID);
+            this.setPosition(position);
 
-        db = new DbUtilities();
-        String sql = "INSERT INTO rms.Staff";
-        sql += "(employeeID, position, fk_userID)";
-        sql += " VALUES (";
-        sql += "'" + StringUtilities.cleanMySqlInsert(employeeID) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";
-        sql += "'" + this.userID + "'); ";
-        try {
-            db.executeQuery(sql);
-        } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred with the insert query inside of the setRoleStaff method. " + ex.getMessage());
-            ErrorLogger.log(sql);
+            db = new DbUtilities();
+            String sql = "INSERT INTO rms.Staff";
+            sql += "(employeeID, position, fk_userID)";
+            sql += " VALUES (";
+            sql += "'" + StringUtilities.cleanMySqlInsert(employeeID) + "', ";
+            sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";
+            sql += "'" + this.userID + "'); ";
+            try {
+                db.executeQuery(sql);
+            } catch (Exception ex) {
+                ErrorLogger.log("An error has occurred with the insert query inside of the setRoleStaff method. " + ex.getMessage());
+                ErrorLogger.log(sql);
+            }
         }
-
     }
 
     /**
@@ -577,17 +581,20 @@ public class User {
         db = new DbUtilities();
         String sql = "";
         if (role.equals("student")) {
+            roles.remove("student");
             sql = "DELETE FROM rms.Student WHERE fk_userID = '" + this.userID + "';";
             this.setPeopleSoftID("");
-            this.setGraduationYear(null);
+           // this.setGraduationYear("");
         }
         if (role.equals("employer")) {
+            roles.remove("employer");
             sql = "DELETE FROM rms.Employer WHERE fk_userID = '" + this.userID + "';";
             this.setPlaceOfWork("");
             this.setIndustry("");
         }
 
         if (role.equals("staff")) {
+            roles.remove("staff");
             sql = "DELETE FROM rms.Staff WHERE fk_userID = '" + this.userID + "';";
             this.setEmployeeID("");
             this.setPosition("");
@@ -726,6 +733,34 @@ public class User {
             ErrorLogger.log(sql);
         }
         this.position = position;
+    }
+    /*
+     * Sets user status to enabled
+     */
+
+    public void setEnabled() {
+        String sql = "UPDATE rms.User SET enabled = 1  WHERE userID = '" + this.userID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred with the insert query inside of the setPosition method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.status = 1;
+    }
+
+    /*
+     * Sets user status to disabled
+     */
+    public void setDisabled() {
+        String sql = "UPDATE rms.User SET enabled = 0  WHERE userID = '" + this.userID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred with the insert query inside of the setPosition method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.status = 0;
     }
 
     /**
