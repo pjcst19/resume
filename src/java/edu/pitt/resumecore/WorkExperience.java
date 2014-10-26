@@ -52,8 +52,9 @@ public class WorkExperience {
         sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";
         sql += "'" + startDate + "', ";
         sql += "'" + endDate + "', ";
-        sql += "'" + currentlyEmployed + "', ";
+        sql += "" + currentlyEmployed + ", ";
         sql += "'" + StringUtilities.cleanMySqlInsert(description) + "')";
+        System.out.println(sql);
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {

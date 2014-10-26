@@ -85,7 +85,6 @@
             $('form').each(function () {
                 post_form_data($(this).serialize());
             });
-            alert("Function Called");
             window.location.href='workExperience.jsp';
             
         };

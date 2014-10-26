@@ -44,7 +44,12 @@
         });
     </script>
     
- 
+        <!--Loads the WorkExperience Form-->
+    <script>
+        $(document).ready(function(){
+            $("#workExpForm").load("workExpForm.html");
+          });
+    </script>
     
     <!--When "Add Work Experience" button is pressed, adds an additional form to allow the user to input multiple work entries-->
      <script type='text/javascript'>
@@ -57,23 +62,31 @@
     </script>
     
     
-    <!--Iterates through forms and submits data from each one individually to the database-->
+    <!--Submits all forms on page -->
     <script>
-    function submitWork() {
-        $('form').each(function() {
-        var work = $(this);
-        $.post(work.attr('action'), work.serialize());
-        });
-        //window.location.href='workExperience.jsp';    
-    }
+        function post_form_data(data) {
+            $.ajax({
+                type: 'POST',
+                url: 'processWorkExperience',
+                data: data,
+                async: false
+                //success: ,
+                //error:
+            });
+        }//end of post_form_data
+        
+        
+        //When Next button is clicked, all forms on page are submitted for processing
+        function submitEdu(){
+        //$('btnSubmit').on('click', function () {
+            $('form').each(function () {
+                post_form_data($(this).serialize());
+            });
+            window.location.href='menu.jsp';
+            
+        };
     </script>
     
-    <!--Loads the WorkExperience Form-->
-    <script>
-        $(document).ready(function(){
-            $("#workExpForm").load("workExpForm.html");
-          });
-    </script>
 </head>
 
 <body>
@@ -123,7 +136,7 @@
                        
                         <button class="btn btn-lg btn-primary" type="button" onclick="window.location.href='education.jsp'">Back</button>
                         <button class="btn btn-lg btn-primary" type="button" id="btnAddWorkExp">Add Work Experience</button>
-                        <button class="btn btn-lg btn-primary" type="submit">Next</button> <!--Where do we go from here? -->
+                        <button class="btn btn-lg btn-primary" type="submit" onclick="submitEdu();">Next</button> <!--Where do we go from here? -->
                     
                 </div>
             </div><!-- /container -->
