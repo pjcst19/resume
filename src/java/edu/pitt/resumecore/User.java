@@ -50,6 +50,8 @@ public class User {
     private String created;
     private String modified;
     private int status;
+    private int usProof;
+    private int usEligible;
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -584,7 +586,7 @@ public class User {
             roles.remove("student");
             sql = "DELETE FROM rms.Student WHERE fk_userID = '" + this.userID + "';";
             this.setPeopleSoftID("");
-           // this.setGraduationYear("");
+            // this.setGraduationYear("");
         }
         if (role.equals("employer")) {
             roles.remove("employer");
@@ -762,7 +764,62 @@ public class User {
         }
         this.status = 0;
     }
+    /*
+     * Sets user US status to enabled
+     */
 
+    public void setUSEligibleEnabled() {
+        String sql = "UPDATE rms.User SET usEligible = 1  WHERE userID = '" + this.userID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred with the insert query inside of the setUSEligibleEnabled method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.usEligible = 1;
+    }
+    /*
+     * Sets user US status to disables
+     */
+
+    public void setUSEligibleDisabled() {
+        String sql = "UPDATE rms.User SET usEligible = 0 WHERE userID = '" + this.userID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred with the insert query inside of the setUSEligibleDisabled method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.usEligible = 0;
+    }
+    /*
+     * Sets user US status to enabled
+     */
+
+    public void setUSProofEnabled() {
+        String sql = "UPDATE rms.User SET usProof = 1  WHERE userID = '" + this.userID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred with the insert query inside of the setUSProofEnabled method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.usProof = 1;
+    }
+    /*
+     * Sets user US status to disables
+     */
+
+    public void setUSProofDisabled() {
+        String sql = "UPDATE rms.User SET usProof = 0 WHERE userID = '" + this.userID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred with the insert query inside of the setUSProofDisabled method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        }
+        this.usProof = 0;
+    }
     /**
      * @return the employeeID
      */

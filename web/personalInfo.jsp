@@ -8,15 +8,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 
-   /* Security security = new Security();
-    if (security.checkHijackedSession(session, request)){
-	response.sendRedirect("index.jsp");
-}
-
     if (Security.checkHijackedSession(session, request)) {
-        response.sendRedirect("index.jsp");
-    }*/
-
+                response.sendRedirect("index.jsp");
+    }
 %>
 <!DOCTYPE html>
 
@@ -67,7 +61,7 @@
                     <form class="frmPersonalInfo" method="post" action="processPersonalInfo">
                         <h2 class="form-signin-heading">Personal Information</h2><br>
                         <input type="text" class="form-control" id="txtFirstName" name="txtFirstName" placeholder="First Name" autofocus="" required><br>
-                        <input type="text" class="form-control" id="txtLastName" name="txtLastName" placeholder="LastName" required><br>
+                        <input type="text" class="form-control" id="txtLastName" name="txtLastName" placeholder="Last Name" required><br>
                         <input type="text" class="form-control" id="txtAddressLine1" name="txtAddressLine1" placeholder="Street Address" required><br>
                         <input type="text" class="form-control" id="txtAddressLine2" name="txtAddressLine2" placeholder="Address"><br>
                         <input type="text" class="form-control" id="txtCity" name="txtCity" placeholder="City" required style="width:50%; display:inline">
@@ -142,12 +136,12 @@
                         <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Email" required style="width:49%; display:inline"><br><br>
                         
                         <label> Are You Legally Eligible to Work in the US?</label>
-                            <input type="radio" id="rdoUSEligible" name="rdoUSEligible" value="1" required> Yes
-                            <input type="radio" id="rdoUSEligible" name="rdoUSEligible" value="0" required> No<br><br>
+                            <input type="radio" id="radUSEligibleTrue" name="radUSEligible" value="true" required> Yes
+                            <input type="radio" id="radUSEligibleFalse" name="radUSEligible" value="false" required> No<br><br>
                             
                         <label> Can you provide evidence of your legal eligibility to work in the US? </label>
-                            <input type="radio" id="rdoWkEvidence" name="rdoWkEvidence" value="1" required> Yes
-                            <input type="radio" id="rdoWkEvidence" name="rdoWkEvidence" value="0" required> No<br><br>
+                            <input type="radio" id="radWkEvidenceTrue" name="radWkEvidence" value="true" required> Yes
+                            <input type="radio" id="radWkEvidenceFalse" name="radWkEvidence" value="false" required> No<br><br>
 
                         <button class="btn btn-lg btn-primary" type="submit" name="btnSubmitPersonalInfo" id="btnSubmitPersonalInfo">Next</button>
                     </form><br>
