@@ -77,6 +77,7 @@ public class searchws extends HttpServlet {
                 Logger.getLogger(searchws.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 out.print(ja);
+                db.closeMySQLConnection();
                 System.out.println(sql);
             }
 

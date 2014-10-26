@@ -39,7 +39,7 @@ public class userws extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        DbUtilities db = null;
+        DbUtilities db = new DbUtilities();
         if (Security.checkHijackedSession(request.getSession(false), request)) {
             response.sendRedirect("./index.jsp");
         }
@@ -57,7 +57,6 @@ public class userws extends HttpServlet {
                 sql += String.format(" WHERE email  LIKE '%s%%'", email);
             }
 
-            db = new DbUtilities();
             JSONArray ja;
             ja = null;
             try {

@@ -39,7 +39,7 @@ public class viewEditUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        DbUtilities db = null;
+        DbUtilities db = new DbUtilities();
         if (Security.checkHijackedSession(request.getSession(false), request)) {
             response.sendRedirect("./index.jsp");
         }
@@ -51,7 +51,6 @@ public class viewEditUser extends HttpServlet {
                 sql += String.format(" WHERE userID   = '%s'", userID);
             }
 
-            db = new DbUtilities();
             JSONArray ja;
             ja = null;
             try {

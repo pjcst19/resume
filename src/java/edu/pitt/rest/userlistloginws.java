@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.pitt.rest;
 
 import edu.pitt.resumecore.User;
@@ -43,38 +42,36 @@ public class userlistloginws extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        DbUtilities db = null;
-        if(Security.checkHijackedSession(request.getSession(false), request)){
+        if (Security.checkHijackedSession(request.getSession(false), request)) {
             response.sendRedirect("index.jsp");
-         }
+        }
+        DbUtilities db = new DbUtilities();
         try (PrintWriter out = response.getWriter()) {
             String login = "";
-            String password ="";
-            if(request.getParameter("login") != null && request.getParameter("password")!= null){
-                login = request.getParameter("login").toString();
-                password = request.getParameter("password").toString();
+            String password = "";
+            if (request.getParameter("login") != null && request.getParameter("password") != null) {
+                login = request.getParameter("login");
+                password = request.getParameter("password");
             }
-                        
-            if(!login.equals("") && !password.equals("")){
-                
+
+            if (!login.equals("") && !password.equals("")) {
+
                 db = new DbUtilities();
                 String sql = "SELECT * FROM rms.User ";
                 sql += "WHERE login = '" + login + "' AND password = '" + password + "'";
-                
+
                 System.out.println(sql);
-                
+
                 JSONArray fullUserList = new JSONArray();
                 ResultSet rs = db.getResultSet(sql);
-                while(rs.next()){
-                User user = new User(rs.getString("userId"));
-                fullUserList.put(user.getUserAsJSON());
+                while (rs.next()) {
+                    User user = new User(rs.getString("userId"));
+                    fullUserList.put(user.getUserAsJSON());
+                }
+
+                out.print(fullUserList.toString());
             }
-            
-            out.print(fullUserList.toString());
-            }
-            
-            
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(userlistloginws.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

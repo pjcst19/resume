@@ -18,9 +18,11 @@ import org.json.JSONObject;
 
 /**
  * Creates an Address object
+ *
  * @author Jordan S. Feldman
  */
 public class Address {
+
     private String addressID;
     private String addressLine1;
     private String addressLine2;
@@ -35,15 +37,19 @@ public class Address {
     private DbUtilities db;
 
     /**
-     * Creates an Address object based upon information obtained from database by providing addressID
+     * Creates an Address object based upon information obtained from database
+     * by providing addressID
+     *
      * @param addressID
      */
-    public Address(String addressID){
-        setAllAddressProperties(addressID);  
+    public Address(String addressID) {
+        setAllAddressProperties(addressID);
     }
-    
+
     /**
-     * Creates an Address object based upon the parameters given and inserts it into the database
+     * Creates an Address object based upon the parameters given and inserts it
+     * into the database
+     *
      * @param addressLine1
      * @param addressLine2
      * @param city
@@ -52,8 +58,8 @@ public class Address {
      * @param postalCode
      * @param country
      */
-    public Address(String addressLine1, String addressLine2, String city, String state, 
-            String province, String postalCode, String country){
+    public Address(String addressLine1, String addressLine2, String city, String state,
+            String province, String postalCode, String country) {
         addressID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Address ";
@@ -72,22 +78,23 @@ public class Address {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of the Address constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
+            db.closeMySQLConnection();
             setAllAddressProperties(addressID);
         }
-        
-        
+
     }
+
     /**
-     * 
+     *
      * @param addressID ID of address to be looked up and properties set from
      */
-    private void setAllAddressProperties(String addressID){
+    private void setAllAddressProperties(String addressID) {
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.Address WHERE addressID = '" + addressID + "'";
         try {
             ResultSet rs = db.getResultSet(sql);
-            if(rs.next()){
+            if (rs.next()) {
                 this.addressLine1 = rs.getString("addressLine1");
                 this.addressLine2 = rs.getString("addressLine2");
                 this.city = rs.getString("city");
@@ -101,21 +108,26 @@ public class Address {
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Address(String addressID) constructor of Address class. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
+            db.closeMySQLConnection();
             this.addressID = addressID;
         }
     }
+
     /**
      * @param addressLine1 the addressLine1 to set
      */
     public void setAddressLine1(String addressLine1) {
-        String sql = "UPDATE Address SET addressLine1 = '" + addressLine1 + "' WHERE addressID = '" + this.addressID +"';";
+        db = new DbUtilities();
+        String sql = "UPDATE Address SET addressLine1 = '" + addressLine1 + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setAddressLine1. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }  
+        } finally {
+            db.closeMySQLConnection();
+        }
         this.addressLine1 = addressLine1;
     }
 
@@ -123,12 +135,15 @@ public class Address {
      * @param addressLine2 the addressLine2 to set
      */
     public void setAddressLine2(String addressLine2) {
-        String sql = "UPDATE Address SET addressLine2 = '" + addressLine2 + "' WHERE addressID = '" + this.addressID +"';";
+        db = new DbUtilities();
+        String sql = "UPDATE Address SET addressLine2 = '" + addressLine2 + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setAddressLine2. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.addressLine2 = addressLine2;
     }
@@ -137,12 +152,15 @@ public class Address {
      * @param city the city to set
      */
     public void setCity(String city) {
-        String sql = "UPDATE Address SET city = '" + city + "' WHERE addressID = '" + this.addressID +"';";
+        db = new DbUtilities();
+        String sql = "UPDATE Address SET city = '" + city + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setCity. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.city = city;
     }
@@ -151,12 +169,15 @@ public class Address {
      * @param state the state to set
      */
     public void setState(String state) {
-        String sql = "UPDATE Address SET state = '" + state + "' WHERE addressID = '" + this.addressID +"';";
+        db = new DbUtilities();
+        String sql = "UPDATE Address SET state = '" + state + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setState. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.state = state;
     }
@@ -165,12 +186,15 @@ public class Address {
      * @param province the province to set
      */
     public void setProvince(String province) {
-        String sql = "UPDATE Address SET Province = '" + province + "' WHERE addressID = '" + this.addressID +"';";
+        db = new DbUtilities();
+        String sql = "UPDATE Address SET Province = '" + province + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setProvince. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.province = province;
     }
@@ -179,12 +203,15 @@ public class Address {
      * @param postalCode the postalCode to set
      */
     public void setPostalCode(String postalCode) {
-        String sql = "UPDATE Address SET postCode = '" + postalCode + "' WHERE addressID = '" + this.addressID +"';";
+        db = new DbUtilities();
+        String sql = "UPDATE Address SET postCode = '" + postalCode + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setPostalCode. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.postalCode = postalCode;
     }
@@ -193,12 +220,15 @@ public class Address {
      * @param country the country to set
      */
     public void setCountry(String country) {
-        String sql = "UPDATE Address SET country = '" + country + "' WHERE addressID = '" + this.addressID +"';";
+        db = new DbUtilities();
+        String sql = "UPDATE Address SET country = '" + country + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setCountry. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.country = country;
     }
@@ -209,7 +239,7 @@ public class Address {
     public String getAddressID() {
         return addressID;
     }
-    
+
     /**
      * @return the addressLine1
      */
@@ -258,12 +288,14 @@ public class Address {
     public String getCountry() {
         return country;
     }
+
     /**
      * Creates and returns a properly formated JSON representation of Address
+     *
      * @return A properly formated JSON representation of Address
      */
-    public JSONObject getAddressAsJson(){
-        
+    public JSONObject getAddressAsJson() {
+
         JSONObject address = new JSONObject();
 
         try {
@@ -274,12 +306,12 @@ public class Address {
             address.put("state", this.state);
             address.put("province", this.province);
             address.put("postalCode", this.postalCode);
-            address.put("country", this.country); 
+            address.put("country", this.country);
             address.put("created", this.created);
             address.put("modified", this.modified);
         } catch (JSONException ex) {
             ErrorLogger.log("An error has occurred with getAddressAsJSON. " + ex.getMessage());
         }
         return address;
-    } 
+    }
 }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.pitt.rest;
 
 import edu.pitt.resumecore.User;
@@ -43,94 +42,85 @@ public class userlistws extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        DbUtilities db = null;
-        if(Security.checkHijackedSession(request.getSession(false), request)){
+        DbUtilities db = new DbUtilities();
+        if (Security.checkHijackedSession(request.getSession(false), request)) {
             response.sendRedirect("rest/index.jsp");
-         }
+        }
         try (PrintWriter out = response.getWriter()) {
-            
+
             String lastName = "";
             String userID = "";
             String field = "";
             String gpa = "";
             String jobDescription = "";
-            
+
             String sql = "";
-            
-            if(request.getParameter("lastName") != null){
+
+            if (request.getParameter("lastName") != null) {
                 lastName = request.getParameter("lastName");
             }
-            if(request.getParameter("userID") != null){
+            if (request.getParameter("userID") != null) {
                 userID = request.getParameter("userID");
             }
-            if(request.getParameter("field") != null){
+            if (request.getParameter("field") != null) {
                 field = request.getParameter("field");
             }
-            if(request.getParameter("gpa") != null){
+            if (request.getParameter("gpa") != null) {
                 gpa = request.getParameter("gpa");
             }
-            if(request.getParameter("jobDescription") != null){
+            if (request.getParameter("jobDescription") != null) {
                 jobDescription = request.getParameter("jobDescription");
             }
-               
-            db = new DbUtilities();
-            
-            if(!lastName.equals("")){
-                
+
+            if (!lastName.equals("")) {
+
                 sql = "SELECT * FROM rms.User ";
                 sql += String.format("WHERE lastName LIKE '%s%%'", lastName);
-                
+
                 System.out.println(sql);
 
-            }
-            else if(!userID.equals("")){
-                
-                 if (userID.equalsIgnoreCase("null")){
+            } else if (!userID.equals("")) {
+
+                if (userID.equalsIgnoreCase("null")) {
                     sql = "SELECT fk_userID AS userID FROM rms.Student;";
-                 }
-                 else {
+                } else {
                     sql = "SELECT * FROM rms.User ";
                     sql += String.format("WHERE userID = '%s'", userID);
-                 }
-                                
-                System.out.println(sql);
-               
-            }
-            else if(!field.equals("")){
-                sql = "SELECT fk_userID AS userID FROM rms.Education JOIN rms.ResumeEducation ON educationID = fk_educationID JOIN rms.Resume ON resumeID = fk_resumeID ";
-                sql += String.format("WHERE field COLLATE UTF8_GENERAL_CI LIKE '%s%%'", field);
-                
+                }
+
                 System.out.println(sql);
 
-            }
-            else if(!gpa.equals("")){
-                
+            } else if (!field.equals("")) {
+                sql = "SELECT fk_userID AS userID FROM rms.Education JOIN rms.ResumeEducation ON educationID = fk_educationID JOIN rms.Resume ON resumeID = fk_resumeID ";
+                sql += String.format("WHERE field COLLATE UTF8_GENERAL_CI LIKE '%s%%'", field);
+
+                System.out.println(sql);
+
+            } else if (!gpa.equals("")) {
+
                 sql = "SELECT fk_userID AS userID FROM rms.Education JOIN rms.ResumeEducation ON educationID = fk_educationID JOIN rms.Resume ON resumeID = fk_resumeID ";
                 sql += String.format("WHERE gpa > '%s'", gpa);
-                
+
                 System.out.println(sql);
-                
-            }
-            else if(!jobDescription.equals("")){
-                
+
+            } else if (!jobDescription.equals("")) {
+
                 sql = "SELECT fk_userID AS userID FROM rms.WorkExperience JOIN rms.ResumeWorkExperience ON workExperienceID = fk_workExperienceID JOIN rms.Resume ON resumeID = fk_resumeID ";
                 sql += String.format("WHERE position COLLATE UTF8_GENERAL_CI LIKE '%s%%'", jobDescription);
-                
+
                 System.out.println(sql);
-            }
-            else {
+            } else {
                 sql = "SELECT resumeID, rating, fk_userID as userID FROM rms.Resume";
             }
-            
+
             JSONArray fullUserList = new JSONArray();
             ResultSet rs = db.getResultSet(sql);
-            while(rs.next()){
+            while (rs.next()) {
                 User user = new User(rs.getString("userID"));
                 fullUserList.put(user.getUserAsJSON());
             }
             out.print(fullUserList.toString());
 
-            
         } catch (SQLException ex) {
             Logger.getLogger(userlistws.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

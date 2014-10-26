@@ -28,9 +28,12 @@ public class Resume {
     private int rating;
     private String created;
     private String modified;
-    private ArrayList<Education> educationList = new ArrayList<Education>();;
-    private ArrayList<Award> awardList = new ArrayList<Award>();;
-    private ArrayList<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();;
+    private ArrayList<Education> educationList = new ArrayList<Education>();
+    ;
+    private ArrayList<Award> awardList = new ArrayList<Award>();
+    ;
+    private ArrayList<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();
+    ;
 
     private DbUtilities db;
 
@@ -40,7 +43,7 @@ public class Resume {
      *
      * @param resumeID
      */
-    public Resume(String resumeID) {       
+    public Resume(String resumeID) {
         setAllResumeProperties(resumeID);
     }
 
@@ -66,11 +69,13 @@ public class Resume {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in the insert query inside of the Resume constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
+            db.closeMySQLConnection();
             setAllResumeProperties(resumeID);
         }
-        
+
     }
+
     private void setAllResumeProperties(String resumeID) {
         String sql1 = "SELECT * FROM rms.Resume WHERE resumeID = '" + resumeID + "'";
         System.out.println(sql1);
@@ -85,10 +90,10 @@ public class Resume {
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Resume(String resumeID) constructor of Resume class. " + ex.getMessage());
             ErrorLogger.log(sql1);
-        }finally{
+        } finally {
             this.resumeID = resumeID;
         }
-        
+
         String sql2 = "SELECT * FROM rms.ResumeAward WHERE fk_resumeID = '" + this.resumeID + "'";
         try {
             ResultSet rs2 = this.getDb().getResultSet(sql2);
@@ -123,9 +128,11 @@ public class Resume {
             ErrorLogger.log("An error has occured in setAllResumeProperties() method of Resume class. " + ex.getMessage());
             ErrorLogger.log(sql4);
         }
+        db.closeMySQLConnection();
     }
 
     public void addEducation(Education education) {
+        db = new DbUtilities();
         educationList.add(education);
         String sql = "INSERT INTO rms.ResumeEducation (fk_resumeID,fk_educationID) VALUES";
         sql += "('" + this.resumeID + "', '" + education.getEducationID() + "')";
@@ -134,10 +141,13 @@ public class Resume {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of addEducation. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
     }
 
     public void addAward(Award award) {
+        db = new DbUtilities();
         awardList.add(award);
         String sql = "INSERT INTO rms.ResumeAward (fk_resumeID,fk_awardID) VALUES";
         sql += "('" + this.resumeID + "', '" + award.getAwardID() + "')";
@@ -146,10 +156,13 @@ public class Resume {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of addAward. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
     }
 
     public void addWorkExperience(WorkExperience workExperience) {
+        db = new DbUtilities();
         workExperienceList.add(workExperience);
         String sql = "INSERT INTO rms.ResumeWorkExperience (fk_resumeID,fk_workExperienceID) VALUES";
         sql += "('" + this.resumeID + "', '" + workExperience.getWorkExperienceID() + "')";
@@ -158,6 +171,8 @@ public class Resume {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of addWorkExperience. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
     }
 
@@ -165,12 +180,15 @@ public class Resume {
      * @param rating the rating to set
      */
     public void setRating(int rating) {
+        db = new DbUtilities();
         String sql = "UPDATE Resume SET rating = '" + rating + "' WHERE resumeID = '" + this.resumeID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setRating. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.rating = rating;
     }
@@ -209,7 +227,7 @@ public class Resume {
             resume.put("rating", this.rating);
             resume.put("created", this.created);
             resume.put("modified", this.modified);
-            
+
             if (this.educationList != null) {
                 for (Education education : this.educationList) {
                     resumeEducationList.put(education.getEducationAsJson());
