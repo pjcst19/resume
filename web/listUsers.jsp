@@ -121,7 +121,7 @@
                     }
                     
                     var status;
-                    if(data[i].enabled === 0){
+                    if(data[i].enabled === false){
                         status = "Disabled";
                     }
                     else{

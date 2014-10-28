@@ -5,6 +5,7 @@
  */
 package edu.pitt.rest;
 
+import edu.pitt.resumecore.User;
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.Security;
 import java.io.IOException;
@@ -44,7 +45,14 @@ public class userws extends HttpServlet {
             response.sendRedirect("./index.jsp");
         }
         try (PrintWriter out = response.getWriter()) {
-            String sql = "SELECT lastName, firstName, login, email, IF(peoplesoftID IS NOT NULL, 'true', 'false') AS Student, IF(employeeID IS NOT NULL, 'true', 'false') AS Staff, IF(placeOfWork IS NOT NULL, 'true', 'false') AS Employer, userID, enabled FROM rms.User U LEFT JOIN Student S ON U.userID = S.fk_userID LEFT JOIN Staff ST ON U.userID = ST.fk_userID LEFT JOIN Employer E ON U.userID = E.fk_userID";
+            String additionalSQL;
+            if(((User) request.getSession().getAttribute("authenticatedUser")).getRoles().contains("staff")){
+                additionalSQL = "";
+            }
+            else{
+                additionalSQL = "WHERE enabled = 1";
+            }
+            String sql = "SELECT lastName, firstName, login, email, IF(peoplesoftID IS NOT NULL, 'true', 'false') AS Student, IF(employeeID IS NOT NULL, 'true', 'false') AS Staff, IF(placeOfWork IS NOT NULL, 'true', 'false') AS Employer, userID, enabled FROM rms.User U LEFT JOIN Student S ON U.userID = S.fk_userID LEFT JOIN Staff ST ON U.userID = ST.fk_userID LEFT JOIN Employer E ON U.userID = E.fk_userID" + additionalSQL;
 
             if (request.getParameter("lastName") != null) {
                 String lastName = request.getParameter("lastName");

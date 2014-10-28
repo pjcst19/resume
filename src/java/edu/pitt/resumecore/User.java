@@ -613,7 +613,7 @@ public class User {
      * @param role
      */
     public void removeRole(String role) {
-        db = new DbUtilities();
+        DbUtilities dbL = new DbUtilities();
         String sql = "";
         if (role.equals("student")) {
             roles.remove("student");
@@ -625,7 +625,7 @@ public class User {
             roles.remove("employer");
             sql = "DELETE FROM rms.Employer WHERE fk_userID = '" + this.userID + "';";
             this.setPlaceOfWork("");
-            this.setIndustry("");
+            // this.setIndustry("");
         }
 
         if (role.equals("staff")) {
@@ -636,12 +636,14 @@ public class User {
         }
 
         try {
-            db.executeQuery(sql);
+            dbL.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred with the Delete query inside of the removeRole method. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            dbL.closeMySQLConnection();
         }
-        db.closeMySQLConnection();
+
     }
 
     /**
