@@ -5,6 +5,7 @@
  */
 package edu.pitt.rest;
 
+import edu.pitt.resumecore.User;
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.Security;
 import java.io.IOException;
@@ -44,6 +45,12 @@ public class searchws extends HttpServlet {
             response.sendRedirect("./index.jsp");
         }
         try (PrintWriter out = response.getWriter()) {
+            String additionalSQL;
+            if (((User) request.getSession().getAttribute("authenticatedUser")).getRoles().contains("staff")) {
+                additionalSQL = "";
+            } else {
+                additionalSQL = "AND  enabled = 1";
+            }
             String sql = "";
 
             if (request.getParameter("resumeID") != null) {
@@ -72,7 +79,7 @@ public class searchws extends HttpServlet {
             JSONArray ja;
             ja = null;
             try {
-                ja = db.getJsonDataTable(sql);
+                ja = db.getJsonDataTable(sql + additionalSQL);
             } catch (JSONException ex) {
                 Logger.getLogger(searchws.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
