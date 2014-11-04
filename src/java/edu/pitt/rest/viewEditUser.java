@@ -59,13 +59,12 @@ public class viewEditUser extends HttpServlet {
                 Logger.getLogger(viewEditUser.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 out.print(ja);
+                db.closeMySQLConnection();
                 System.out.println(sql);
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(viewEditUser.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            db.closeMySQLConnection();
         }
     }
 

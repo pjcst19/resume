@@ -42,69 +42,64 @@ public class processEditUser extends HttpServlet {
             if (Security.checkHijackedSession(session, request)) {
                 response.sendRedirect("index.jsp");
             } else {
-                
+
                 System.out.println(session.getAttribute("selectedUserID"));
 
                 User user = new User((String) session.getAttribute("selectedUserID"));
 
-                if (!request.getParameter("txtFirstName").isEmpty()){
+                if (!request.getParameter("txtFirstName").equals(user.getFirstName())) {
                     String firstName = request.getParameter("txtFirstName");
                     user.setFirstName(firstName);
                 }
 
-                if (!request.getParameter("txtLastName").isEmpty()){
+                if (!request.getParameter("txtLastName").equals(user.getLastName())) {
                     String lastName = request.getParameter("txtLastName");
                     user.setLastName(lastName);
 
                 }
 
-                if (!request.getParameter("txtLogin").isEmpty()) {
+                if (!request.getParameter("txtLogin").equals(user.getLogin())) {
                     String login = request.getParameter("txtLogin");
                     user.setLogin(login);
                 }
 
-                if (!request.getParameter("txtEmail").isEmpty()) {
+                if (!request.getParameter("txtEmail").equals(user.getEmail())) {
                     String email = request.getParameter("txtEmail");
                     user.setEmail(email);
                 }
 
-                if (!request.getParameter("txtPassword").isEmpty()) {
+                if (!request.getParameter("txtPassword").equals(user.getPassword())) {
                     String password = request.getParameter("txtPassword");
                     user.setPassword(password);
                 }
-                
-                 if (request.getParameter("chkEmployer") != null) {
-                     user.setRoleEmployer("", "");
+
+                if (request.getParameter("chkEmployer") != null) {
+                    user.setRoleEmployer("", "");
+                } else if (user.getRoles().contains("employer")) {
+                    user.removeRole("employer");
                 }
-                 else{
-                     user.removeRole("employer");
-                 }
-                 
-                  if (request.getParameter("chkStaff") != null) {
+
+                if (request.getParameter("chkStaff") != null) {
                     user.setRoleStaff("", "");
+                } else if (user.getRoles().contains("staff")) {
+                    user.removeRole("staff");
                 }
-                  else{
-                     user.removeRole("staff");
-                 }
-                  
-                   if (request.getParameter("chkStudent") != null) {
-                       user.setRoleStudent("", new Date());
+
+                if (request.getParameter("chkStudent") != null) {
+                    user.setRoleStudent("", new Date());
+                } else if (user.getRoles().contains("student")) {
+                    user.removeRole("student");
                 }
-                   else{
-                     user.removeRole("student");
-                 }
-                   
-                   if(request.getParameter("radStatus") != null){
-                       String status = request.getParameter("radStatus");
-                       System.out.println(status);
-                       if(status.equals("enabled")){
-                           user.setEnabled();
-                       }
-                       else if(status.equals("disabled")){
-                           user.setDisabled();
-                       }
-                   }
-                
+
+                if (request.getParameter("radStatus") != null) {
+                    String status = request.getParameter("radStatus");
+                    System.out.println(status);
+                    if (status.equals("enabled")) {
+                        user.setEnabled();
+                    } else if (status.equals("disabled")) {
+                        user.setDisabled();
+                    }
+                }
 
                 response.sendRedirect("listUsers.jsp");
 
@@ -113,7 +108,6 @@ public class processEditUser extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
