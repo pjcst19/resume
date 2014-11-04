@@ -40,66 +40,92 @@ public class processPersonalInfo extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession(true);
 
-//            Security security = new Security();
-//            if (security.checkHijackedSession(session, request)) {
-//                response.sendRedirect("index.jsp");
-//            }
+            if (Security.checkHijackedSession(session, request)) {
+                response.sendRedirect("index.jsp");
+            } else {
+                User user = (User) session.getAttribute("authenticatedUser");
+                String firstName = "";
+                String lastName = "";
+                String addressLine1 = "";
+                String addressLine2 = "";
+                String city = "";
+                String state = "";
+                String province = "";
+                String country = "";
+                String postalCode = "";
+                String phoneNumber = "";
+                String email = "";
+                String workEligibility = "";
+                String workEligibilityProof = "";
 
-            User user = (User) session.getAttribute("authenticatedUser");
-            String firstName = "";
-            String lastName = "";
-            String addressLine1 = "";
-            String addressLine2 = "";
-            String city = "";
-            String state = "";
-            String province = "";
-            String country = "";
-            String postalCode = "";
-            String phoneNumber = "";
-            String email = "";
-            //String stringWorkEligibility = "";
-            //Integer workEligibility = null;
-            //String stringUSProof = "":
-            //Integer USProof = null;
-            
+                if (request.getParameter("txtFirstName") != null) {
+                    firstName = request.getParameter("txtFirstName");
+                }
+                if (request.getParameter("txtLastName") != null) {
+                    lastName = request.getParameter("txtLastName");
+                }
+                if (request.getParameter("txtAddressLine1") != null) {
+                    addressLine1 = request.getParameter("txtAddressLine1");
+                }
+                if (request.getParameter("txtAddressLine2") != null) {
+                    addressLine2 = request.getParameter("txtAddressLine2");
+                }
+                if (request.getParameter("txtCity") != null) {
+                    city = request.getParameter("txtCity");
+                }
+                if (request.getParameter("txtState") != null) {
+                    state = request.getParameter("txtState");
+                }
+                if (request.getParameter("txtProvince") != null) {
+                    province = request.getParameter("txtProvince");
+                }
+                if (request.getParameter("txtCountry") != null) {
+                    country = request.getParameter("txtCountry");
+                }
+                if (request.getParameter("txtPostalCode") != null) {
+                    postalCode = request.getParameter("txtPostalCode");
+                }
+                if (request.getParameter("txtPhone") != null) {
+                    phoneNumber = request.getParameter("txtPhone");
+                }
+                if (request.getParameter("txtEmail") != null) {
+                    email = request.getParameter("txtEmail");
+                }
 
-//            if (!request.getParameter("txtfirstName").equals("") && !request.getParameter("txtLastName").equals("")) {
+                if (request.getParameter("radUSEligible") != null) {
+                    workEligibility = request.getParameter("radUSEligible");
+                    System.out.println(workEligibility);
+                    if (workEligibility.equals("true")) {
+                        user.setUSEligibleEnabled();
+                    } else if (workEligibility.equals("false")) {
+                        user.setUSEligibleDisabled();
+                    }
+                }
 
-                firstName = request.getParameter("txtFirstName");
-                lastName = request.getParameter("txtLastName");
-                addressLine1 = request.getParameter("txtAddressLine1");
-                addressLine2 = request.getParameter("txtAddressLine2");
-                city = request.getParameter("txtCity");
-                state = request.getParameter("txtState");
-                province = request.getParameter("txtProvince");
-                country = request.getParameter("txtCountry");
-                postalCode = request.getParameter("txtPostalCode");
-                phoneNumber = request.getParameter("txtPhone");
-                email = request.getParameter("txtEmail");
-                //workEligibility = Integer.parseInt(stringWorkEligibility);
-                //USProof = Integer.parseInt(stringUSProof);
+                if (request.getParameter("radWkEvidence") != null) {
+                    workEligibilityProof = request.getParameter("radWkEvidence");
+                    System.out.println(workEligibilityProof);
+                    if (workEligibilityProof.equals("true")) {
+                        user.setUSProofEnabled();
+                    } else if (workEligibilityProof.equals("false")) {
+                        user.setUSProofDisabled();
+                    }
+                }
 
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setPhoneNumber(phoneNumber);
                 user.setEmail(email);
-                
-                /*Jordan - need to alter User for workEligibility
-                user.setWorkEligibility(workEligibility);
-                user.setUSProof(USProof);
-                */
 
                 Address address = new Address(addressLine1, addressLine2, city, state, province, postalCode, country);
                 user.addAddress(address);
 
                 response.sendRedirect("education.jsp");
 
-//            } else {
-//                out.println("You must enter your First and Last Name!");
-//            }
-
+            }
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

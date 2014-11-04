@@ -246,7 +246,7 @@ public class DbUtilities {
     
     public void closeMySQLConnection(){
         try {
-            conn.close();
+           this. conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(DbUtilities.class.getName()).log(Level.SEVERE, null, ex);
         }

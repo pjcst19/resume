@@ -44,6 +44,7 @@ public class WorkExperience {
         workExperienceID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.WorkExperience ";
+
         sql += "(workExperienceID,businessName,position,startDate,endDate,currentlyEmployed,description)";
         sql += " VALUES ("; 
         sql += "'" + this.workExperienceID + "', ";
@@ -51,8 +52,9 @@ public class WorkExperience {
         sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";
         sql += "'" + startDate + "', ";
         sql += "'" + endDate + "', ";
-        sql += "'" + currentlyEmployed + "', ";
+        sql += "" + currentlyEmployed + ", ";
         sql += "'" + StringUtilities.cleanMySqlInsert(description) + "')";
+        System.out.println(sql);
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -60,6 +62,7 @@ public class WorkExperience {
             ErrorLogger.log(sql);
         } finally{
             setAllWorkExperienceProperties(workExperienceID);
+            db.closeMySQLConnection();
         }
     }
     private void setAllWorkExperienceProperties(String workExperienceID){
@@ -83,70 +86,89 @@ public class WorkExperience {
             ErrorLogger.log(sql);
         } finally{
             this.workExperienceID = workExperienceID;
+            db.closeMySQLConnection();
         }
     }
     public void setBusinessName(String businessName){
+        db = new DbUtilities();
         String sql = "UPDATE WorkExperience SET businessName = '" + businessName + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setBusinessName. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            db.closeMySQLConnection();
         }
         this.businessName = businessName;
     }
     
     public void setPosition(String position){
+        db = new DbUtilities();
         String sql = "UPDATE WorkExperience SET position = '" + position + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setPosition. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            db.closeMySQLConnection();
         }
         this.position = position;
     }
     
     public void setStartDate(String startDate){
+        db = new DbUtilities();
         String sql = "UPDATE WorkExperience SET startDate = '" + startDate + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setStartDate. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            db.closeMySQLConnection();
         }
         this.startDate = startDate;
     }
     
     public void setEndDate(String endDate){
+        db = new DbUtilities();
         String sql = "UPDATE WorkExperience SET endDate = '" + endDate + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setEndDate. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            db.closeMySQLConnection();
         }
         this.endDate = endDate;
     }
     
      public void setCurrentlyEmployed(int currentlyEmployed){
+         db = new DbUtilities();
         String sql = "UPDATE WorkExperience SET currentlyEmployed = '" + currentlyEmployed + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setEndDate. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            db.closeMySQLConnection();
         }
-        this.endDate = endDate;
+        this.currentlyEmployed = currentlyEmployed;
     }
     
     public void setDescription(String description){
+        db = new DbUtilities();
         String sql = "UPDATE WorkExperience SET description = '" + description + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setDescription. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            db.closeMySQLConnection();
         }
         this.description = description;
     }

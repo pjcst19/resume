@@ -24,8 +24,8 @@ import org.json.JSONException;
  *
  * @author Jordan Feldman
  */
-@WebServlet(name = "searchws", urlPatterns = {"/rest/searchws"})
-public class searchws extends HttpServlet {
+@WebServlet(name = "userws", urlPatterns = {"/rest/userws"})
+public class userws extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,50 +39,37 @@ public class searchws extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        DbUtilities db = null;
+        DbUtilities db = new DbUtilities();
         if (Security.checkHijackedSession(request.getSession(false), request)) {
             response.sendRedirect("./index.jsp");
         }
         try (PrintWriter out = response.getWriter()) {
-            String sql = "";
+            String sql = "SELECT lastName, firstName, login, email, IF(peoplesoftID IS NOT NULL, 'true', 'false') AS Student, IF(employeeID IS NOT NULL, 'true', 'false') AS Staff, IF(placeOfWork IS NOT NULL, 'true', 'false') AS Employer, userID, enabled FROM rms.User U LEFT JOIN Student S ON U.userID = S.fk_userID LEFT JOIN Staff ST ON U.userID = ST.fk_userID LEFT JOIN Employer E ON U.userID = E.fk_userID";
 
-            if (request.getParameter("resumeID") != null) {
-                String resumeID = request.getParameter("resumeID");
-                sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,resumeID FROM User U JOIN Resume R ON U.userID = R.fk_userID WHERE resumeID = %s", resumeID);
-
-            }
-            if (request.getParameter("field") != null) {
-                String field = request.getParameter("field");
-                sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,field FROM User U JOIN Resume R ON U.userID = R.fk_userID JOIN ResumeEducation RE ON R.resumeID = RE.fk_resumeID JOIN Education E ON E.educationID = RE.fk_educationID WHERE field LIKE '%s%%'", field);
-            }
-            if (request.getParameter("gpa") != null) {
-                String gpa = request.getParameter("gpa");
-                sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,gpa FROM User U JOIN Resume R ON U.userID = R.fk_userID JOIN ResumeEducation RE ON R.resumeID = RE.fk_resumeID JOIN Education E ON E.educationID = RE.fk_educationID WHERE gpa > %s", gpa);
-            }
-            if (request.getParameter("description") != null) {
-                String description = request.getParameter("description");
-                sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,description FROM User U JOIN Resume R ON U.userID = R.fk_userID JOIN ResumeWorkExperience RWE ON R.resumeID = RWE.fk_resumeID JOIN WorkExperience WE ON WE.workExperienceID = RWE.fk_workExperienceID WHERE description LIKE '%s%%'", description);
-            }
             if (request.getParameter("lastName") != null) {
                 String lastName = request.getParameter("lastName");
-                sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,lastName FROM User U JOIN Resume R ON U.userID = R.fk_userID WHERE lastName LIKE '%s%%'", lastName);
+                sql += String.format(" WHERE lastName  LIKE '%s%%'", lastName);
+            } else if (request.getParameter("login") != null) {
+                String login = request.getParameter("login");
+                sql += String.format(" WHERE login  LIKE '%s%%'", login);
+            } else if (request.getParameter("email") != null) {
+                String email = request.getParameter("email");
+                sql += String.format(" WHERE email  LIKE '%s%%'", email);
             }
 
-            db = new DbUtilities();
             JSONArray ja;
             ja = null;
             try {
                 ja = db.getJsonDataTable(sql);
             } catch (JSONException ex) {
-                Logger.getLogger(searchws.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(userws.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 out.print(ja);
-                db.closeMySQLConnection();
                 System.out.println(sql);
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(searchws.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(userws.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             db.closeMySQLConnection();
         }

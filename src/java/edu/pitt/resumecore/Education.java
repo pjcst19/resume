@@ -58,12 +58,14 @@ public class Education {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of the Education constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
-        } finally{
+        } finally {
+            db.closeMySQLConnection();
             setAllEducationProperties(educationID);
         }
 
     }
-    private void setAllEducationProperties(String educationID){
+
+    private void setAllEducationProperties(String educationID) {
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.Education WHERE educationID = '" + educationID + "'";
         try {
@@ -81,108 +83,128 @@ public class Education {
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Education(String educationID) constructor of Education class. " + ex.getMessage());
             ErrorLogger.log(sql);
-        } finally{
+        } finally {
+            db.closeMySQLConnection();
             this.educationID = educationID;
         }
     }
+
     public void setName(String name) {
+        db = new DbUtilities();
         String sql = "UPDATE Education SET name = '" + name + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setName. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.name = name;
     }
 
     public void setType(String type) {
+        db = new DbUtilities();
         String sql = "UPDATE Education SET type = '" + type + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setType. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.type = type;
     }
-    
+
     public void setField(String field) {
+        db = new DbUtilities();
         String sql = "UPDATE Education SET field = '" + field + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setField. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.field = field;
     }
-    
+
     public void setMinor(String minor) {
+        db = new DbUtilities();
         String sql = "UPDATE Education SET minor = '" + minor + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setField. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.minor = minor;
     }
-    
+
     public void setGPA(Double gpa) {
+        db = new DbUtilities();
         String sql = "UPDATE Education SET gpa = '" + gpa.toString() + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setGPA. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.gpa = gpa;
     }
-    
+
     public void setGraduationDate(String graduationDate) {
+        db = new DbUtilities();
         String sql = "UPDATE Education SET graduationDate = '" + graduationDate + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setGraduationDate. " + ex.getMessage());
             ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
         }
         this.graduationDate = graduationDate;
     }
-    
-    public String getEducationID(){
+
+    public String getEducationID() {
         return educationID;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    
-    public String getType(){
+
+    public String getType() {
         return type;
     }
-    
-    public String getField(){
+
+    public String getField() {
         return field;
     }
-    
-    public String getMinor(){
+
+    public String getMinor() {
         return minor;
     }
-    
-    public double getGPA(){
+
+    public double getGPA() {
         return gpa;
     }
-    
-    public String getGraduationDate(){
+
+    public String getGraduationDate() {
         return graduationDate;
     }
-    
-    public JSONObject getEducationAsJson(){
-        
+
+    public JSONObject getEducationAsJson() {
+
         JSONObject education = new JSONObject();
-        
+
         try {
             education.put("educationID", this.educationID);
             education.put("name", this.name);
@@ -190,7 +212,7 @@ public class Education {
             education.put("field", this.field);
             education.put("gpa", this.gpa);
             education.put("graduationDate", this.graduationDate);
-            
+
         } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within getEducationAsJSON. " + ex.getMessage());
         }

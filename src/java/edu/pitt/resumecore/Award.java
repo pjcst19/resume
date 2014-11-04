@@ -47,6 +47,7 @@ public class Award {
             ErrorLogger.log("An error has occurred in with the insert query inside of the Award constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
         }finally{
+            db.closeMySQLConnection();
             setAllAwardProperties(awardID);
         }
     }
@@ -65,27 +66,34 @@ public class Award {
             ErrorLogger.log("An error has occurred in Award(String awardID) constructor of Award class. " + ex.getMessage());
             ErrorLogger.log(sql);
         }finally{
+            db.closeMySQLConnection();
             this.awardID = awardID;
         }
     }
     public void setName(String name){
+        db = new DbUtilities();
         String sql = "UPDATE Award SET name = '" + name + "' WHERE awardID = '" + this.awardID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setName. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            db.closeMySQLConnection();
         }
         this.name = name;
     }
     
     public void setDescription(String description){
+        db = new DbUtilities();
         String sql = "UPDATE Award SET description = '" + description + "' WHERE awardID = '" + this.awardID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setDescription. " + ex.getMessage());
             ErrorLogger.log(sql);
+        }finally{
+            db.closeMySQLConnection();
         }
         this.description = description;
     }

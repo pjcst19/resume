@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/src/java/edu/pitt/servlets/processEducation.java</file>
-            <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/web/education.jsp</file>
+            <file>file:/Users/jordansfeldman/Desktop/RMS/web/workExperience.jsp</file>
+            <file>file:/Users/jordansfeldman/Desktop/RMS/src/java/edu/pitt/resumecore/WorkExperience.java</file>
+            <file>file:/Users/jordansfeldman/Desktop/RMS/web/workExpForm.html</file>
+            <file>file:/Users/jordansfeldman/Desktop/RMS/src/java/edu/pitt/servlets/processWorkExperience.java</file>
         </group>
     </open-files>
 </project-private>

@@ -65,6 +65,8 @@
                             else if(user.getRoles().contains("staff")){
                                 out.print("<li><a href='listResumes.jsp'>List all Resumes</a></li>");
                                 out.print("<li><a href='searchResumes.jsp'>Search through Resumes</a></li>");
+                                out.print("<li><a href='listUsers.jsp'>List Users</a></li>");
+                                out.print("<li><a href='addUser.jsp'>Add User</a></li>");
                             }
                             else if(user.getRoles().contains("employer")){
                                 out.print("<li><a href='listResumes.jsp'>View all Resumes</a></li>");

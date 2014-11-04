@@ -13,7 +13,7 @@
         <form class="form-signin" method="post" action="login">
             <h2 class="form-signin-heading">Login</h2><br>
             <% out.print(errorMessage);%>
-            <input type="text" name="txtEmailAddress" id="txtEmailAddress" class="form-control" placeholder="Email address" required="required" autofocus>
+            <input type="text" name="txtEmailAddress" id="txtEmailAddress" class="form-control" placeholder="Username" required="required" autofocus>
             <br>
             <input type="password" name="txtPassword" id="txtPassword" class="form-control" placeholder="Password" required="required">
             <label class="checkbox">
@@ -21,5 +21,9 @@
             </label>
             <hr>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button></form><br> </div>
-            
-<%@ include file="includes/footer.jsp" %>
+    <script>
+        $(document).ready(function () {
+            $("#mainContainer").width("300px");
+        });
+    </script>
+    <%@ include file="includes/footer.jsp" %>
