@@ -7,6 +7,7 @@ package edu.pitt.servlets;
 
 import edu.pitt.resumecore.User;
 import edu.pitt.utilities.Security;
+import edu.pitt.utilities.StringUtilities;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -43,33 +44,31 @@ public class processEditUser extends HttpServlet {
                 response.sendRedirect("index.jsp");
             } else {
 
-                System.out.println(session.getAttribute("selectedUserID"));
-
                 User user = new User((String) session.getAttribute("selectedUserID"));
 
                 if (!request.getParameter("txtFirstName").equals(user.getFirstName())) {
-                    String firstName = request.getParameter("txtFirstName");
+                    String firstName =StringUtilities.cleanMySqlInsert( request.getParameter("txtFirstName"));
                     user.setFirstName(firstName);
                 }
 
                 if (!request.getParameter("txtLastName").equals(user.getLastName())) {
-                    String lastName = request.getParameter("txtLastName");
+                    String lastName = StringUtilities.cleanMySqlInsert(request.getParameter("txtLastName"));
                     user.setLastName(lastName);
 
                 }
 
                 if (!request.getParameter("txtLogin").equals(user.getLogin())) {
-                    String login = request.getParameter("txtLogin");
+                    String login = StringUtilities.cleanMySqlInsert(request.getParameter("txtLogin"));
                     user.setLogin(login);
                 }
 
                 if (!request.getParameter("txtEmail").equals(user.getEmail())) {
-                    String email = request.getParameter("txtEmail");
+                    String email = StringUtilities.cleanMySqlInsert(request.getParameter("txtEmail"));
                     user.setEmail(email);
                 }
 
                 if (!request.getParameter("txtPassword").equals(user.getPassword())) {
-                    String password = request.getParameter("txtPassword");
+                    String password = StringUtilities.cleanMySqlInsert(request.getParameter("txtPassword"));
                     user.setPassword(password);
                 }
 
@@ -93,7 +92,6 @@ public class processEditUser extends HttpServlet {
 
                 if (request.getParameter("radStatus") != null) {
                     String status = request.getParameter("radStatus");
-                    System.out.println(status);
                     if (status.equals("enabled")) {
                         user.setEnabled();
                     } else if (status.equals("disabled")) {

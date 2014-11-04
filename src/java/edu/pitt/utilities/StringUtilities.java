@@ -71,7 +71,7 @@ public class StringUtilities {
 
             byte byteData[] = md.digest();
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < byteData.length; i++) {
                 sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
             }
@@ -90,9 +90,6 @@ public class StringUtilities {
      */
     public static boolean isValidGUID(String guid){
         UUID uuid = UUID.fromString(guid);
-        if(guid.equals(uuid.toString())){
-            return true;
-        }
-        return false;
+        return guid.equals(uuid.toString());
     }
 }

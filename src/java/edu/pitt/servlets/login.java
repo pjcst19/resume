@@ -7,6 +7,7 @@
 package edu.pitt.servlets;
 
 import edu.pitt.resumecore.User;
+import edu.pitt.utilities.StringUtilities;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -44,8 +45,8 @@ public class login extends HttpServlet {
             
             if(!request.getParameter("txtEmailAddress").equals("") && !request.getParameter("txtPassword").equals("")){
                 HttpSession session = request.getSession(true);
-                emailAddress = request.getParameter("txtEmailAddress");
-                password = request.getParameter("txtPassword");
+                emailAddress = StringUtilities.cleanMySqlInsert(request.getParameter("txtEmailAddress"));
+                password = StringUtilities.cleanMySqlInsert(request.getParameter("txtPassword"));
                 
                 user = new User(emailAddress, password);
                 

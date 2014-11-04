@@ -52,6 +52,8 @@ public class User {
     private int status;
     private int usProof;
     private int usEligible;
+    private boolean userLoggedIn;
+    private boolean systemCreatedUser;
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -63,6 +65,7 @@ public class User {
      * retrieved
      */
     public User(String userID) {
+        systemCreatedUser = true;
         String sql = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
         sql += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
         sql += "WHERE userID = '" + userID + "'";
@@ -76,10 +79,11 @@ public class User {
      * @param password
      */
     public User(String login, String password) {
+        this.userLoggedIn = true;
         String sql = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
         sql += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
-        sql += "WHERE login = '" + login + "';";
-        this.inputPassword = password;
+        sql += "WHERE login = '" + StringUtilities.cleanMySqlInsert(login) + "';";
+        this.inputPassword = StringUtilities.cleanMySqlInsert(password);
         setAllUserProperties(sql);
     }
 
@@ -97,6 +101,7 @@ public class User {
      * @param phoneNumber
      */
     public User(String firstName, String lastName, String middleInitial, String login, String password, ArrayList<Address> addresses, String email, String phoneNumber) {
+        systemCreatedUser = true;
         userID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.User";
@@ -137,7 +142,8 @@ public class User {
         try {
             ResultSet rs1 = db.getResultSet(sql1);
             while (rs1.next()) {
-                if (this.userID == null || Security.checkPassword(this.inputPassword, rs1.getString("password"))) {
+                System.out.println(Security.checkPassword(this.inputPassword, rs1.getString("password")));
+                if ((Security.checkPassword(this.inputPassword, rs1.getString("password")) && this.userLoggedIn) || this.systemCreatedUser) {
                     this.userID = (rs1.getString("userID"));
                     this.lastName = (rs1.getString("lastName"));
                     this.firstName = (rs1.getString("firstName"));

@@ -8,6 +8,7 @@ package edu.pitt.servlets;
 import edu.pitt.resumecore.Address;
 import edu.pitt.resumecore.User;
 import edu.pitt.utilities.Security;
+import edu.pitt.utilities.StringUtilities;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -54,23 +55,23 @@ public class processAddUser extends HttpServlet {
                 String phoneNumber = "";
                 
                   if (!request.getParameter("txtFirstName").isEmpty()){
-                    firstName = request.getParameter("txtFirstName");
+                   firstName = StringUtilities.cleanMySqlInsert( request.getParameter("txtFirstName"));
                 }
 
                 if (!request.getParameter("txtLastName").isEmpty()){
-                    lastName = request.getParameter("txtLastName");
+                    lastName = StringUtilities.cleanMySqlInsert(request.getParameter("txtLastName"));
                 }
 
                 if (!request.getParameter("txtLogin").isEmpty()) {
-                    login = request.getParameter("txtLogin");
+                    login = StringUtilities.cleanMySqlInsert(request.getParameter("txtLogin"));
                 }
 
                 if (!request.getParameter("txtEmail").isEmpty()) {
-                    email = request.getParameter("txtEmail");
+                    email = StringUtilities.cleanMySqlInsert(request.getParameter("txtEmail"));
                 }
 
                 if (!request.getParameter("txtPassword").isEmpty()) {
-                    password = request.getParameter("txtPassword");
+                    password = StringUtilities.cleanMySqlInsert(request.getParameter("txtPassword"));
                 }
                 
                         
@@ -89,8 +90,7 @@ public class processAddUser extends HttpServlet {
                 }
                    
                    if(request.getParameter("radStatus") != null){
-                       String status = request.getParameter("radStatus");
-                       System.out.println(status);
+                       String status = StringUtilities.cleanMySqlInsert(request.getParameter("radStatus"));
                        if(status.equals("enabled")){
                            user.setEnabled();
                        }
