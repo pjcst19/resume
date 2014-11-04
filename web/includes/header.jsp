@@ -14,10 +14,12 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Login</title>
+        <title>RMS </title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="css/custom.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     </head>
 
 
@@ -40,5 +42,5 @@
         </div>
 
 
-        <div class="container theme-showcase">
+        <div id="mainContainer" class="container theme-showcase" style="width:900px">
             <div class="panel panel-primary">

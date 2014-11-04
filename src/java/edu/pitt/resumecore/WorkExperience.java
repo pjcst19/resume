@@ -44,6 +44,7 @@ public class WorkExperience {
         workExperienceID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.WorkExperience ";
+
         sql += "(workExperienceID,businessName,position,startDate,endDate,currentlyEmployed,description)";
         sql += " VALUES ("; 
         sql += "'" + this.workExperienceID + "', ";
