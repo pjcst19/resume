@@ -28,6 +28,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="css/custom.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
+        
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
         <!--        <script language="javascript">
@@ -65,6 +66,97 @@
                         }
                     }
                 </script>-->
+        
+                <script language="javascript">
+                    $(document).ready(function() {
+//                        getJsonFromWebService("rest/resumews?resumeID=<% //out.print(request.getParameter("resumeID"));%>");
+                         getJsonFromWebService("rest/resumews?resumeID=00b4443b-4903-489e-b486-2869bb5c317a");
+                    });
+                    function getJsonFromWebService(targetUrl) {
+                        console.log(targetUrl);
+                        jQuery.ajax({
+                            type: "GET",
+                            url: targetUrl,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function(data, status, jqXHR) {
+                                jsonToHtmlLayout(data);
+                                console.log("success");
+                            },
+                            error: function(jqXHR, status) {
+                                console.log(status);
+                                console.log("Error")
+                            }
+                        });
+                    }
+        
+        
+                    function jsonToHtmlLayout(data) {
+                    $resume = $('#resumeContainer');
+                    $userName = $('#userName');
+                    
+                    $userName.append('<h3 class="panel-heading"><strong>' + data.firstName + " " + data.lastName + '</strong></h3>');
+                    
+                    $resume.append('<div class="col-md-4">');
+                    $resume.append('<label>' + data.resumeID + '</label><br>');
+//                    $resume.append('Degree Type:<div id="degreeType">' + data.type + '</div><br>');
+//                    $resume.append('Major:<div id="major">' + data.field + '</div><br>');
+//                    $resume.append('GPA:<div id="gpa">' + data.gpa + '</div><br>');
+//                    $resume.append('Graduation Date: <div id="gradDate">' + data.graduationDate + '</div><br>')
+                    $resume.append('</div>');
+                    
+
+//                                        <label>Student</label><br>
+//                                        Name:<div id="firstName"></div><br>
+//                                        Address:<div id="addressLine1"></div><br>
+//                                        City:<div id="city"></div><br>
+//                                        State:<div id="state"></div><br>
+//                                        Province:<div id="province"></div><br>
+//                                        Country:<div id="country"></div><br>
+//                                        Postal Code:<div id="postalCode"></div><br>
+//
+//                                        Phone Number:<div id="phoneNumber"></div><br>
+//                                        Email: <div id="email"></div><br>
+//                                </div>
+//
+//                                <div class="col-md-4">
+//
+//                                         
+//
+//                                        <label>Awards</label><br>
+//                                        Award Name:<div id="awardName"></div><br>
+//                                        Award Description:<div id="description"></div>
+//
+//                                        <br>
+//                                </div>
+//
+//                                <div class="col-md-4">
+//
+//                                        <label></label><br>
+//                                        Employer:<div id="employer"></div><br>
+//                                        Start Date:<div id="startDate"></div><br>
+//                                        End Date:<div id="endDate"></div><br>
+//                                        Position:<div id="position"></div><br>
+//                                        Position Description:<div id="description"></div><br>
+//
+//                                        <br>
+//
+//
+//
+//                                </div>
+        
+//                    $resume.append(data.name);
+//                    $resume.append(data.type);
+//                    $resume.append(data.field);
+//                    $resume.append(data.gpa);
+//                    $resume.append(data.graduationDate);
+//                   
+                            
+                    }
+                </script>
+        
+        
+        
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
@@ -89,11 +181,13 @@
                 </div><!--/.nav-collapse -->
             </div>
         </div>
+        
+    
 
         <div class="container">
             <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Search</strong></h3>
+                <div class="panel-default" id="userName">
+<!--                    <h3 class="panel-heading"><strong>Resume</strong></h3>-->
                 </div>
 
                 <div class="panel-body">
@@ -101,52 +195,10 @@
 
                         <div class="page-header">
                             <div id="resumeContainer" col-lg-12">
+   
 
-                                 <div class="col-md-4">
+                               
 
-                                    <label>Student</label><br>
-                                    Name:<div id="firstName">Mary Geyer</div><br>
-                                    Address:<div id="addressLine1"> 404 Orchard Street</div><br>
-                                    City:<div id="city"> Osseo</div><br>
-                                    State:<div id="state">Minnesota</div><br>
-                                    Province:<div id="province"></div><br>
-                                    Country:<div id="country">United States</div><br>
-                                    Postal Code:<div id="postalCode">55369</div><br>
-
-                                    Phone Number:<div id="phoneNumber">952-855-0097</div><br>
-                                    Email: <div id="email">mgeyer@pitt.edu</div><br>
-                                </div>
-
-                                <div class="col-md-4">
-
-                                     <label>Education</label><br>
-                                    University:<div id="school">University of Pittsburgh</div><br>
-                                    Degree Type:<div id="degreeType">MS</div><br>
-                                    Major:<div id="major">Psychology</div><br>
-                                    GPA:<div id="gpa">4.0</div><br>
-                                    Graduation Date: <div id="gradDate">12-20-2014</div><br>
-                                    
-                                    <label>Awards</label><br>
-                                    Award Name:<div id="awardName">'IT Helpfulness Award'</div><br>
-                                    Award Description:<div id="description">This award is given to those students that show a gift for teaching others about Information Technology related concepts </div>
-
-                                    <br>
-                                </div>
-                                 
-                                 <div class="col-md-4">
-
-                                    <label>Work Experience</label><br>
-                                    Employer:<div id="employer">Citizens Bank</div><br>
-                                    Start Date:<div id="startDate">10-10-2013</div><br>
-                                    End Date:<div id="endDate">02-02-2014</div><br>
-                                    Position:<div id="position">Information Systems Specialist</div><br>
-                                    Position Description:<div id="description">Communicate application problems and issues to key stakeholders, including management, development teams, end users, and unit leaders.</div><br>
-
-                                    <br>
-
-                            
-
-                                </div>
 
 
 

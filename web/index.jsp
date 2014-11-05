@@ -7,8 +7,8 @@
 %>
 <%@ include file="includes/header.jsp" %>
 
-<div class="panel-heading">
-    <h3 class="panel-title"><strong>Login</strong></h3>
+<div class="panel-heading panel-default">
+    <h3 class="panel-title panel-default"><strong>Login</strong></h3>
 </div><div class="panel-body"><div class="page-header">
         <form class="form-signin" method="post" action="login">
             <h2 class="form-signin-heading">Login</h2><br>
@@ -21,9 +21,20 @@
             </label>
             <hr>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button></form><br> </div>
+<<<<<<< HEAD
+=======
+
+            
+<%@ include file="includes/footer.jsp" %>
+
+>>>>>>> mandySprint4A
     <script>
         $(document).ready(function () {
             $("#mainContainer").width("300px");
         });
     </script>
     <%@ include file="includes/footer.jsp" %>
+<<<<<<< HEAD
+=======
+
+>>>>>>> mandySprint4A

@@ -50,8 +50,11 @@ public class User {
     private String created;
     private String modified;
     private int status;
+<<<<<<< HEAD
     private int usProof;
     private int usEligible;
+=======
+>>>>>>> mandySprint4A
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -493,7 +496,10 @@ public class User {
      * @param password the password to set
      */
     public void setPassword(String password) {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+>>>>>>> mandySprint4A
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         String encryptedPassword = passwordEncryptor.encryptPassword(password);
         String sql = "UPDATE rms.User SET password = '" + encryptedPassword + "' WHERE userID = '" + this.userID + "';";
@@ -521,7 +527,10 @@ public class User {
      *
      */
     public void setRoleStudent(String peopleSoftID, Date graduationYear) {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+>>>>>>> mandySprint4A
         if (!roles.contains("student")) {
             String role = "student";
             roles.add(role);
@@ -540,8 +549,11 @@ public class User {
             } catch (Exception ex) {
                 ErrorLogger.log("An error has occurred with the insert query inside of the setRoleStudent method. " + ex.getMessage());
                 ErrorLogger.log(sql);
+<<<<<<< HEAD
             } finally {
                 db.closeMySQLConnection();
+=======
+>>>>>>> mandySprint4A
             }
         }
     }
@@ -552,7 +564,10 @@ public class User {
      * @param industry
      */
     public void setRoleEmployer(String placeOfWork, String industry) {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+>>>>>>> mandySprint4A
         if (!roles.contains("emploer")) {
             String role = "employer";
             roles.add(role);
@@ -571,8 +586,11 @@ public class User {
             } catch (Exception ex) {
                 ErrorLogger.log("An error has occurred with the insert query inside of the setRoleEmployer method. " + ex.getMessage());
                 ErrorLogger.log(sql);
+<<<<<<< HEAD
             } finally {
                 db.closeMySQLConnection();
+=======
+>>>>>>> mandySprint4A
             }
         }
     }
@@ -583,7 +601,10 @@ public class User {
      * @param position
      */
     public void setRoleStaff(String employeeID, String position) {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+>>>>>>> mandySprint4A
         if (!roles.contains("staff")) {
             String role = "staff";
             roles.add(role);
@@ -602,8 +623,11 @@ public class User {
             } catch (Exception ex) {
                 ErrorLogger.log("An error has occurred with the insert query inside of the setRoleStaff method. " + ex.getMessage());
                 ErrorLogger.log(sql);
+<<<<<<< HEAD
             } finally {
                 db.closeMySQLConnection();
+=======
+>>>>>>> mandySprint4A
             }
         }
     }
@@ -619,7 +643,11 @@ public class User {
             roles.remove("student");
             sql = "DELETE FROM rms.Student WHERE fk_userID = '" + this.userID + "';";
             this.setPeopleSoftID("");
+<<<<<<< HEAD
             // this.setGraduationYear("");
+=======
+           // this.setGraduationYear("");
+>>>>>>> mandySprint4A
         }
         if (role.equals("employer")) {
             roles.remove("employer");
@@ -792,15 +820,21 @@ public class User {
      */
 
     public void setEnabled() {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+>>>>>>> mandySprint4A
         String sql = "UPDATE rms.User SET enabled = 1  WHERE userID = '" + this.userID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred with the insert query inside of the setPosition method. " + ex.getMessage());
             ErrorLogger.log(sql);
+<<<<<<< HEAD
         } finally {
             db.closeMySQLConnection();
+=======
+>>>>>>> mandySprint4A
         }
         this.status = 1;
     }
@@ -809,13 +843,17 @@ public class User {
      * Sets user status to disabled
      */
     public void setDisabled() {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+>>>>>>> mandySprint4A
         String sql = "UPDATE rms.User SET enabled = 0  WHERE userID = '" + this.userID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred with the insert query inside of the setPosition method. " + ex.getMessage());
             ErrorLogger.log(sql);
+<<<<<<< HEAD
         } finally {
             db.closeMySQLConnection();
         }
@@ -889,6 +927,11 @@ public class User {
         }
         this.usProof = 0;
     }
+=======
+        }
+        this.status = 0;
+    }
+>>>>>>> mandySprint4A
 
     /**
      * @return the employeeID
