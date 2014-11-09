@@ -81,6 +81,7 @@
                             dataType: "json",
                             success: function(data, status, jqXHR) {
                                 jsonToHtmlLayout(data);
+                                console.log(data);
                                 console.log("success");
                             },
                             error: function(jqXHR, status) {
@@ -92,66 +93,43 @@
         
         
                     function jsonToHtmlLayout(data) {
-                    $resume = $('#resumeContainer');
-                    $userName = $('#userName');
-                    
-                    $userName.append('<h3 class="panel-heading"><strong>' + data.firstName + " " + data.lastName + '</strong></h3>');
-                    
-                    $resume.append('<div class="col-md-4">');
-                    $resume.append('<label>' + data.resumeID + '</label><br>');
-//                    $resume.append('Degree Type:<div id="degreeType">' + data.type + '</div><br>');
-//                    $resume.append('Major:<div id="major">' + data.field + '</div><br>');
-//                    $resume.append('GPA:<div id="gpa">' + data.gpa + '</div><br>');
-//                    $resume.append('Graduation Date: <div id="gradDate">' + data.graduationDate + '</div><br>')
-                    $resume.append('</div>');
-                    
+                        $resume = $('#resumeContainer');
+                        $userName = $('#userName');
 
-//                                        <label>Student</label><br>
-//                                        Name:<div id="firstName"></div><br>
-//                                        Address:<div id="addressLine1"></div><br>
-//                                        City:<div id="city"></div><br>
-//                                        State:<div id="state"></div><br>
-//                                        Province:<div id="province"></div><br>
-//                                        Country:<div id="country"></div><br>
-//                                        Postal Code:<div id="postalCode"></div><br>
-//
-//                                        Phone Number:<div id="phoneNumber"></div><br>
-//                                        Email: <div id="email"></div><br>
-//                                </div>
-//
-//                                <div class="col-md-4">
-//
-//                                         
-//
-//                                        <label>Awards</label><br>
-//                                        Award Name:<div id="awardName"></div><br>
-//                                        Award Description:<div id="description"></div>
-//
-//                                        <br>
-//                                </div>
-//
-//                                <div class="col-md-4">
-//
-//                                        <label></label><br>
-//                                        Employer:<div id="employer"></div><br>
-//                                        Start Date:<div id="startDate"></div><br>
-//                                        End Date:<div id="endDate"></div><br>
-//                                        Position:<div id="position"></div><br>
-//                                        Position Description:<div id="description"></div><br>
-//
-//                                        <br>
-//
-//
-//
-//                                </div>
-        
-//                    $resume.append(data.name);
-//                    $resume.append(data.type);
-//                    $resume.append(data.field);
-//                    $resume.append(data.gpa);
-//                    $resume.append(data.graduationDate);
-//                   
+                        $userName.append('<h3 class="panel-heading"><strong>' + data.firstName + " " + data.lastName + '</strong></h3>');
+
+                        $resume.append('<div class="col-md-4">');
+    //                    $resume.append('<label>' + data.resumeID + '</label><br>');
+                        $resume.append('<h3> Education </h3><hr>');
+                        
+                        for ($i=0; $i<data.EducationList.length; $i++){
+                            $resume.append(data.EducationList[$i].name + ', ' + data.EducationList[$i].type + ', ' + data.EducationList[$i].field + '<br>');
+                            $resume.append('GPA:' + data.EducationList[$i].gpa + '<br>');
+                            $resume.append(data.EducationList[$i].graduationDate + '<br><br>');
                             
+                        }
+                        
+                        $resume.append('<h3> Work Experience </h3><hr>');
+                        for ($i=0; $i<data.WorkExperienceList.length; $i++){
+                            $resume.append(data.WorkExperienceList[$i].businessName + '<br>');
+                            $resume.append(data.WorkExperienceList[$i].position);
+                            $resume.append(data.WorkExperienceList[$i].startDate + ' - ' + data.WorkExperienceList[$i].endDate + '<br>');
+                            $resume.append(data.WorkExperienceList[$i].description + '<br>');
+                        }
+                            
+                        if(data.AwardList.length > 0){
+                            $resume.append('<h3>Awards</h3>');
+                        }
+                        
+                        for ($i=0; $i<data.AwardList.length; $i++){
+                            $resume.append(data.AwardList[$i].name + '<br>');
+                            $resume.append(data.AwardList[$i].description + '</div><br>');
+                        }
+                            
+                    
+                        
+                        $resume.append('</div>');
+                                              
                     }
                 </script>
         
