@@ -21,20 +21,16 @@
             </label>
             <hr>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button></form><br> </div>
-<<<<<<< HEAD
-=======
+
 
             
 <%@ include file="includes/footer.jsp" %>
 
->>>>>>> mandySprint4A
+
     <script>
         $(document).ready(function () {
             $("#mainContainer").width("300px");
         });
     </script>
     <%@ include file="includes/footer.jsp" %>
-<<<<<<< HEAD
-=======
 
->>>>>>> mandySprint4A

@@ -255,6 +255,48 @@ public class User {
      *
      * @return user The user info as a JSON Object
      */
+    public JSONObject getUserInfoAsJSON() {
+        JSONObject user = new JSONObject();
+        JSONArray userAddressList = new JSONArray();
+        JSONArray userResumeList = new JSONArray();
+        JSONArray userRoleList = new JSONArray();
+        try {
+            user.put("userID", this.getUserID());
+            user.put("lastName", this.getLastName());
+            user.put("firstName", this.getFirstName());
+            user.put("middleInital", this.getMiddleInitial());
+            user.put("login", this.getLogin());
+            user.put("password", this.getPassword());
+            user.put("email", this.getEmail());
+            user.put("phoneNumber", this.getPhoneNumber());
+            user.put("peopleSoftID", this.getPeopleSoftID());
+            user.put("graduationYear", this.getGraduationYear());
+            user.put("placeOfWork", this.getPlaceOfWork());
+            user.put("industry", this.getIndustry());
+            user.put("employeeID", this.getEmployeeID());
+            user.put("position", this.getPosition());
+            user.put("created", this.created);
+            user.put("modified", this.modified);
+            user.put("status", this.status);
+
+            for (Address address : addresses) {
+                userAddressList.put(address.getAddressAsJson());
+            }
+
+            user.put("addresses", userAddressList);
+
+            for (String role : roles) {
+                userRoleList.put(role);
+            }
+            user.put("roles", userRoleList);
+
+        } catch (JSONException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
+
+    }
+    
     public JSONObject getUserAsJSON() {
         JSONObject user = new JSONObject();
         JSONArray userAddressList = new JSONArray();
