@@ -13,7 +13,46 @@
     }
 %>
 
-<%@ include file="includes/header.jsp" %>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>RMS </title>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" >
+        
+        <!--Stylesheet for Resume-->
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" media="all" />
+        <link href="css/custom.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    </head>
+
+
+    <body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span></button> <a class="navbar-brand" href="#">Resume Management System</a>
+                </div> 
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown"><ul class="nav navbar-nav">
+                                <li class=""><a href="register.jsp">Create Account</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+
+
 
 
 
@@ -144,11 +183,7 @@
                         <h3 class="panel-heading"><strong>Resume</strong></h3>
 </div>-->
 
-<div class="panel-body">
-    
 
-        <div class="page-header">
-            <div id="resumeContainer" col-lg-12">
                  
                  <div id="doc2" class="yui-t7">
                     <div id="inner">
