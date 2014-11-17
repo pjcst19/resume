@@ -132,7 +132,7 @@
                         <input type="text" class="form-control" id="txtProvince" name="txtProvince" placeholder="Province" style="width:40%; display:inline">
                         <input type="text" class="form-control" id="txtCountry" name="txtCountry" placeholder="Country" style="width:38%; display:inline">
                         <input type="text" class="form-control" id="txtPostalCode" name="txtPostalCode" placeholder="Postal Code" required style="width:20%; display:inline"><br><br>
-                        <input type="tel" class="form-control" id="txtPhone" name="txtPhone" placeholder="Phone Number" required style="width:50%; display:inline">
+                        <input type="tel" class="form-control" id="txtPhone" name="txtPhone" placeholder="Phone Number: xxx-xxx-xxxx" required pattern="\d{3}-?\d{3}-?\d{4}"style="width:50%; display:inline">
                         <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Email" required style="width:49%; display:inline"><br><br>
                         
                         <label> Are You Legally Eligible to Work in the US?</label>

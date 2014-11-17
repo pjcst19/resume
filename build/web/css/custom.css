@@ -29,7 +29,7 @@ Added by Mandy Kendall
 .msg a:hover { background: #266400; }
 
 /* //-- yui-grids style overrides -- */
-#inner { padding: 10px 80px; margin: 80px auto; background: #f5f5f5; border: solid #666; border-width: 8px 0 2px 0; }
+#inner { padding: 10px 80px; margin: 80px auto; border: solid #666; border-width: 0px; }
 .yui-gf { margin-bottom: 2em; padding-bottom: 2em; border-bottom: 1px solid #ccc; }
 
 /* //-- header, body, footer -- */
@@ -88,3 +88,8 @@ a#pdf:hover { background: #222; }
 
 .resumeName {font-size: 24px;
       float:left;}
+
+
+@media print{
+    
+}

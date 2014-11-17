@@ -145,13 +145,13 @@
 </div>-->
 
 <div class="panel-body">
-    <div class="panel-body">
+    
 
         <div class="page-header">
             <div id="resumeContainer" col-lg-12">
                  
                  <div id="doc2" class="yui-t7">
-	<div id="inner">
+                    <div id="inner">
 	
 		<div id="hd">
 			<div class="yui-gc">
