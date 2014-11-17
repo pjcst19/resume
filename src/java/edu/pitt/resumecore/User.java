@@ -52,8 +52,12 @@ public class User {
     private int status;
     private int usProof;
     private int usEligible;
+<<<<<<< HEAD
     private boolean userLoggedIn;
     private boolean systemCreatedUser;
+=======
+
+>>>>>>> mandySprint5
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -65,7 +69,10 @@ public class User {
      * retrieved
      */
     public User(String userID) {
+<<<<<<< HEAD
         systemCreatedUser = true;
+=======
+>>>>>>> mandySprint5
         String sql = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
         sql += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
         sql += "WHERE userID = '" + userID + "'";
@@ -79,7 +86,10 @@ public class User {
      * @param password
      */
     public User(String login, String password) {
+<<<<<<< HEAD
         this.userLoggedIn = true;
+=======
+>>>>>>> mandySprint5
         String sql = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
         sql += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
         sql += "WHERE login = '" + StringUtilities.cleanMySqlInsert(login) + "';";
@@ -260,6 +270,48 @@ public class User {
      *
      * @return user The user info as a JSON Object
      */
+    public JSONObject getUserInfoAsJSON() {
+        JSONObject user = new JSONObject();
+        JSONArray userAddressList = new JSONArray();
+        JSONArray userResumeList = new JSONArray();
+        JSONArray userRoleList = new JSONArray();
+        try {
+            user.put("userID", this.getUserID());
+            user.put("lastName", this.getLastName());
+            user.put("firstName", this.getFirstName());
+            user.put("middleInital", this.getMiddleInitial());
+            user.put("login", this.getLogin());
+            user.put("password", this.getPassword());
+            user.put("email", this.getEmail());
+            user.put("phoneNumber", this.getPhoneNumber());
+            user.put("peopleSoftID", this.getPeopleSoftID());
+            user.put("graduationYear", this.getGraduationYear());
+            user.put("placeOfWork", this.getPlaceOfWork());
+            user.put("industry", this.getIndustry());
+            user.put("employeeID", this.getEmployeeID());
+            user.put("position", this.getPosition());
+            user.put("created", this.created);
+            user.put("modified", this.modified);
+            user.put("status", this.status);
+
+            for (Address address : addresses) {
+                userAddressList.put(address.getAddressAsJson());
+            }
+
+            user.put("addresses", userAddressList);
+
+            for (String role : roles) {
+                userRoleList.put(role);
+            }
+            user.put("roles", userRoleList);
+
+        } catch (JSONException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
+
+    }
+    
     public JSONObject getUserAsJSON() {
         JSONObject user = new JSONObject();
         JSONArray userAddressList = new JSONArray();
@@ -499,7 +551,13 @@ public class User {
      * @param password the password to set
      */
     public void setPassword(String password) {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+
+        db = new DbUtilities();
+
+>>>>>>> mandySprint5
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         String encryptedPassword = passwordEncryptor.encryptPassword(password);
         String sql = "UPDATE rms.User SET password = '" + encryptedPassword + "' WHERE userID = '" + this.userID + "';";
@@ -527,7 +585,13 @@ public class User {
      *
      */
     public void setRoleStudent(String peopleSoftID, Date graduationYear) {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+
+        db = new DbUtilities();
+
+>>>>>>> mandySprint5
         if (!roles.contains("student")) {
             String role = "student";
             roles.add(role);
@@ -546,8 +610,15 @@ public class User {
             } catch (Exception ex) {
                 ErrorLogger.log("An error has occurred with the insert query inside of the setRoleStudent method. " + ex.getMessage());
                 ErrorLogger.log(sql);
+<<<<<<< HEAD
             } finally {
                 db.closeMySQLConnection();
+=======
+
+            } finally {
+                db.closeMySQLConnection();
+
+>>>>>>> mandySprint5
             }
         }
     }
@@ -558,7 +629,13 @@ public class User {
      * @param industry
      */
     public void setRoleEmployer(String placeOfWork, String industry) {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+
+        db = new DbUtilities();
+
+>>>>>>> mandySprint5
         if (!roles.contains("emploer")) {
             String role = "employer";
             roles.add(role);
@@ -577,8 +654,15 @@ public class User {
             } catch (Exception ex) {
                 ErrorLogger.log("An error has occurred with the insert query inside of the setRoleEmployer method. " + ex.getMessage());
                 ErrorLogger.log(sql);
+<<<<<<< HEAD
             } finally {
                 db.closeMySQLConnection();
+=======
+
+            } finally {
+                db.closeMySQLConnection();
+
+>>>>>>> mandySprint5
             }
         }
     }
@@ -589,7 +673,13 @@ public class User {
      * @param position
      */
     public void setRoleStaff(String employeeID, String position) {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+
+        db = new DbUtilities();
+
+>>>>>>> mandySprint5
         if (!roles.contains("staff")) {
             String role = "staff";
             roles.add(role);
@@ -608,8 +698,15 @@ public class User {
             } catch (Exception ex) {
                 ErrorLogger.log("An error has occurred with the insert query inside of the setRoleStaff method. " + ex.getMessage());
                 ErrorLogger.log(sql);
+<<<<<<< HEAD
             } finally {
                 db.closeMySQLConnection();
+=======
+
+            } finally {
+                db.closeMySQLConnection();
+
+>>>>>>> mandySprint5
             }
         }
     }
@@ -625,7 +722,15 @@ public class User {
             roles.remove("student");
             sql = "DELETE FROM rms.Student WHERE fk_userID = '" + this.userID + "';";
             this.setPeopleSoftID("");
+<<<<<<< HEAD
             // this.setGraduationYear("");
+=======
+
+            // this.setGraduationYear("");
+
+           // this.setGraduationYear("");
+
+>>>>>>> mandySprint5
         }
         if (role.equals("employer")) {
             roles.remove("employer");
@@ -649,7 +754,7 @@ public class User {
         } finally {
             dbL.closeMySQLConnection();
         }
-
+        db.closeMySQLConnection();
     }
 
     /**
@@ -800,15 +905,28 @@ public class User {
      */
 
     public void setEnabled() {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+
+        db = new DbUtilities();
+
+>>>>>>> mandySprint5
         String sql = "UPDATE rms.User SET enabled = 1  WHERE userID = '" + this.userID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred with the insert query inside of the setPosition method. " + ex.getMessage());
             ErrorLogger.log(sql);
+<<<<<<< HEAD
         } finally {
             db.closeMySQLConnection();
+=======
+
+        } finally {
+            db.closeMySQLConnection();
+
+>>>>>>> mandySprint5
         }
         this.status = 1;
     }
@@ -817,13 +935,23 @@ public class User {
      * Sets user status to disabled
      */
     public void setDisabled() {
+<<<<<<< HEAD
         db = new DbUtilities();
+=======
+
+        db = new DbUtilities();
+
+>>>>>>> mandySprint5
         String sql = "UPDATE rms.User SET enabled = 0  WHERE userID = '" + this.userID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred with the insert query inside of the setPosition method. " + ex.getMessage());
             ErrorLogger.log(sql);
+<<<<<<< HEAD
+=======
+
+>>>>>>> mandySprint5
         } finally {
             db.closeMySQLConnection();
         }
@@ -896,7 +1024,16 @@ public class User {
             db.closeMySQLConnection();
         }
         this.usProof = 0;
+<<<<<<< HEAD
     }
+=======
+        this.status = 0;
+    }
+
+        //}
+        
+   
+>>>>>>> mandySprint5
 
     /**
      * @return the employeeID

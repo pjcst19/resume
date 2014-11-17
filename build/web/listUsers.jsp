@@ -121,7 +121,11 @@
                     }
                     
                     var status;
+<<<<<<< HEAD
                     if(data[i].enabled === false){
+=======
+                    if(data[i].enabled === 0){
+>>>>>>> mandySprint5
                         status = "Disabled";
                     }
                     else{

@@ -16,6 +16,10 @@
 
         <title>RMS </title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        
+        <!--Stylesheet for Resume-->
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" media="all" />
+        
         <link href="css/custom.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
 

@@ -5,7 +5,10 @@
  */
 package edu.pitt.rest;
 
+<<<<<<< HEAD
 import edu.pitt.resumecore.User;
+=======
+>>>>>>> mandySprint5
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.Security;
 import java.io.IOException;
@@ -40,11 +43,20 @@ public class userws extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
+<<<<<<< HEAD
         DbUtilities db = new DbUtilities();
+=======
+
+        DbUtilities db = new DbUtilities();
+
+        //DbUtilities db = null;
+
+>>>>>>> mandySprint5
         if (Security.checkHijackedSession(request.getSession(false), request)) {
             response.sendRedirect("./index.jsp");
         }
         try (PrintWriter out = response.getWriter()) {
+<<<<<<< HEAD
             String additionalSQL;
             if(((User) request.getSession().getAttribute("authenticatedUser")).getRoles().contains("staff")){
                 additionalSQL = "";
@@ -53,6 +65,9 @@ public class userws extends HttpServlet {
                 additionalSQL = "WHERE enabled = 1";
             }
             String sql = "SELECT lastName, firstName, login, email, IF(peoplesoftID IS NOT NULL, 'true', 'false') AS Student, IF(employeeID IS NOT NULL, 'true', 'false') AS Staff, IF(placeOfWork IS NOT NULL, 'true', 'false') AS Employer, userID, enabled FROM rms.User U LEFT JOIN Student S ON U.userID = S.fk_userID LEFT JOIN Staff ST ON U.userID = ST.fk_userID LEFT JOIN Employer E ON U.userID = E.fk_userID" + additionalSQL;
+=======
+            String sql = "SELECT lastName, firstName, login, email, IF(peoplesoftID IS NOT NULL, 'true', 'false') AS Student, IF(employeeID IS NOT NULL, 'true', 'false') AS Staff, IF(placeOfWork IS NOT NULL, 'true', 'false') AS Employer, userID, enabled FROM rms.User U LEFT JOIN Student S ON U.userID = S.fk_userID LEFT JOIN Staff ST ON U.userID = ST.fk_userID LEFT JOIN Employer E ON U.userID = E.fk_userID";
+>>>>>>> mandySprint5
 
             if (request.getParameter("lastName") != null) {
                 String lastName = request.getParameter("lastName");
@@ -65,6 +80,12 @@ public class userws extends HttpServlet {
                 sql += String.format(" WHERE email  LIKE '%s%%'", email);
             }
 
+<<<<<<< HEAD
+=======
+
+            db = new DbUtilities();
+
+>>>>>>> mandySprint5
             JSONArray ja;
             ja = null;
             try {

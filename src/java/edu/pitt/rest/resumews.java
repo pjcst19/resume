@@ -5,6 +5,10 @@
  */
 package edu.pitt.rest;
 
+<<<<<<< HEAD
+=======
+import edu.pitt.resumecore.Address;
+>>>>>>> mandySprint5
 import edu.pitt.resumecore.Resume;
 import edu.pitt.resumecore.User;
 import edu.pitt.utilities.DbUtilities;
@@ -53,6 +57,10 @@ public class resumews extends HttpServlet {
          try (PrintWriter out = response.getWriter()) {
             
             String resumeID = "";
+<<<<<<< HEAD
+=======
+            String userID = "";
+>>>>>>> mandySprint5
             
             if(request.getParameter("resumeID") != null){
                 resumeID = request.getParameter("resumeID");
@@ -63,17 +71,76 @@ public class resumews extends HttpServlet {
                 out.print("Resume ID is null");
             }
             
+<<<<<<< HEAD
             JSONArray fullResume = new JSONArray();
            
             Resume userResume = new Resume(resumeID);
             
             out.print(userResume.getResumeAsJson().toString());
+=======
+            DbUtilities db = new DbUtilities();
+            JSONArray userResume = new JSONArray();
+            
+            String sql ="SELECT fk_userID FROM Resume WHERE resumeID = '" + resumeID + "';";
+           
+            ResultSet rs = null;
+            
+            try {
+                rs = db.getResultSet(sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(resumews.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                while (rs.next()) {
+                    User user = new User(rs.getString("fk_userID"));
+                    userResume.put(user.getUserInfoAsJSON());
+                    userID = rs.getString("fk_userID");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(resumews.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+                
+                
+            
+       
+              String sql2 = "SELECT fk_addressID FROM UserAddress WHERE fk_userID = '" + userID + "';";
+            ResultSet rs2 = null;
+           
+            try {
+                rs2 = db.getResultSet(sql2);
+            } catch (SQLException ex) {
+                Logger.getLogger(resumews.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                while (rs.next()) {
+                    Address address = new Address(rs.getString("fk_addressID"));
+                    userResume.put(address.getAddressAsJson());
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(resumews.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            
+            Resume resume = new Resume(resumeID);
+            userResume.put(resume.getResumeAsJson());
+            out.print(userResume.toString());
+            
+>>>>>>> mandySprint5
             
         }
          
 //         /*catch (SQLException ex) {
 //            Logger.getLogger(resumews.class.getName()).log(Level.SEVERE, null, ex);
 //        } */
+<<<<<<< HEAD
+=======
+         
+//         /*catch (SQLException ex) {
+//            Logger.getLogger(resumews.class.getName()).log(Level.SEVERE, null, ex);
+//        } */
+>>>>>>> mandySprint5
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

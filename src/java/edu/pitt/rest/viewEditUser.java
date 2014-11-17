@@ -39,7 +39,15 @@ public class viewEditUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
+<<<<<<< HEAD
         DbUtilities db = new DbUtilities();
+=======
+
+        DbUtilities db = new DbUtilities();
+
+        //DbUtilities db = null;
+
+>>>>>>> mandySprint5
         if (Security.checkHijackedSession(request.getSession(false), request)) {
             response.sendRedirect("./index.jsp");
         }
@@ -51,6 +59,11 @@ public class viewEditUser extends HttpServlet {
                 sql += String.format(" WHERE userID   = '%s'", userID);
             }
 
+<<<<<<< HEAD
+=======
+            db = new DbUtilities();
+
+>>>>>>> mandySprint5
             JSONArray ja;
             ja = null;
             try {
@@ -59,12 +72,20 @@ public class viewEditUser extends HttpServlet {
                 Logger.getLogger(viewEditUser.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 out.print(ja);
+<<<<<<< HEAD
                 db.closeMySQLConnection();
+=======
+>>>>>>> mandySprint5
                 System.out.println(sql);
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(viewEditUser.class.getName()).log(Level.SEVERE, null, ex);
+<<<<<<< HEAD
+=======
+        } finally {
+            db.closeMySQLConnection();
+>>>>>>> mandySprint5
         }
     }
 
