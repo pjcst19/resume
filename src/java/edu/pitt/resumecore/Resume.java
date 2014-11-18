@@ -56,14 +56,14 @@ public class Resume {
      */
     public Resume(String userID, int rating) {
         this.resumeID = UUID.randomUUID().toString();
-        this.userID = userID;
+        this.userID = StringUtilities.cleanMySqlInsert(userID);
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Resume ";
         sql += "(resumeID,fk_userID,rating,created,modified)";
         sql += " VALUES (";
         sql += "'" + resumeID + "', ";
-        sql += "'" + userID + "', ";
-        sql += "'" + rating + "',NULL,NULL);";
+        sql += "'" +   this.userID + "', ";
+        sql += "'" + this.rating + "',NULL,NULL);";
         System.out.println(sql);
         try {
             db.executeQuery(sql);
@@ -78,12 +78,13 @@ public class Resume {
     }
 
     private void setAllResumeProperties(String resumeID) {
-        String sql1 = "SELECT * FROM rms.Resume R LEFT JOIN rms.ResumeAddress ON resumeID = fk_resumeID LEFT JOIN rms.Address ON fk_addressID = addressID WHERE R.resumeID = '" + resumeID + "'";
+        String sql1 = "SELECT * FROM rms.Resume R LEFT JOIN rms.ResumeAddress ON resumeID = fk_resumeID LEFT JOIN rms.Address ON fk_addressID = addressID WHERE R.resumeID = '" + StringUtilities.cleanMySqlInsert(resumeID) + "'";
         System.out.println(sql1);
         db = new DbUtilities();
         try {
             ResultSet rs = db.getResultSet(sql1);
             while (rs.next()) {
+                this.resumeID = rs.getString("resumeID");
                 this.rating = rs.getInt("rating");
                 this.userID = rs.getString("fk_userID");
                 this.created = rs.getTimestamp("created").toString();
@@ -95,7 +96,6 @@ public class Resume {
             ErrorLogger.log("An error has occurred in Resume(String resumeID) constructor of Resume class. " + ex.getMessage());
             ErrorLogger.log(sql1);
         } finally {
-            this.resumeID = resumeID;
         }
 
         String sql2 = "SELECT * FROM rms.ResumeAward WHERE fk_resumeID = '" + this.resumeID + "'";
@@ -184,7 +184,6 @@ public class Resume {
      * @param rating the rating to set
      */
     public void setRating(int rating) {
-        db = new DbUtilities();
         String sql = "UPDATE Resume SET rating = '" + rating + "' WHERE resumeID = '" + this.resumeID + "';";
         try {
             db.executeQuery(sql);
@@ -317,7 +316,7 @@ public class Resume {
      * @return the userID
      */
     public String getUserID() {
-        return userID;
+        return this.userID;
     }
 
     /**
