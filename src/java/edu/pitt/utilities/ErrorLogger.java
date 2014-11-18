@@ -22,21 +22,21 @@ public class ErrorLogger {
      * @param errorDescription
      */
     public static void log(String errorDescription) {
-//		File file = new File("logs/" + StringUtilities.dateToFilename("txt"));
-//                System.out.println(file.getAbsolutePath());
-//		try {
-//			if (!file.exists()) {
-//				file.createNewFile();
-//			}
-//			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-//			BufferedWriter bw = new BufferedWriter(fw);
-//			PrintWriter pw = new PrintWriter(bw);
-//			pw.println(String.valueOf(new Date()) + "|" + errorDescription);
-//			pw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		File file = new File("logs/" + StringUtilities.dateToFilename("txt"));
+                System.out.println(file.getAbsolutePath());
+		try {
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			PrintWriter pw = new PrintWriter(bw);
+			pw.println(String.valueOf(new Date()) + "|" + errorDescription);
+			pw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
