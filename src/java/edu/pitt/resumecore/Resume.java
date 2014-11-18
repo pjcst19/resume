@@ -7,6 +7,7 @@ package edu.pitt.resumecore;
 
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.ErrorLogger;
+import edu.pitt.utilities.StringUtilities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class Resume {
     private int rating;
     private String created;
     private String modified;
+    private String userID;
     private ArrayList<Education> educationList = new ArrayList<>();
     private ArrayList<Award> awardList = new ArrayList<>();
     private ArrayList<WorkExperience> workExperienceList = new ArrayList<>();
@@ -53,7 +55,8 @@ public class Resume {
      * @param rating
      */
     public Resume(String userID, int rating) {
-        resumeID = UUID.randomUUID().toString();
+        this.resumeID = UUID.randomUUID().toString();
+        this.userID = userID;
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Resume ";
         sql += "(resumeID,fk_userID,rating,created,modified)";
@@ -82,6 +85,7 @@ public class Resume {
             ResultSet rs = db.getResultSet(sql1);
             while (rs.next()) {
                 this.rating = rs.getInt("rating");
+                this.userID = rs.getString("fk_userID");
                 this.created = rs.getTimestamp("created").toString();
                 this.modified = rs.getTimestamp("modified").toString();
                 Address address = new Address(rs.getString("addressID"));
@@ -210,7 +214,8 @@ public class Resume {
     public int getRating() {
         return this.rating;
     }
- /**
+
+    /**
      * Adds an address to this list of resume addresses
      *
      * @param address
@@ -250,7 +255,7 @@ public class Resume {
 
         addresses.remove(address);
     }
-    
+
     /**
      * Creates and returns a properly formated JSON representation of Resume
      *
@@ -265,6 +270,7 @@ public class Resume {
 
         try {
             resume.put("resumeID", this.resumeID);
+            resume.put("userID", this.userID);
             resume.put("rating", this.rating);
             resume.put("created", this.created);
             resume.put("modified", this.modified);
@@ -274,7 +280,7 @@ public class Resume {
             }
 
             resume.put("addresses", resumeAddressList);
-            
+
             if (this.educationList != null) {
                 for (Education education : this.educationList) {
                     resumeEducationList.put(education.getEducationAsJson());
@@ -305,6 +311,30 @@ public class Resume {
             ErrorLogger.log("An error has occurred within getResumeAsJSON. " + ex.getMessage());
         }
         return resume;
+    }
+
+    /**
+     * @return the userID
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(String userID) {
+        db = new DbUtilities();
+        String sql = "UPDATE Resume SET fk_userID = '" + StringUtilities.cleanMySqlInsert(userID) + "' WHERE resumeID = '" + this.resumeID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setUserID. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            this.userID = StringUtilities.cleanMySqlInsert(userID);
+            db.closeMySQLConnection();
+        }
     }
 
 }
