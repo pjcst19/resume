@@ -28,12 +28,10 @@ public class Resume {
     private int rating;
     private String created;
     private String modified;
-    private ArrayList<Education> educationList = new ArrayList<Education>();
-    ;
-    private ArrayList<Award> awardList = new ArrayList<Award>();
-    ;
-    private ArrayList<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();
-    ;
+    private ArrayList<Education> educationList = new ArrayList<>();
+    private ArrayList<Award> awardList = new ArrayList<>();
+    private ArrayList<WorkExperience> workExperienceList = new ArrayList<>();
+    private ArrayList<Address> addresses = new ArrayList<>();
 
     private DbUtilities db;
 
@@ -77,15 +75,17 @@ public class Resume {
     }
 
     private void setAllResumeProperties(String resumeID) {
-        String sql1 = "SELECT * FROM rms.Resume WHERE resumeID = '" + resumeID + "'";
+        String sql1 = "SELECT * FROM rms.Resume R LEFT JOIN rms.ResumeAddress ON resumeID = fk_resumeID LEFT JOIN rms.Address ON fk_addressID = addressID WHERE R.resumeID = '" + resumeID + "'";
         System.out.println(sql1);
         db = new DbUtilities();
         try {
             ResultSet rs = db.getResultSet(sql1);
-            if (rs.next()) {
+            while (rs.next()) {
                 this.rating = rs.getInt("rating");
                 this.created = rs.getTimestamp("created").toString();
                 this.modified = rs.getTimestamp("modified").toString();
+                Address address = new Address(rs.getString("addressID"));
+                this.addresses.add(address);
             }
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Resume(String resumeID) constructor of Resume class. " + ex.getMessage());
@@ -210,7 +210,47 @@ public class Resume {
     public int getRating() {
         return this.rating;
     }
+ /**
+     * Adds an address to this list of resume addresses
+     *
+     * @param address
+     */
+    public void addAddress(Address address) {
+        db = new DbUtilities();
+        String sql = "INSERT INTO rms.ResumeAddress (fk_userID,fk_addressID) VALUES";
+        sql += "('" + this.resumeID + "', '" + address.getAddressID() + "')";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in the insert query inside of addAddress method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
+        }
+        addresses.add(address);
 
+    }
+
+    /**
+     * Removes an address to this list of resume addresses
+     *
+     * @param address
+     */
+    public void removeAddress(Address address) {
+        db = new DbUtilities();
+        String sql = "DELETE FROM rms.ResumeAddress WHERE fk_resumeID = '" + this.resumeID + "' AND fk_addressID = '" + address.getAddressID() + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in the insert query inside of addAddress method. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
+        }
+
+        addresses.remove(address);
+    }
+    
     /**
      * Creates and returns a properly formated JSON representation of Resume
      *
@@ -218,6 +258,7 @@ public class Resume {
      */
     public JSONObject getResumeAsJson() {
         JSONObject resume = new JSONObject();
+        JSONArray resumeAddressList = new JSONArray();
         JSONArray resumeEducationList = new JSONArray();
         JSONArray resumeAwardList = new JSONArray();
         JSONArray resumeWorkExperienceList = new JSONArray();
@@ -228,6 +269,12 @@ public class Resume {
             resume.put("created", this.created);
             resume.put("modified", this.modified);
 
+            for (Address address : addresses) {
+                resumeAddressList.put(address.getAddressAsJson());
+            }
+
+            resume.put("addresses", resumeAddressList);
+            
             if (this.educationList != null) {
                 for (Education education : this.educationList) {
                     resumeEducationList.put(education.getEducationAsJson());
