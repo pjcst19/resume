@@ -63,14 +63,14 @@ public class Address {
         addressID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Address ";
-        sql += "(addressId,addressLine1,addressLine2,city,state,";
+        sql += "(addressId,addressLine1,addressLine2,city,state,province";
         sql += "postalCode,country,created,modified) VALUES (";
         sql += "'" + addressID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(addressLine1) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(addressLine2) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(city) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(state) + "', ";
-//        sql += "'" + StringUtilities.cleanMySqlInsert(province) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(province) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(postalCode) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(country) + "',NULL,NULL);";
         try {
