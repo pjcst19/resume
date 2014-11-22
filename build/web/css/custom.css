@@ -7,6 +7,10 @@ and open the template in the editor.
     Created on : Apr 15, 2014, 1:32:58 PM
     Author     : jordanstevenfeldman
 */
+
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,300italic,400italic);
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,300);
 body {
     padding-top: 70px;
 }
@@ -21,6 +25,10 @@ ul {
 Resume Styles
 Added by Mandy Kendall
 */
+
+.row-fluid {
+  border-bottom: 1px solid #dddddd;
+}
 
 .row-fluid {
   width: 100%;
@@ -206,11 +214,53 @@ Added by Mandy Kendall
   
 }
 
-.entry{
-    border-bottom: 5px solid gray;
+div.entry{
+    border-bottom: 1px solid #dddddd;
 }
 
 p.entry {
     text-indent:0;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: Open Sans, Source Sans Pro, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  color: #000;
+  line-height: 100%;
+}
+h1 {
+  font-size: 40px;
+  line-height: 50px;
+  padding-top: 30px;
+  font-weight: 700;
+  font-family: Open Sans;
+  text-align: left;
+  letter-spacing: 1px;
+}
+h2 {
+  font-size: 21px;
+  text-align: left;
+}
+h3 {
+  font-size: 20px ;
+}
+h4 {
+  font-size: 16px ;
+}
+h5 {
+  font-size: 12px;
+}
+strong {
+  font-weight: 400;
+}
+p {
+  text-indent: 0px;
+  font-size: 16px;
+  margin: 0px;
 }
 

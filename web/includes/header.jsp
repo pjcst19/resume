@@ -16,7 +16,7 @@
 
         <title>RMS </title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<!--<link href="assets/css/bootstrap.min.css" rel="stylesheet">-->
+        <!--<link href="assets/css/bootstrap.min.css" rel="stylesheet">-->
         
         <!--Stylesheet for Resume-->
         <link href="assets/css/style.css" rel="stylesheet">

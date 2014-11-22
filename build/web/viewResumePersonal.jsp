@@ -25,6 +25,12 @@
     });
 
 
+    function gpaToDecimal(gpa) {
+        var gpa = gpa;
+        var gpaDecimal = gpa.toFixed(1);
+        return gpaDecimal;
+    }
+
 
     //Gets JSON from web service
     function getJsonFromWebService(targetUrl) {
@@ -66,57 +72,59 @@
             }
         });
     }
-    
-    
-     function userJSONToHTMLLayout(data){
-         $userName = $('#userName');
-         $emailPhoneInfo = $('#emailPhoneInfo');
-         
-         $userName.append('<h1>' + data.firstName + " " + data.lastName + '</h1>');
-         $emailPhoneInfo.append('<h4> <strong> Phone: </strong>' + data.phoneNumber + "<strong>  Email: </strong>" + data.email + '</h4>');
-         
-     };
+
+
+    function userJSONToHTMLLayout(data) {
+        $userName = $('#userName');
+        $emailPhoneInfo = $('#emailPhoneInfo');
+
+        $userName.append('<h1>' + data.firstName + " " + data.lastName + '</h1>');
+        $emailPhoneInfo.append('<h4> <strong> Phone: </strong>' + data.phoneNumber + "<strong>  Email: </strong>" + data.email + '</h4>');
+
+    }
+    ;
 
     //Builds HTML layout using user and resume information from JSON
     function jsonToHtmlLayout(data) {
-            $resume = $('#resumeContainer');
-            $contactInfo = $('#contactInfo');
-            $education = $('#education');
-            $workExperience = $('#workExperience');
-           
-            
-            
-            for (var i = 0; i < data['addresses'].length; i++){
-                $contactInfo.append('<h4>' + data['addresses'][i].addressLine1 + ' ' + data['addresses'][i].addressLine2 + ' ' + data['addresses'][i].city +
-                        ', ' + data['addresses'][i].state + ' ' + data['addresses'][i].postalCode + '</h4>');
-            }
-                
-            
-            
-            for (var i = 0; i < data['EducationList'].length; i++){
-                $education.append('<div class="entry" style="border-bottom: 5 px solid #fff234');
-                $education.append('<h4>' + data['EducationList'][i].name + '</h4>');
-                $education.append('<h5>' + data['EducationList'][i].graduationDate + '</h5>');
-                $education.append('<h5>' + data['EducationList'][i].type + ', ' + data['EducationList'][i].field + '</h5>');
-                //If the student has listed a minor
-                if (data['EducationList'].minor !== null){
-                    $education.append('<h5> Minor/Related Area: ' + data['EducationList'][i].minor + '</h5>');
-                }
+        $resume = $('#resumeContainer');
+        $contactInfo = $('#contactInfo');
+        $education = $('#education');
+        $workExperience = $('#workExperience');
 
-                $education.append('<h5> GPA:' + data['EducationList'][i].gpa + '</h5>');
-                $education.append('</div>');
-                
+
+
+        for (var i = 0; i < data['addresses'].length; i++) {
+            $contactInfo.append('<h4>' + data['addresses'][i].addressLine1 + ' ' + data['addresses'][i].addressLine2 + ' ' + data['addresses'][i].city +
+                    ', ' + data['addresses'][i].state + ' ' + data['addresses'][i].postalCode + '</h4>');
+        }
+
+
+
+        for (var i = 0; i < data['EducationList'].length; i++) {
+            var gpa = gpaToDecimal(data['EducationList'][i].gpa);
+            $education.append('<div class="entry" style="border-bottom: 5 px solid #fff234');
+            $education.append('<h4>' + data['EducationList'][i].name + '</h4>');
+            $education.append('<h5>' + data['EducationList'][i].graduationDate + '</h5>');
+            $education.append('<h5>' + data['EducationList'][i].type + ', ' + data['EducationList'][i].field + '</h5>');
+            //If the student has listed a minor
+            if (data['EducationList'].minor !== null) {
+                $education.append('<h5> Minor/Related Area: ' + data['EducationList'][i].minor + '</h5>');
             }
-            
-            
-            for (var i = 0; i < data['WorkExperienceList'].length; i++){
-                 $workExperience.append('<div class="entry"');
-                 $workExperience.append('<h4>' + data['WorkExperienceList'][i].businessName + '</h4>');
-                $workExperience.append('<h5>' + data['WorkExperienceList'][i].position + '</h5>');
-                $workExperience.append('<h5>' + data['WorkExperienceList'][i].startDate + ' - ' + data['WorkExperienceList'][i].endDate + '</h5>');
-                $workExperience.append('<p>' + data['WorkExperienceList'][i].description + '</p>');
-                $workExperience.append('</div>');
-            }
+
+            $education.append('<h5> GPA:' + gpa + '</h5>');
+            $education.append('</div>');
+
+        }
+
+
+        for (var i = 0; i < data['WorkExperienceList'].length; i++) {
+            $workExperience.append('<div class="entry"');
+            $workExperience.append('<h4>' + data['WorkExperienceList'][i].businessName + '</h4>');
+            $workExperience.append('<h5>' + data['WorkExperienceList'][i].position + '</h5>');
+            $workExperience.append('<h5>' + data['WorkExperienceList'][i].startDate + ' - ' + data['WorkExperienceList'][i].endDate + '</h5>');
+            $workExperience.append('<p>' + data['WorkExperienceList'][i].description + '</p>');
+            $workExperience.append('</div>');
+        }
 
 
     }
@@ -130,11 +138,11 @@
         <div class="title span7" id="userName">
             <!--            <h1>John Smith</h1>-->
         </div>
-        <div class="span4" id="contactInfo">
+        <div class="title span7" id="contactInfo">
             <!--Address Information Appears Here-->
         </div>
-        
-         <div class="span4" id="emailPhoneInfo">
+
+        <div class="title span7" id="emailPhoneInfo">
             <!--Phone and Email Information Appears Here-->
         </div>	
     </header>
@@ -164,7 +172,7 @@
     <!-- Footer -->
     <footer>
         <a href="#">Download as PDF</a> | <a href="#" onclick="javascript
-                    :window.print();">Print</a>
+                :window.print();">Print</a>
 
     </footer>
 
@@ -172,6 +180,8 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 <script src="assets/js/main.js"></script>
+
+
 
 
 
