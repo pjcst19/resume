@@ -56,6 +56,7 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data, status, jqXHR) {
+                userJSONToHTMLLayout(data);
                 console.log(data);
                 console.log("success");
             },
@@ -65,23 +66,35 @@
             }
         });
     }
+    
+    
+     function userJSONToHTMLLayout(data){
+         $userName = $('#userName');
+         $emailPhoneInfo = $('#emailPhoneInfo');
+         
+         $userName.append('<h1>' + data.firstName + " " + data.lastName + '</h1>');
+         $emailPhoneInfo.append('<h4> <strong> Phone: </strong>' + data.phoneNumber + "<strong>  Email: </strong>" + data.email + '</h4>');
+         
+     };
 
     //Builds HTML layout using user and resume information from JSON
     function jsonToHtmlLayout(data) {
             $resume = $('#resumeContainer');
-            $userName = $('#userName');
             $contactInfo = $('#contactInfo');
             $education = $('#education');
             $workExperience = $('#workExperience');
-            $userName.append('<h1>' + data.firstName + " " + data.lastName + '</h1>');
+           
             
             
-            $contactInfo.append('<h3>' + data['addresses'].addressLine1 + ' ' + data['addresses'].addressLine2 + ' ' + data['addresses'].city +
-                        ', ' + data['addresses'].state + ' ' +  data['addresses'].province + ' ' +  data['addresses'].postalCode + '</h3>');
+            for (var i = 0; i < data['addresses'].length; i++){
+                $contactInfo.append('<h4>' + data['addresses'][i].addressLine1 + ' ' + data['addresses'][i].addressLine2 + ' ' + data['addresses'][i].city +
+                        ', ' + data['addresses'][i].state + ' ' + data['addresses'][i].postalCode + '</h4>');
+            }
                 
             
             
             for (var i = 0; i < data['EducationList'].length; i++){
+                $education.append('<div class="entry" style="border-bottom: 5 px solid #fff234');
                 $education.append('<h4>' + data['EducationList'][i].name + '</h4>');
                 $education.append('<h5>' + data['EducationList'][i].graduationDate + '</h5>');
                 $education.append('<h5>' + data['EducationList'][i].type + ', ' + data['EducationList'][i].field + '</h5>');
@@ -91,15 +104,18 @@
                 }
 
                 $education.append('<h5> GPA:' + data['EducationList'][i].gpa + '</h5>');
+                $education.append('</div>');
                 
             }
             
             
             for (var i = 0; i < data['WorkExperienceList'].length; i++){
-                $workExperience.append('<h4>' + data['WorkExperienceList'][i].businessName + '</h4>');
+                 $workExperience.append('<div class="entry"');
+                 $workExperience.append('<h4>' + data['WorkExperienceList'][i].businessName + '</h4>');
                 $workExperience.append('<h5>' + data['WorkExperienceList'][i].position + '</h5>');
                 $workExperience.append('<h5>' + data['WorkExperienceList'][i].startDate + ' - ' + data['WorkExperienceList'][i].endDate + '</h5>');
                 $workExperience.append('<p>' + data['WorkExperienceList'][i].description + '</p>');
+                $workExperience.append('</div>');
             }
 
 
@@ -110,16 +126,16 @@
 <section class="resume">
 
     <!-- Header -->
-    <header class="row">
+    <header class="row-fluid">
         <div class="title span7" id="userName">
             <!--            <h1>John Smith</h1>-->
         </div>
         <div class="span4" id="contactInfo">
-            Stationsplein, 1012 AB
-            Amsterdam, The Netherlands
-            info@email.com
-            +4 8 15 16 23 42
-
+            <!--Address Information Appears Here-->
+        </div>
+        
+         <div class="span4" id="emailPhoneInfo">
+            <!--Phone and Email Information Appears Here-->
         </div>	
     </header>
 
@@ -127,17 +143,17 @@
     <!-- Education -->
     <article class="row-fluid">
         <header class="span3">
-            <h3>Education</h3>
+            <h2>Education</h2>
         </header>
-        <div class="span9" id="education">
+        <div class="span9 education" id="education">
             <!--Education Information Appears Here-->
         </div>
     </article>
 
     <!-- Work -->
-    <article class="row">
+    <article class="row-fluid">
         <header class="span3">
-            <h3>Work Experience</h3>
+            <h2>Work Experience</h2>
         </header>
         <div class="span9" id="workExperience">
             <!--Work Experience Information Appears Here -->
