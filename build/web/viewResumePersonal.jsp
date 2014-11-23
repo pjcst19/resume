@@ -79,8 +79,7 @@
         $emailPhoneInfo = $('#emailPhoneInfo');
 
         $userName.append('<h1>' + data.firstName + ' '+ data.lastName + '</h1>');
-        $emailPhoneInfo.append('<h4> <strong> Phone: </strong>' + data.phoneNumber + '</h4>');
-        $emailPhoneInfo.append('<h4> <strong>  Email: </strong>' + data.email + '</h4>');
+        $emailPhoneInfo.append('<h4> <strong>Phone: </strong>' + data.phoneNumber + '&nbsp &nbsp<strong>   Email: </strong>' + data.email + '</h4>');
 
     }
     ;
@@ -95,24 +94,25 @@
 
 
         for (var i = 0; i < data['addresses'].length; i++) {
-            $contactInfo.append('<h4>' + data['addresses'][i].addressLine1 + ' ' + data['addresses'][i].addressLine2 + '</h4>')
-            $contactInfo.append ('<h4>' + data['addresses'][i].city + ', ' + data['addresses'][i].state + ' ' + data['addresses'][i].postalCode + '</h4>');
+            $contactInfo.append('<h4>' + data['addresses'][i].addressLine1 + ' ' + data['addresses'][i].addressLine2 + ', '
+                                + data['addresses'][i].city + ', ' + data['addresses'][i].state + ' ' + data['addresses'][i].postalCode + '</h4>');
         }
 
 
 
         for (var i = 0; i < data['EducationList'].length; i++) {
             var gpa = gpaToDecimal(data['EducationList'][i].gpa);
-            $education.append('<div style="padding: 0 0 20px 0;">');
-            $education.append('<h4>' + data['EducationList'][i].name + '</h4>');
-            $education.append('<h5>' + data['EducationList'][i].graduationDate + '</h5>');
-            $education.append('<h5>' + data['EducationList'][i].type + ', ' + data['EducationList'][i].field + '</h5>');
-            //If the student has listed a minor
-            if (data['EducationList'].minor !== null) {
-                $education.append('<h5> Minor/Related Area: ' + data['EducationList'][i].minor + '</h5>');
-            }
+            $education.append('<div style="padding: 0 0 30px 0;">');
+            $education.append('<div style="float:right; display:inline"><h4>' + data['EducationList'][i].graduationDate + '</h4></div>');
+            $education.append('<h3>' + data['EducationList'][i].name + '</h3>');
+            $education.append('<h4>' + data['EducationList'][i].type + ', ' + data['EducationList'][i].field);
+//            $education.append(', Minor/Related Area: ' + (data['EducationList'][i].minor || "") + '</h4>');
+//            //If the student has listed a minor
+//            if (data['EducationList'].minor == "undefined") {
+//                $education.append('</h4>');
+//            }
 
-            $education.append('<h5> GPA:' + gpa + '</h5>');
+            $education.append('<h4> GPA: ' + gpa + '</h4>');
             $education.append('</div>');
 
         }
@@ -127,10 +127,10 @@
 //                }
             
             $workExperience.append('<div style="padding: 0 0 20px 0;">');
-            $workExperience.append('<h4>' + data['WorkExperienceList'][i].businessName + '</h4>');
-            $workExperience.append('<h5>' + data['WorkExperienceList'][i].position + '<span style="text-align:right">' + 
-                                    data['WorkExperienceList'][i].startDate + ' - ' + $endDate + '</span></h5>');
-            $workExperience.append('<p>' + data['WorkExperienceList'][i].description + '</p>');
+            $workExperience.append('<div style="float:right; display:inline"><h4>' + data['WorkExperienceList'][i].startDate + ' - ' + $endDate + '</h4></div>');
+            $workExperience.append('<h3>' + data['WorkExperienceList'][i].businessName + '</h3>');
+            $workExperience.append('<div><div style"float:left; display:inline"><h4>' + data['WorkExperienceList'][i].position + '</h4></div>');
+            $workExperience.append('<div style:"display:block"><p>' + data['WorkExperienceList'][i].description + '</p></div>');
             $workExperience.append('</div>');
         }
 
@@ -143,14 +143,14 @@
 
     <!-- Header -->
     <header class="row-fluid">
-        <div class="title span7" id="userName">
+        <div class="title span9" id="userName">
             <!--            <h1>John Smith</h1>-->
         </div>
-        <div class="title span4 left" id="contactInfo">
+        <div class="title span9" id="contactInfo">
             <!--Address Information Appears Here-->
         </div>
 
-        <div class="title span4 right" id="emailPhoneInfo">
+        <div class="title span9" id="emailPhoneInfo">
             <!--Phone and Email Information Appears Here-->
         </div>	
     </header>

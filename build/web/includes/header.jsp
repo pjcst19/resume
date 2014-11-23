@@ -14,7 +14,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>RMS </title>
+        <title>Resume Management System </title>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <!--<link href="assets/css/bootstrap.min.css" rel="stylesheet">-->
         
