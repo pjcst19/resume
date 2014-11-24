@@ -89,6 +89,7 @@ public class Education {
                 this.name = rs.getString("name");
                 this.type = rs.getString("type");
                 this.field = rs.getString("field");
+                this.minor = rs.getString("minor");
                 this.gpa = rs.getDouble("gpa");
                 this.graduationDate = rs.getString("graduationDate");
                 this.created = rs.getTimestamp("created").toString();
@@ -249,7 +250,6 @@ public class Education {
             education.put("graduationDate", this.graduationDate);
             education.put("created", this.created);
             education.put("modified", this.modified);
-            education.put("minor", this.minor);
 
         } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within getEducationAsJSON. " + ex.getMessage());

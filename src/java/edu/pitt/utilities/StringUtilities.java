@@ -56,7 +56,7 @@ public class StringUtilities {
         String cleanData = data.replace("  ", " ");
         //cleanData = cleanData.replace("\\", "\\\\");
         cleanData = cleanData.replace("'", "\\'");
-        return cleanData;
+        return data;
     }
 
     /**

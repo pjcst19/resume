@@ -106,8 +106,11 @@ public class Resume {
                 this.userID = rs.getString("fk_userID");
                 this.created = rs.getTimestamp("created").toString();
                 this.modified = rs.getTimestamp("modified").toString();
-                Address address = new Address(rs.getString("addressID"));
-                this.addresses.add(address);
+                if (rs.getString("addressID") != null){
+                 
+                    Address address = new Address(rs.getString("addressID"));
+                    this.addresses.add(address);
+                }
             }
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Resume(String resumeID) constructor of Resume class. " + ex.getMessage());
