@@ -8,11 +8,13 @@ package edu.pitt.resumecore;
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.ErrorLogger;
 import edu.pitt.utilities.StringUtilities;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,7 +54,7 @@ public class Education {
         sql += "'" + StringUtilities.cleanMySqlInsert(field) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(minor) + "', ";
         sql += "'" + gpa.toString() + "', ";
-        sql += "'" + graduationDate + "',NULL,NULL); ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(graduationDate) + "',NULL,NULL); ";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -64,10 +66,23 @@ public class Education {
         }
 
     }
+    
+     /**
+     * Creates an Education object from JSON
+     * @param education JSON object for an Education object
+     */
+    public Education(JSONObject education){
+        try {
+            this.educationID = education.getString("educationID"); 
+            setEducationFromJSON(education);
+        } catch (JSONException ex) {
+            Logger.getLogger(Education.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void setAllEducationProperties(String educationID) {
         db = new DbUtilities();
-        String sql = "SELECT * FROM rms.Education WHERE educationID = '" + educationID + "'";
+        String sql = "SELECT * FROM rms.Education WHERE educationID = '" + StringUtilities.cleanMySqlInsert(educationID) + "'";
         try {
             ResultSet rs = db.getResultSet(sql);
             if (rs.next()) {
@@ -91,7 +106,7 @@ public class Education {
 
     public void setName(String name) {
         db = new DbUtilities();
-        String sql = "UPDATE Education SET name = '" + name + "' WHERE educationID = '" + this.educationID + "';";
+        String sql = "UPDATE Education SET name = '" + StringUtilities.cleanMySqlInsert(name) + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -100,12 +115,13 @@ public class Education {
         } finally {
             db.closeMySQLConnection();
         }
-        this.name = name;
+        this.name = StringUtilities.cleanMySqlInsert(name);
+        setModified();
     }
 
     public void setType(String type) {
         db = new DbUtilities();
-        String sql = "UPDATE Education SET type = '" + type + "' WHERE educationID = '" + this.educationID + "';";
+        String sql = "UPDATE Education SET type = '" + StringUtilities.cleanMySqlInsert(type) + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -114,12 +130,13 @@ public class Education {
         } finally {
             db.closeMySQLConnection();
         }
-        this.type = type;
+        this.type = StringUtilities.cleanMySqlInsert(type);
+        setModified();
     }
 
     public void setField(String field) {
         db = new DbUtilities();
-        String sql = "UPDATE Education SET field = '" + field + "' WHERE educationID = '" + this.educationID + "';";
+        String sql = "UPDATE Education SET field = '" + StringUtilities.cleanMySqlInsert(field) + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -128,12 +145,13 @@ public class Education {
         } finally {
             db.closeMySQLConnection();
         }
-        this.field = field;
+        this.field = StringUtilities.cleanMySqlInsert(field);
+        setModified();
     }
 
     public void setMinor(String minor) {
         db = new DbUtilities();
-        String sql = "UPDATE Education SET minor = '" + minor + "' WHERE educationID = '" + this.educationID + "';";
+        String sql = "UPDATE Education SET minor = '" + StringUtilities.cleanMySqlInsert(minor) + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -142,7 +160,8 @@ public class Education {
         } finally {
             db.closeMySQLConnection();
         }
-        this.minor = minor;
+        this.minor = StringUtilities.cleanMySqlInsert(minor);
+        setModified();
     }
 
     public void setGPA(Double gpa) {
@@ -157,11 +176,12 @@ public class Education {
             db.closeMySQLConnection();
         }
         this.gpa = gpa;
+        setModified();
     }
 
     public void setGraduationDate(String graduationDate) {
         db = new DbUtilities();
-        String sql = "UPDATE Education SET graduationDate = '" + graduationDate + "' WHERE educationID = '" + this.educationID + "';";
+        String sql = "UPDATE Education SET graduationDate = '" + StringUtilities.cleanMySqlInsert(graduationDate) + "' WHERE educationID = '" + this.educationID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -170,7 +190,22 @@ public class Education {
         } finally {
             db.closeMySQLConnection();
         }
-        this.graduationDate = graduationDate;
+        this.graduationDate = StringUtilities.cleanMySqlInsert(graduationDate);
+        setModified();
+    }
+
+    private void setModified() {
+        this.modified = DATE_FORMAT.format(Calendar.getInstance().toString());
+        db = new DbUtilities();
+        String sql = "UPDATE Education SET modified = '" + this.modified + "' WHERE educationID = '" + this.educationID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setModified. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
+        }
     }
 
     public String getEducationID() {
@@ -212,10 +247,27 @@ public class Education {
             education.put("field", this.field);
             education.put("gpa", this.gpa);
             education.put("graduationDate", this.graduationDate);
+            education.put("created", this.created);
+            education.put("modified", this.modified);
+            education.put("minor", this.minor);
 
         } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within getEducationAsJSON. " + ex.getMessage());
         }
         return education;
+    }
+
+    public final void setEducationFromJSON(JSONObject education) {
+
+        try {
+            setName(education.getString("name"));
+            setType(education.getString("type"));
+            setField(education.getString("field"));
+            setGPA(education.getDouble("gpa"));
+            setGraduationDate(education.getString("graduationDate"));
+            setMinor(education.getString("minor"));
+        } catch (JSONException ex) {
+            ErrorLogger.log("An error occurred within setEducationFromJSON. " + ex.getMessage());
+        }
     }
 }

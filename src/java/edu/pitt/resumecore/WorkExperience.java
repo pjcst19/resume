@@ -12,7 +12,10 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,35 +40,49 @@ public class WorkExperience {
     private DbUtilities db;
 
     public WorkExperience(String workExperienceID) {
-        setAllWorkExperienceProperties(workExperienceID);
+        setAllWorkExperienceProperties(StringUtilities.cleanMySqlInsert(workExperienceID));
     }
-    
-    public WorkExperience(String businessName, String position, String startDate, String endDate, int currentlyEmployed, String description){
+
+    public WorkExperience(String businessName, String position, String startDate, String endDate, int currentlyEmployed, String description) {
         workExperienceID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.WorkExperience ";
 
-        sql += "(workExperienceID,businessName,position,startDate,endDate,currentlyEmployed,description)";
-        sql += " VALUES ("; 
+        sql += "(workExperienceID,businessName,position,startDate,endDate,currentlyEmployed,description,created,modified)";
+        sql += " VALUES (";
         sql += "'" + this.workExperienceID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(businessName) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";
-        sql += "'" + startDate + "', ";
-        sql += "'" + endDate + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(startDate) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(endDate) + "', ";
         sql += "" + currentlyEmployed + ", ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(description) + "')";
+        sql += "'" + StringUtilities.cleanMySqlInsert(description) + "',NULL,NULL);";
         System.out.println(sql);
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of the WorkExperience constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
-        } finally{
+        } finally {
             setAllWorkExperienceProperties(workExperienceID);
             db.closeMySQLConnection();
         }
     }
-    private void setAllWorkExperienceProperties(String workExperienceID){
+
+    /**
+     * Creates an Education object from JSON
+     * @param workExperience JSON object for an Education object
+     */
+    public WorkExperience(JSONObject workExperience){
+        try {
+            this.workExperienceID = workExperience.getString("workExperienceID"); 
+            setWorkExperienceFromJSON(workExperience);
+        } catch (JSONException ex) {
+            Logger.getLogger(WorkExperience.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void setAllWorkExperienceProperties(String workExperienceID) {
         this.workExperienceID = workExperienceID;
         db = new DbUtilities();
         String sql = "SELECT * FROM rms.WorkExperience WHERE workExperienceID = '" + workExperienceID + "'";
@@ -84,126 +101,148 @@ public class WorkExperience {
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in WorkExperience(String workExperienceID) constructor of WorkExperience class. " + ex.getMessage());
             ErrorLogger.log(sql);
-        } finally{
+        } finally {
             this.workExperienceID = workExperienceID;
             db.closeMySQLConnection();
         }
     }
-    public void setBusinessName(String businessName){
+
+    public void setBusinessName(String businessName) {
         db = new DbUtilities();
-        String sql = "UPDATE WorkExperience SET businessName = '" + businessName + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
+        String sql = "UPDATE WorkExperience SET businessName = '" + StringUtilities.cleanMySqlInsert(businessName) + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setBusinessName. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
         }
-        this.businessName = businessName;
+        this.businessName = StringUtilities.cleanMySqlInsert(businessName);
+        setModified();
     }
-    
-    public void setPosition(String position){
+
+    public void setPosition(String position) {
         db = new DbUtilities();
-        String sql = "UPDATE WorkExperience SET position = '" + position + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
+        String sql = "UPDATE WorkExperience SET position = '" + StringUtilities.cleanMySqlInsert(position) + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setPosition. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
         }
-        this.position = position;
+        this.position = StringUtilities.cleanMySqlInsert(position);
+        setModified();
     }
-    
-    public void setStartDate(String startDate){
+
+    public void setStartDate(String startDate) {
         db = new DbUtilities();
-        String sql = "UPDATE WorkExperience SET startDate = '" + startDate + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
+        String sql = "UPDATE WorkExperience SET startDate = '" + StringUtilities.cleanMySqlInsert(startDate) + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setStartDate. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
         }
-        this.startDate = startDate;
+        this.startDate = StringUtilities.cleanMySqlInsert(startDate);
+        setModified();
     }
-    
-    public void setEndDate(String endDate){
+
+    public void setEndDate(String endDate) {
         db = new DbUtilities();
-        String sql = "UPDATE WorkExperience SET endDate = '" + endDate + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
+        String sql = "UPDATE WorkExperience SET endDate = '" + StringUtilities.cleanMySqlInsert(endDate) + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setEndDate. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
         }
-        this.endDate = endDate;
+        this.endDate = StringUtilities.cleanMySqlInsert(endDate);
+        setModified();
     }
-    
-     public void setCurrentlyEmployed(int currentlyEmployed){
-         db = new DbUtilities();
+
+    public void setCurrentlyEmployed(int currentlyEmployed) {
+        db = new DbUtilities();
         String sql = "UPDATE WorkExperience SET currentlyEmployed = '" + currentlyEmployed + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setEndDate. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
         }
         this.currentlyEmployed = currentlyEmployed;
+        setModified();
     }
-    
-    public void setDescription(String description){
+
+    public void setDescription(String description) {
         db = new DbUtilities();
-        String sql = "UPDATE WorkExperience SET description = '" + description + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
+        String sql = "UPDATE WorkExperience SET description = '" + StringUtilities.cleanMySqlInsert(description) + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setDescription. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
         }
-        this.description = description;
+        this.description = StringUtilities.cleanMySqlInsert(description);
+        setModified();
     }
-    
-    public String getWorkExperienceID(){
+
+    private void setModified() {
+        this.modified = DATE_FORMAT.format(Calendar.getInstance().toString());
+        db = new DbUtilities();
+        String sql = "UPDATE WorkExperience SET modified = '" + this.modified + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setModified. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
+        }
+    }
+
+    public String getWorkExperienceID() {
         return workExperienceID;
     }
-    
-    public String getBusinessName(){
+
+    public String getBusinessName() {
         return businessName;
     }
-    
-    public String getPosition(){
+
+    public String getPosition() {
         return position;
     }
-    
-    public String getStartDate(){
+
+    public String getStartDate() {
         return startDate;
     }
-    
-    public String getEndDate(){
+
+    public String getEndDate() {
         return endDate;
     }
-    
-    public int currentlyEmployed(){
+
+    public int currentlyEmployed() {
         return currentlyEmployed;
     }
-    public String getDescription(){
+
+    public String getDescription() {
         return description;
     }
-    
-    public JSONObject getWorkExperienceAsJson(){
-        
+
+    public JSONObject getWorkExperienceAsJson() {
+
         JSONObject workExperience = new JSONObject();
-        
+
         try {
             workExperience.put("workExperienceID", this.workExperienceID);
             workExperience.put("businessName", this.businessName);
@@ -213,9 +252,24 @@ public class WorkExperience {
             workExperience.put("description", this.description);
             workExperience.put("created", this.created);
             workExperience.put("modified", this.modified);
+            workExperience.put("currentlyEmployed", this.currentlyEmployed);
         } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within getWorkExperiencenAsJSON. " + ex.getMessage());
         }
         return workExperience;
+    }
+
+    public final void setWorkExperienceFromJSON(JSONObject workExperience) {
+
+        try {
+            setBusinessName(workExperience.getString("businessName"));
+            setPosition(workExperience.getString("position"));
+            setStartDate(workExperience.getString("startDate"));
+            setEndDate(workExperience.getString("endDate"));
+            setDescription(workExperience.getString("description"));
+            setCurrentlyEmployed(workExperience.getInt("currentlyEmployed"));
+        } catch (JSONException ex) {
+            ErrorLogger.log("An error occurred within setWorkExperienceFromJSON. " + ex.getMessage());
+        }
     }
 }

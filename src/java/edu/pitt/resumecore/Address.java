@@ -9,11 +9,12 @@ import edu.pitt.utilities.ErrorLogger;
 import edu.pitt.utilities.StringUtilities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
-
 import org.json.JSONObject;
 
 /**
@@ -35,6 +36,8 @@ public class Address {
     private String modified;
 
     private DbUtilities db;
+
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * Creates an Address object based upon information obtained from database
@@ -86,12 +89,25 @@ public class Address {
     }
 
     /**
+     * Creates an Address object from JSON
+     * @param address JSON object for an Address
+     */
+    public Address(JSONObject address){
+        try {
+            this.addressID = address.getString("addressID"); 
+            setAddressFromJSON(address);
+        } catch (JSONException ex) {
+            Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
      *
      * @param addressID ID of address to be looked up and properties set from
      */
     private void setAllAddressProperties(String addressID) {
         db = new DbUtilities();
-        String sql = "SELECT * FROM rms.Address WHERE addressID = '" + addressID + "'";
+        String sql = "SELECT * FROM rms.Address WHERE addressID = '" + StringUtilities.cleanMySqlInsert(addressID) + "'";
         try {
             ResultSet rs = db.getResultSet(sql);
             if (rs.next()) {
@@ -110,7 +126,7 @@ public class Address {
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
-            this.addressID = addressID;
+            this.addressID = StringUtilities.cleanMySqlInsert(addressID);
         }
     }
 
@@ -119,7 +135,7 @@ public class Address {
      */
     public void setAddressLine1(String addressLine1) {
         db = new DbUtilities();
-        String sql = "UPDATE Address SET addressLine1 = '" + addressLine1 + "' WHERE addressID = '" + this.addressID + "';";
+        String sql = "UPDATE Address SET addressLine1 = '" + StringUtilities.cleanMySqlInsert(addressLine1) + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -128,7 +144,8 @@ public class Address {
         } finally {
             db.closeMySQLConnection();
         }
-        this.addressLine1 = addressLine1;
+        this.addressLine1 = StringUtilities.cleanMySqlInsert(addressLine1);
+        setModified();
     }
 
     /**
@@ -136,7 +153,7 @@ public class Address {
      */
     public void setAddressLine2(String addressLine2) {
         db = new DbUtilities();
-        String sql = "UPDATE Address SET addressLine2 = '" + addressLine2 + "' WHERE addressID = '" + this.addressID + "';";
+        String sql = "UPDATE Address SET addressLine2 = '" + StringUtilities.cleanMySqlInsert(addressLine2) + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -145,7 +162,8 @@ public class Address {
         } finally {
             db.closeMySQLConnection();
         }
-        this.addressLine2 = addressLine2;
+        this.addressLine2 = StringUtilities.cleanMySqlInsert(addressLine2);
+        setModified();
     }
 
     /**
@@ -153,7 +171,7 @@ public class Address {
      */
     public void setCity(String city) {
         db = new DbUtilities();
-        String sql = "UPDATE Address SET city = '" + city + "' WHERE addressID = '" + this.addressID + "';";
+        String sql = "UPDATE Address SET city = '" + StringUtilities.cleanMySqlInsert(city) + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -162,7 +180,8 @@ public class Address {
         } finally {
             db.closeMySQLConnection();
         }
-        this.city = city;
+        this.city = StringUtilities.cleanMySqlInsert(city);
+        setModified();
     }
 
     /**
@@ -170,7 +189,7 @@ public class Address {
      */
     public void setState(String state) {
         db = new DbUtilities();
-        String sql = "UPDATE Address SET state = '" + state + "' WHERE addressID = '" + this.addressID + "';";
+        String sql = "UPDATE Address SET state = '" + StringUtilities.cleanMySqlInsert(state) + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -179,7 +198,8 @@ public class Address {
         } finally {
             db.closeMySQLConnection();
         }
-        this.state = state;
+        this.state = StringUtilities.cleanMySqlInsert(state);
+        setModified();
     }
 
     /**
@@ -187,7 +207,7 @@ public class Address {
      */
     public void setProvince(String province) {
         db = new DbUtilities();
-        String sql = "UPDATE Address SET Province = '" + province + "' WHERE addressID = '" + this.addressID + "';";
+        String sql = "UPDATE Address SET Province = '" + StringUtilities.cleanMySqlInsert(province) + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -196,7 +216,8 @@ public class Address {
         } finally {
             db.closeMySQLConnection();
         }
-        this.province = province;
+        this.province = StringUtilities.cleanMySqlInsert(province);
+        setModified();
     }
 
     /**
@@ -204,7 +225,7 @@ public class Address {
      */
     public void setPostalCode(String postalCode) {
         db = new DbUtilities();
-        String sql = "UPDATE Address SET postCode = '" + postalCode + "' WHERE addressID = '" + this.addressID + "';";
+        String sql = "UPDATE Address SET postCode = '" + StringUtilities.cleanMySqlInsert(postalCode) + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -213,7 +234,8 @@ public class Address {
         } finally {
             db.closeMySQLConnection();
         }
-        this.postalCode = postalCode;
+        this.postalCode = StringUtilities.cleanMySqlInsert(postalCode);
+        setModified();
     }
 
     /**
@@ -221,7 +243,7 @@ public class Address {
      */
     public void setCountry(String country) {
         db = new DbUtilities();
-        String sql = "UPDATE Address SET country = '" + country + "' WHERE addressID = '" + this.addressID + "';";
+        String sql = "UPDATE Address SET country = '" + StringUtilities.cleanMySqlInsert(country) + "' WHERE addressID = '" + this.addressID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -230,7 +252,22 @@ public class Address {
         } finally {
             db.closeMySQLConnection();
         }
-        this.country = country;
+        this.country = StringUtilities.cleanMySqlInsert(country);
+        setModified();
+    }
+
+    private void setModified() {
+        this.modified = DATE_FORMAT.format(Calendar.getInstance().toString());
+        db = new DbUtilities();
+        String sql = "UPDATE Address SET modified = '" + this.modified + "' WHERE addressID = '" + this.addressID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setModified. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
+        }
     }
 
     /**
@@ -313,5 +350,25 @@ public class Address {
             ErrorLogger.log("An error has occurred with getAddressAsJSON. " + ex.getMessage());
         }
         return address;
+    }
+
+    /**
+     * Sets the properties of an Address given JSON
+     *
+     * @param address JSON representation of an Address object
+     */
+    public final void setAddressFromJSON(JSONObject address) {
+
+        try {
+            setAddressLine1(address.getString("addressLine1"));
+            setAddressLine2(address.getString("addressLine2"));
+            setCity(address.getString("city"));
+            setState(address.getString("state"));
+            setProvince(address.getString("province"));
+            setPostalCode(address.getString("postalCode"));
+            setCountry(address.getString("country"));
+        } catch (JSONException ex) {
+            ErrorLogger.log("An error has occurred with setAddressFromJSON. " + ex.getMessage());
+        }
     }
 }
