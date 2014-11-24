@@ -74,7 +74,6 @@ public class Education {
                 this.name = rs.getString("name");
                 this.type = rs.getString("type");
                 this.field = rs.getString("field");
-                this.minor = rs.getString("minor");
                 this.gpa = rs.getDouble("gpa");
                 this.graduationDate = rs.getString("graduationDate");
                 this.created = rs.getTimestamp("created").toString();
@@ -210,6 +209,7 @@ public class Education {
             education.put("name", this.name);
             education.put("type", this.type);
             education.put("field", this.field);
+            education.put("minor", this.minor);
             education.put("gpa", this.gpa);
             education.put("graduationDate", this.graduationDate);
 

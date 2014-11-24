@@ -30,6 +30,13 @@
         var gpaDecimal = gpa.toFixed(1);
         return gpaDecimal;
     }
+    
+    function setMinor(minor){
+         var minor;
+         if (minor != ""){
+                
+            }
+        }
 
 
     //Gets JSON from web service
@@ -102,16 +109,14 @@
 
         for (var i = 0; i < data['EducationList'].length; i++) {
             var gpa = gpaToDecimal(data['EducationList'][i].gpa);
+            
+            var minor = (data['EducationList'][i].minor || "");
+        
             $education.append('<div style="padding: 0 0 30px 0;">');
             $education.append('<div style="float:right; display:inline"><h4>' + data['EducationList'][i].graduationDate + '</h4></div>');
             $education.append('<h3>' + data['EducationList'][i].name + '</h3>');
             $education.append('<h4>' + data['EducationList'][i].type + ', ' + data['EducationList'][i].field);
-//            $education.append(', Minor/Related Area: ' + (data['EducationList'][i].minor || "") + '</h4>');
-//            //If the student has listed a minor
-//            if (data['EducationList'].minor == "undefined") {
-//                $education.append('</h4>');
-//            }
-
+           
             $education.append('<h4> GPA: ' + gpa + '</h4>');
             $education.append('</div>');
 

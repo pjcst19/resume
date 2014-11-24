@@ -5,11 +5,9 @@
         <group>
             <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/src/java/edu/pitt/resumecore/Address.java</file>
             <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/web/viewResumePersonal.jsp</file>
-            <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/src/java/edu/pitt/resumecore/User.java</file>
             <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/web/includes/header.jsp</file>
-            <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/web/assets/css/bootstrap.css</file>
-            <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/web/assets/css/style.css</file>
             <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/web/css/custom.css</file>
+            <file>file:/C:/Users/Mandy/Documents/NetBeansProjects/resume/src/java/edu/pitt/resumecore/Award.java</file>
         </group>
     </open-files>
 </project-private>
