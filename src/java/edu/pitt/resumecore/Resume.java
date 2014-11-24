@@ -80,6 +80,20 @@ public class Resume {
 
     }
 
+    /**
+     * Creates an Resume object from JSON
+     * @param resume JSON object for an Resume object
+     */
+    public Resume(JSONObject resume){
+        try {
+//            setAllResumeProperties(resume.getString("resumeID")); 
+            this.resumeID = resume.getString("resumeID"); 
+            setResumeFromJSON(resume);
+        } catch (JSONException ex) {
+            Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void setAllResumeProperties(String resumeID) {
         String sql1 = "SELECT * FROM rms.Resume R LEFT JOIN rms.ResumeAddress ON resumeID = fk_resumeID LEFT JOIN rms.Address ON fk_addressID = addressID WHERE R.resumeID = '" + StringUtilities.cleanMySqlInsert(resumeID) + "'";
         System.out.println(sql1);
@@ -358,7 +372,7 @@ public class Resume {
      *
      * @param resume A properly formated JSON representation of Resume
      */
-    public void setResumeFromJSON(JSONObject resume) {
+    public final void setResumeFromJSON(JSONObject resume) {
         try {
             setUserID(resume.getString("userID"));
             setRating(resume.getInt("rating"));
