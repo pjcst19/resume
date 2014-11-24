@@ -10,7 +10,9 @@ import edu.pitt.utilities.ErrorLogger;
 import edu.pitt.utilities.StringUtilities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +39,8 @@ public class Resume {
 
     private DbUtilities db;
 
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
     /**
      * Creates a Resume object based upon information obtained from database by
      * providing resumeID
@@ -61,10 +65,9 @@ public class Resume {
         String sql = "INSERT INTO rms.Resume ";
         sql += "(resumeID,fk_userID,rating,created,modified)";
         sql += " VALUES (";
-        sql += "'" + resumeID + "', ";
-        sql += "'" +   this.userID + "', ";
+        sql += "'" + this.resumeID + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(this.userID) + "', ";
         sql += "'" + this.rating + "',NULL,NULL);";
-        System.out.println(sql);
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -77,6 +80,20 @@ public class Resume {
 
     }
 
+    /**
+     * Creates an Resume object from JSON
+     * @param resume JSON object for an Resume object
+     */
+    public Resume(JSONObject resume){
+        try {
+//            setAllResumeProperties(resume.getString("resumeID")); 
+            this.resumeID = resume.getString("resumeID"); 
+            setResumeFromJSON(resume);
+        } catch (JSONException ex) {
+            Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void setAllResumeProperties(String resumeID) {
         String sql1 = "SELECT * FROM rms.Resume R LEFT JOIN rms.ResumeAddress ON resumeID = fk_resumeID LEFT JOIN rms.Address ON fk_addressID = addressID WHERE R.resumeID = '" + StringUtilities.cleanMySqlInsert(resumeID) + "'";
         System.out.println(sql1);
@@ -100,7 +117,7 @@ public class Resume {
 
         String sql2 = "SELECT * FROM rms.ResumeAward WHERE fk_resumeID = '" + this.resumeID + "'";
         try {
-            ResultSet rs2 = this.getDb().getResultSet(sql2);
+            ResultSet rs2 = db.getResultSet(sql2);
             while (rs2.next()) {
                 this.awardList.add(new Award(rs2.getString("fk_awardID")));
             }
@@ -112,7 +129,7 @@ public class Resume {
 
         String sql3 = "SELECT * FROM rms.ResumeEducation WHERE fk_resumeID = '" + this.resumeID + "'";
         try {
-            ResultSet rs3 = this.getDb().getResultSet(sql3);
+            ResultSet rs3 = db.getResultSet(sql3);
             while (rs3.next()) {
                 this.educationList.add(new Education(rs3.getString("fk_educationID")));
             }
@@ -124,7 +141,7 @@ public class Resume {
 
         String sql4 = "SELECT * FROM rms.ResumeWorkExperience WHERE fk_resumeID = '" + this.resumeID + "'";
         try {
-            ResultSet rs4 = this.getDb().getResultSet(sql4);
+            ResultSet rs4 = db.getResultSet(sql4);
             while (rs4.next()) {
                 this.workExperienceList.add(new WorkExperience(rs4.getString("fk_workExperienceID")));
             }
@@ -147,6 +164,7 @@ public class Resume {
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
+            setModified();
         }
     }
 
@@ -162,6 +180,7 @@ public class Resume {
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
+            setModified();
         }
     }
 
@@ -177,6 +196,7 @@ public class Resume {
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
+            setModified();
         }
     }
 
@@ -192,12 +212,23 @@ public class Resume {
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
+            setModified();
         }
         this.rating = rating;
     }
 
-    public DbUtilities getDb() {
-        return db;
+    private void setModified() {
+        this.modified = DATE_FORMAT.format(Calendar.getInstance().toString());
+        db = new DbUtilities();
+        String sql = "UPDATE Resume SET modified = '" + this.modified + "' WHERE resumeID = '" + this.resumeID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setModified. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
+        }
     }
 
     /**
@@ -253,6 +284,30 @@ public class Resume {
         }
 
         addresses.remove(address);
+    }
+
+    /**
+     * @return the userID
+     */
+    public String getUserID() {
+        return this.userID;
+    }
+
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(String userID) {
+        db = new DbUtilities();
+        String sql = "UPDATE Resume SET fk_userID = '" + StringUtilities.cleanMySqlInsert(userID) + "' WHERE resumeID = '" + this.resumeID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setUserID. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            this.userID = StringUtilities.cleanMySqlInsert(userID);
+            db.closeMySQLConnection();
+        }
     }
 
     /**
@@ -313,27 +368,47 @@ public class Resume {
     }
 
     /**
-     * @return the userID
+     * Sets properties of a Resume given JSON
+     *
+     * @param resume A properly formated JSON representation of Resume
      */
-    public String getUserID() {
-        return this.userID;
-    }
-
-    /**
-     * @param userID the userID to set
-     */
-    public void setUserID(String userID) {
-        db = new DbUtilities();
-        String sql = "UPDATE Resume SET fk_userID = '" + StringUtilities.cleanMySqlInsert(userID) + "' WHERE resumeID = '" + this.resumeID + "';";
+    public final void setResumeFromJSON(JSONObject resume) {
         try {
-            db.executeQuery(sql);
-        } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of setUserID. " + ex.getMessage());
-            ErrorLogger.log(sql);
-        } finally {
-            this.userID = StringUtilities.cleanMySqlInsert(userID);
-            db.closeMySQLConnection();
+            setUserID(resume.getString("userID"));
+            setRating(resume.getInt("rating"));
+
+            JSONArray resumeAddressList = resume.getJSONArray("addresses");
+            JSONArray resumeEducationList = resume.getJSONArray("EducationList");
+            JSONArray resumeAwardList = resume.getJSONArray("AwardList");
+            JSONArray resumeWorkExperienceList = resume.getJSONArray("WorkExperienceList");
+
+            int addressListLength = resumeAddressList.length();
+
+            for (int i = 0; i < addressListLength; i++) {
+                Address address = new Address(resumeAddressList.getJSONObject(i));
+            }
+            
+            int educationListLength = resumeEducationList.length();
+
+            for (int i = 0; i < educationListLength; i++) {
+                Education education = new Education(resumeEducationList.getJSONObject(i));
+            }
+            
+            int awardListLength = resumeAwardList.length();
+
+            for (int i = 0; i < awardListLength; i++) {
+                Award award = new Award(resumeAwardList.getJSONObject(i));
+            }
+            
+            int workExperienceLength = resumeWorkExperienceList.length();
+
+            for (int i = 0; i < workExperienceLength; i++) {
+                WorkExperience workExperience = new WorkExperience(resumeWorkExperienceList.getJSONObject(i));
+            }
+
+            
+        } catch (JSONException ex) {
+            ErrorLogger.log("An error has occurred within getResumeAsJSON. " + ex.getMessage());
         }
     }
-
 }
