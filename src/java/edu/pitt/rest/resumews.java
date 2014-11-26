@@ -35,9 +35,9 @@ public class resumews extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
 
-        if (Security.checkHijackedSession(request.getSession(false), request)) {
-            response.sendRedirect("rest/index.jsp");
-        } else {
+//        if (Security.checkHijackedSession(request.getSession(false), request)) {
+//            response.sendRedirect("rest/index.jsp");
+//        } else {
             try (PrintWriter out = response.getWriter()) {
 
                 if (request.getParameter("resumeID") != null) {
@@ -47,7 +47,7 @@ public class resumews extends HttpServlet {
                 }
             }
         }
-    }
+//    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

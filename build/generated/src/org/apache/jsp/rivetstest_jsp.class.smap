@@ -1,0 +1,15 @@
+SMAP
+rivetstest_jsp.java
+JSP
+*S JSP
+*F
++ 0 rivetstest.jsp
+rivetstest.jsp
++ 1 header.jsp
+includes/header.jsp
+*L
+5,5:50
+5#1,48:54
+9#0,79:101
+5#1,48:179
+*E
