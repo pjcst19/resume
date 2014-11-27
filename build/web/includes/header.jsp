@@ -24,7 +24,9 @@
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-        <script src="js/rivets.bundled.min.js"></script>
+         <script src="js/knockout-3.2.0.js"></script>
+<!--        <script src="js/rivets.bundled.min.js"></script>-->
+<!--        <script src="js/rivetsConf.js"></script>-->
     </head>
 
 

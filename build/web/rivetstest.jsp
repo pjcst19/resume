@@ -10,7 +10,7 @@
 
 <!--Security-->
 <%
-    String resumeID = "";
+    String resumeID = "00b4443b-4903-489e-b486-2869bb5c317a";
 //    if (Security.checkHijackedSession(session, request)) {
 //        response.sendRedirect("index.jsp");
 //    } else {
@@ -19,10 +19,10 @@
 %>
 
 <script language="javascript">
-   
+    var resumeData;
     //Gets resume as JSON from web service based on resumeID
     $(document).ready(function () {
-        getJsonFromWebService("rest/resumews?resumeID=00b4443b-4903-489e-b486-2869bb5c317a");
+        getJsonFromWebService("rest/resumews?resumeID=<%out.print(resumeID);%>");
     });
 
     //Gets JSON from web service
@@ -34,7 +34,8 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data, status, jqXHR) {
-                jsonToHtmlLayout(data);
+                resumeData = data;
+                jsonToHtmlLayout();
                 console.log(data);
                 console.log("success");
             },
@@ -46,20 +47,22 @@
     }
 
     //Builds HTML layout using user and resume information from JSON
-    function jsonToHtmlLayout(data) {
+    function jsonToHtmlLayout() {
         $education = $('#education');
-        $length = data['EducationList'].length;
-//
+        //$length = data['EducationList'].length;
+        $length = resumeData.EducationList.length;
+        //
 //
         for (var i = 0; i < $length; i++) {
+            resumeData.EducationList[i].minor;
             //what does the action have to be?
-           $education.append('<form class="form-signin" method="post" action="processEducation">');
+           $education.append('<form class="form-signin" method="post" action="processResume">');
            $education.append('<label> University</label>');
-           $education.append('<input type="text" rv-value="data[\'EducationList\'][i].name" class="form-control" id="txtSchoolName" required autofocus=""><br>');
-           $education.append('<input rv-value="data[\'EducationList\'][i].major" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:34%; display:inline">')
-           $education.append('<input rv-value="data[\'EducationList\'][i].minor" class="form-control" id="txtMinorType" name="txtMinorType" placeholder="Minor or Related Area" style="width:34%; display:inline"><br><br>');
-           $education.append('<input rv-value="data[\'EducationList\'][i].gpa" type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline" required>');
-           $education.append('<input rv-value="data[\'EducationList\'][i].graduationDate" type="text" class="form-control datepicker" id="txtGraduationDate" name="txtGraduationDate" placeholder="Graduation Date" required style="width:20%; display:inline">');
+//           $education.append('<input type="text" rv-value="data[\'EducationList\'][i].name" class="form-control" rv-placeholder="data[\'EducationList\'][i].name" required autofocus=""><br>');
+//           $education.append('<input data-text="resumeData.EducationList[i].major" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:34%; display:inline">');
+           $education.append('<input data-bind="value: resumeData.EducationList[i].minor" class="form-control" style="width:34%; display:inline"><br><br>');
+//           $education.append('<input data-value="data[\'EducationList\'][i].gpa" type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline" required>');
+//           $education.append('<input data-value="data[\'EducationList\'][i].graduationDate" type="text" class="form-control datepicker" id="txtGraduationDate" name="txtGraduationDate" placeholder="Graduation Date" required style="width:20%; display:inline">');
            $education.append('</form><br>');
        }
 
@@ -81,19 +84,40 @@
 //
 //    <br><br>
                             
-            
-        
-    }
-    
-
-    
-
+  }
 </script>
 
-<div id="education">
-                        
+ <!--Submits all forms on page -->
+    <script>
+        function post_form_data(data) {
+            $.ajax({
+                type: 'POST',
+                url: 'processResume',
+                data: data,
+                async: false
+                //success: ,
+                //error:
+            });
+        }//end of post_form_data
+        
+        
+        //When Next button is clicked, all forms on page are submitted for processing
+        function submitEduEdit(){
+        //$('btnSubmit').on('click', function () {
+            $('form').each(function () {
+                post_form_data($(this).serialize());
+            });
+            window.location.href='viewPersonalResume.jsp?resumeID=<%out.print(resumeID);%>';
+            
+        };
+    </script>
+
+<div id="education">                        
                         
 </div>
+    
+    <button class="btn btn-lg btn-primary" type="button" id="btnEducation" onclick="window.location.href='listResumes.jsp?userID=<%out.print(resumeID);%>'">Back</button>
+    <button class="btn btn-lg btn-primary" type="submit" onclick="submitEduEdit();" id="btnSubmit" name="btnSubmit">Next</button>
 
 
 

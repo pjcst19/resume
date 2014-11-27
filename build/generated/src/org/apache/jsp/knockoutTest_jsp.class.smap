@@ -1,0 +1,18 @@
+SMAP
+knockoutTest_jsp.java
+JSP
+*S JSP
+*F
++ 0 knockoutTest.jsp
+knockoutTest.jsp
++ 1 header.jsp
+includes/header.jsp
+*L
+5,2:50
+11,5:52
+5#1,50:56
+15#0,4:105
+20,3:110
+22,46:113
+5#1,50:158
+*E
