@@ -10,7 +10,7 @@
 //    if (Security.checkHijackedSession(session, request)) {
 //        response.sendRedirect("index.jsp");
 //    } else {
-        resumeID = request.getParameter("resumeID");
+    resumeID = request.getParameter("resumeID");
 //    }
 %>
 
@@ -53,7 +53,7 @@
                 created: ko.observable(created),
                 modified: ko.observable(modified),
                 description: ko.observable(description),
-                currentlyEmployed: ko.observable(currentlyEmployed),
+                currentlyEmployed: ko.observable(currentlyEmployed.toString()),
             };
         }
 
@@ -68,48 +68,66 @@
 </script>
 
 <script>
-   function SubmitWorkExperienceEdits(){
-       finalJSON = ko.toJSON(ResumeModel);
-       alert (finalJSON);
-   };
+    function SubmitWorkExperienceEdits() {
+        finalJSON = ko.toJSON(ResumeModel);
+        alert(finalJSON);
+    }
+    ;
 </script>
 
 
-        <div class="panel-heading">
-            <h3 class="panel-title"><strong>Edit Your Resume</strong></h3>
-        </div>
+<div class="panel-heading">
+    <h3 class="panel-title"><strong>Edit Your Resume</strong></h3>
+</div>
 
-        <div class="panel-body">
+<div class="panel-body">
 
-            <div id="page-header">
-                <h2 class="form-signin-heading">Work Experience</h2><br>
-                
-
-                 <form class="form-signin" method="post" data-bind="submit:SubmitWorkExperienceEdits">
-                <div data-bind="foreach: resumes">
-                    <!--            Resume ID: <input data-bind="value: resumeID"><br/>-->
-                    <div data-bind="foreach: WorkExperienceList">
+    <div id="page-header">
+        <h2 class="form-signin-heading">Work Experience</h2><br>
         
-                            <label style="display:inline"> Business Name </label><br><input data-bind="value: businessName" type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
-                            <label style="display:inline"> Position </label><br><input data-bind="value: position" type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position" required><br>
-                            <label style="display:inline"> Start Date </label><input  type="date" class="form-control datepicker" id ="txtStartDate" name="txtStartDate" style="width:20%; display:inline">
-                            <label style="display:inline"> End Date </label><input  type="date" class="form-control datepicker" id="txtEndDate" name="txtEndDate"  style="width:20%; display:inline">
 
-                            <!-- How do I deal with the Radio Button??-->
-                            <label style="display:inline">Currently Employed? </label>
-                            <input data-bind="checked: currentlyEmployed" type="radio"  id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="1" style="display:inline" required> Yes
-                            <input data-bind="checked: currentlyEmployed" type="radio"  id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="0" style="display:inline" required> No<br><br>
 
-                            <label style="display:inline"> Description of Work </label><br>
-                            <textarea data-bind="value: description" class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience" required></textarea><br>
+        <form class="form-signin" method="post" data-bind="submit:SubmitWorkExperienceEdits">
+            <% int i = 0;%>
+            <div data-bind="foreach: resumes">
+                <!--            Resume ID: <input data-bind="value: resumeID"><br/>-->
 
+                 
+                   
+                     <% i+=1; %>
+
+                <div data-bind="foreach: WorkExperienceList">
+                    
+                   <% i+=1;%>
+                    
+                    <form>
                         
-                    </div>
+                        <p> <%out.print(i);%> </p>
+
+                        <label style="display:inline"> Business Name </label><br><input data-bind="value: businessName" type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
+                        <label style="display:inline"> Position </label><br><input data-bind="value: position" type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position" required><br>
+                        <label style="display:inline"> Start Date </label><input data-bind="value: startDate" type="date" class="form-control datepicker" style="width:20%; display:inline">
+                        <label style="display:inline"> End Date </label><input data-bind="value: endDate" type="date" class="form-control datepicker" style="width:20%; display:inline">
+
+                        <!-- How do I deal with the Radio Button??-->
+                        <label style="display:inline">Currently Employed? </label>
+                        <input data-bind="checked: currentlyEmployed" type="radio"  id="rdoCurrentlyEmployed>" name="rdoCurrentlyEmployed<%out.print(i);%>" value="1" style="display:inline" required> Yes
+                        <input data-bind="checked: currentlyEmployed" type="radio"  id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed<%out.print(i);%>" value="0" style="display:inline" required> No<br><br>
+
+                        <label style="display:inline"> Description of Work </label><br>
+                        <textarea data-bind="value: description" class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience" required></textarea><br>
+
+                    </form>
+                        
+                         
+
                 </div>
 
-                <button class="btn btn-lg btn-primary" type="button" onclick="window.location.href='education.jsp'">Back</button>
-                <button class="btn btn-lg btn-primary" type="submit">Next</button> <!--Where do we go from here? -->
-                </form>
-                <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>
+            </div>
 
-                <%@ include file="includes/footer.jsp" %>
+            <button class="btn btn-lg btn-primary" type="button" onclick="window.location.href='education.jsp'">Back</button>
+            <button class="btn btn-lg btn-primary" type="submit">Next</button> <!--Where do we go from here? -->
+        </form>
+        <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>
+
+        <%@ include file="includes/footer.jsp" %>

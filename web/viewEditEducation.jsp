@@ -48,6 +48,12 @@
         ko.applyBindings(new ResumeModel());
     });</script>
 
+<script>
+    $(function () {
+        $(".datepicker").datepicker();
+    });
+</script>
+
 
 <div class="panel-heading">
             <h3 class="panel-title"><strong>Edit Your Resume</strong></h3>
@@ -68,8 +74,7 @@
                 <label> University</label>
                 <input data-bind="value: name" type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" required autofocus=""><br>
 
-                <!--How do I deal with this-->
-                <select class="form-control" id="txtDegreeType" name="txtDegreeType" required style="width:30%; display:inline">
+                <select data-bind="value: type" class="form-control" id="txtDegreeType" name="txtDegreeType" required style="width:15%; display:inline">
                     <option value="Associates">Associates</option>
                     <option value="Bachelors">Bachelors</option>
                     <option value="Masters">Masters</option>
@@ -78,11 +83,11 @@
                     <option value="MA">Diploma</option>                              
                 </select>
 
-                <input data-bind="value: field" type="text" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:34%; display:inline">
-                <input data-bind="value: minor" type="text" class="form-control" id="txtMinorType" name="txtMinorType" placeholder="Minor or Related Area" style="width:34%; display:inline"><br><br>
+                <label> Major </label><input data-bind="value: field" type="text" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:34%; display:inline">
+                <label> Minor/Related Area </label><input data-bind="value: minor" type="text" class="form-control" id="txtMinorType" name="txtMinorType" placeholder="Minor or Related Area" style="width:34%; display:inline"><br><br>
 
-                <input data-bind="value: gpa" type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline" required>
-                <input data-bind="value: graduationDate" type="text" class="form-control datepicker" id="txtGraduationDate" name="txtGraduationDate" placeholder="Graduation Date" required style="width:20%; display:inline">
+                <label> GPA </label><input data-bind="value: gpa" type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline" required>
+                <label> Graduation Date </label><input data-bind="value: graduationDate" type="text" class="form-control datepicker" id="txtGraduationDate" name="txtGraduationDate" placeholder="Graduation Date" required style="width:20%; display:inline">
 
 
                 <br><br>
