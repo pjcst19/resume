@@ -99,4 +99,4 @@
     <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>
 
 
-    <%@ include file="includes/header.jsp" %>
+    <%@ include file="includes/footer.jsp" %>

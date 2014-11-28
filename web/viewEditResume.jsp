@@ -1,52 +1,13 @@
 <%-- 
-    Document   : knocktest
-    Created on : Nov 27, 2014, 10:45:33 AM
-    Author     : jordansfeldman
+    Document   : viewEditResume
+    Created on : Nov 28, 2014, 4:46:44 PM
+    Author     : Mandy
 --%>
 
 <%@ include file="includes/header.jsp" %>
 
-<script>
-    var data;
-    var finalJSON;
-    $(document).ready(function () {
-        ResumeModel = function () {
-            var self = this;
-            self.resumes = ko.observableArray();
-            $.getJSON("rest/resumews?resumeID=00b4443b-4903-489e-b486-2869bb5c317a", function (json) {
-                data = json;
-
-                self.EducationList = ko.observableArray();
-                $.each(data.EducationList, function (i, val) {
-                    self.EducationList.push(new EducationModel(val.educationID, val.minor, val.field, val.graduationDate, val.created, val.modified, val.name, val.gpa, val.type));
-                });
-
-                self.resumes.push({
-                    resumeID: ko.observable(data.resumeID),
-                    created: ko.observable(data.created),
-                    modified: ko.observable(data.modified),
-                    rating: ko.observable(data.rating),
-                    EducationList: self.EducationList
-                });
-            });
-        };
-        function EducationModel(educationID, minor, field, graduationDate, created, modified, name, gpa, type) {
-            var self = this;
-            return{
-                educationID: ko.observable(educationID),
-                minor: ko.observable(minor),
-                field: ko.observable(field),
-                graduationDate: ko.observable(graduationDate),
-                created: ko.observable(created),
-                modified: ko.observable(modified),
-                name: ko.observable(name),
-                gpa: ko.observable(gpa),
-                type: ko.observable(type)
-            };
-        }
-
-        ko.applyBindings(new ResumeModel());
-    });</script>
+<script src="js/editResumeFunctions.js" type="text/javascript">
+</script>
 
 <script>
     $(function () {
@@ -95,6 +56,36 @@
             </form><br>
        
         </div>
+        
+        <div data-bind="foreach: WorkExperienceList">
+                    
+                
+                    <form>
+                        
+                      
+
+                        <label style="display:inline"> Business Name </label><br><input data-bind="value: businessName" type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
+                        <label style="display:inline"> Position </label><br><input data-bind="value: position" type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position" required><br>
+                        <label style="display:inline"> Start Date </label><input data-bind="value: startDate" type="date" class="form-control datepicker" style="width:20%; display:inline">
+                        <label style="display:inline"> End Date </label><input data-bind="value: endDate" type="date" class="form-control datepicker" style="width:20%; display:inline">
+
+                        <!-- How do I deal with the Radio Button??-->
+                        <label style="display:inline">Currently Employed? </label>
+                        <input data-bind="checked: currentlyEmployed" type="radio"  id="rdoCurrentlyEmployed>" name="rdoCurrentlyEmployed" value="1" style="display:inline" required> Yes
+                        <input data-bind="checked: currentlyEmployed" type="radio"  id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="0" style="display:inline" required> No<br><br>
+
+                        <label style="display:inline"> Description of Work </label><br>
+                        <textarea data-bind="value: description" class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience" required></textarea><br>
+
+                    </form>
+                        
+                         
+
+                </div>
+        
+        
+        
+        
     </div>
     <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>
 

@@ -1,17 +1,17 @@
 SMAP
-viewEditEducation_jsp.java
+viewEditResume_jsp.java
 JSP
 *S JSP
 *F
-+ 0 viewEditEducation.jsp
-viewEditEducation.jsp
++ 0 viewEditResume.jsp
+viewEditResume.jsp
 + 1 header.jsp
 includes/header.jsp
 + 2 footer.jsp
 includes/footer.jsp
 *L
-5,3:50
+5,2:50
 5#1,52:52
-7#0,96:103
-5#2,12:199
+7#0,87:103
+5#2,12:190
 *E
