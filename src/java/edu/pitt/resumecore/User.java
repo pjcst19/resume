@@ -53,7 +53,6 @@ public class User {
     private int usProof;
     private int usEligible;
 
-
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
@@ -147,8 +146,11 @@ public class User {
                     this.password = (rs1.getString("password"));
                     this.email = (rs1.getString("email"));
                     this.phoneNumber = (rs1.getString("phoneNumber"));
-                    Address address = new Address(rs1.getString("addressID"));
-                    this.addresses.add(address);
+                    if (rs1.getString("addressID") == null) {
+                    } else {
+                        Address address = new Address(rs1.getString("addressID"));
+                        this.addresses.add(address);
+                    }
                     this.created = rs1.getTimestamp("created").toString();
                     this.modified = rs1.getTimestamp("modified").toString();
                     this.status = rs1.getInt("enabled");
@@ -636,9 +638,7 @@ public class User {
             this.setPeopleSoftID("");
 
             // this.setGraduationYear("");
-
-           // this.setGraduationYear("");
-
+            // this.setGraduationYear("");
         }
         if (role.equals("employer")) {
             roles.remove("employer");
@@ -917,10 +917,7 @@ public class User {
         this.status = 0;
     }
 
-        //}
-        
-   
-
+    //}
     /**
      * @return the employeeID
      */
