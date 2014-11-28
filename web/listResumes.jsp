@@ -56,7 +56,7 @@
                         $row.append('<td>' + data[i]['resumes'][j].modified + '</td>');
                         $row.append('<td>' + data[i]['resumes'][j].resumeID + '</td>');
                         $row.append('<td><a href="viewResumePersonal.jsp?resumeID=' + data[i]['resumes'][j].resumeID + '">View</a></td>');
-                        $row.append('<td><a href="editResumePersonal.jsp?resumeID=' + data[i]['resumes'][j].resumeID + '">Edit</a></td>');
+                        $row.append('<td><a href="viewEditEducation.jsp?resumeID=' + data[i]['resumes'][j].resumeID + '">Edit</a></td>');
                         $row.append('</tr>');
                         $table.append($row);
                     }

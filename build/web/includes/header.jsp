@@ -22,11 +22,13 @@
         <link href="assets/css/style.css" rel="stylesheet">
         <link href="css/custom.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-         <script src="js/knockout-3.2.0.js"></script>
-<!--        <script src="js/rivets.bundled.min.js"></script>-->
-<!--        <script src="js/rivetsConf.js"></script>-->
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script src="js/knockout-3.2.0.js"></script>
+        <script src="js/knockout.mapping.js"></script>
     </head>
 
 
