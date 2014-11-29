@@ -45,6 +45,12 @@
                                 <li class=""><a href="register.jsp">Create Account</a></li>
                             </ul>
                         </li>
+                        
+                        <li>
+                            <ul class="nav pull-right">
+                                <a class="btn btn-default navbar-btn" href="logout">Logout</a>
+                            </ul>
+                        </li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

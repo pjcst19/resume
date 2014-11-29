@@ -42,7 +42,7 @@ function post_form_data(data) {
 
 
 //When Next button is clicked, all forms on page are submitted for processing
-function submitEdu() {
+function submitWork() {
     //$('btnSubmit').on('click', function () {
     $('form').each(function () {
         post_form_data($(this).serialize());
