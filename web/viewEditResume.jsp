@@ -18,9 +18,23 @@
 %>
 
 <%@ include file="includes/header.jsp" %>
+<%@ include file="js/editResumeFunctions.js.jsp" %>
 
-<script src="js/editResumeFunctions.js" type="text/javascript"></script>
+<!--<script src="js/editResumeFunctions.js" type="text/javascript"></script>-->
 <script src="js/koDatePickerBinding.js"></script>
+<script>
+
+    function submitJSON(data) {
+        $.ajax({
+            type: 'POST',
+            url: 'rest/processResume',
+            data: {'resume': data},
+            async: false
+                    //success: ,
+                    //error:
+        });
+    }
+</script>
 
 
 <div class="panel-heading">
@@ -37,31 +51,28 @@
         <!--            Resume ID: <input data-bind="value: resumeID"><br/>-->
         <div data-bind="foreach: EducationList">
 
-            <form class="form-signin" method="post" action="processEducation">
+            <label> University</label>
+            <input data-bind="value: name" type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" required autofocus=""><br>
+
+            <select data-bind="value: type" class="form-control" id="txtDegreeType" name="txtDegreeType" required style="width:15%; display:inline">
+                <option value="Associates">Associates</option>
+                <option value="Bachelors">Bachelors</option>
+                <option value="Masters">Masters</option>
+                <option value="Doctorate">Doctorate</option>
+                <option value="Certificate">Certificate</option>
+                <option value="MA">Diploma</option>                              
+            </select>
+
+            <label> Major </label><input data-bind="value: field" type="text" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:31%; display:inline">
+            <label> Minor/Related Area </label><input data-bind="value: minor" type="text" class="form-control" id="txtMinorType" name="txtMinorType" placeholder="Minor or Related Area" style="width:31%; display:inline"><br><br>
+
+            <label> GPA </label><input data-bind="value: gpa" type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline" required>
+            <label> Graduation Date </label><input data-bind="datepicker: graduationDate" type="text" class="form-control datepicker" id="txtGraduationDate" name="txtGraduationDate" placeholder="Graduation Date" required style="width:20%; display:inline">
 
 
-                <label> University</label>
-                <input data-bind="value: name" type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" required autofocus=""><br>
+            <br><br>
 
-                <select data-bind="value: type" class="form-control" id="txtDegreeType" name="txtDegreeType" required style="width:15%; display:inline">
-                    <option value="Associates">Associates</option>
-                    <option value="Bachelors">Bachelors</option>
-                    <option value="Masters">Masters</option>
-                    <option value="Doctorate">Doctorate</option>
-                    <option value="Certificate">Certificate</option>
-                    <option value="MA">Diploma</option>                              
-                </select>
-
-                <label> Major </label><input data-bind="value: field" type="text" class="form-control" id="txtMajorType" name="txtMajorType" placeholder="Major" required style="width:31%; display:inline">
-                <label> Minor/Related Area </label><input data-bind="value: minor" type="text" class="form-control" id="txtMinorType" name="txtMinorType" placeholder="Minor or Related Area" style="width:31%; display:inline"><br><br>
-
-                <label> GPA </label><input data-bind="value: gpa" type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline" required>
-                <label> Graduation Date </label><input data-bind="datepicker: graduationDate" type="text" class="form-control datepicker" id="txtGraduationDate" name="txtGraduationDate" placeholder="Graduation Date" required style="width:20%; display:inline">
-
-
-                <br><br>
-
-            </form><br>
+            <br>
 
         </div>
 
@@ -71,10 +82,7 @@
 
         <div data-bind="foreach: WorkExperienceList">
 
-
-            <form style="margin:0px 0px 50px 0px;">
-
-
+            <form>
                 <label style="display:inline"> Business Name </label><br><input data-bind="value: businessName" type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
                 <label style="display:inline"> Position </label><br><input data-bind="value: position" type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position" required><br>
                 <label style="display:inline"> Start Date </label><input data-bind="datepicker: startDate,  datepickerOptions: { maxDate: '+1M +1D'}" type="date" class="form-control datepicker" style="width:20%; display:inline">
@@ -87,10 +95,7 @@
 
                 <label style="display:inline"> Description of Work </label><br>
                 <textarea data-bind="value: description" class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience" required></textarea><br>
-
             </form>
-
-
 
         </div>
 
@@ -99,6 +104,7 @@
 
     </div>
     <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>
+    <button data-bind="click:  this.submitJSON(ko.toJSON($root.resumes, null, 2))">Submit</button>
 
 
     <%@ include file="includes/footer.jsp" %>

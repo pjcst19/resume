@@ -122,7 +122,7 @@ public class Award {
     }
     
     private void setModified() {
-        this.modified = DATE_FORMAT.format(Calendar.getInstance().toString());
+        this.modified = DATE_FORMAT.format(Calendar.getInstance().getTime());
         db = new DbUtilities();
         String sql = "UPDATE Award SET modified = '" + this.modified + "' WHERE awardID = '" + this.awardID + "';";
         try {
