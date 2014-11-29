@@ -125,11 +125,12 @@
 
         for (var i = 0; i < data['WorkExperienceList'].length; i++) {
             $endDate = data['WorkExperienceList'][i].endDate;
+            $currentlyEmployed = data['WorkExperienceList'][i].currentlyEmployed;
             
-//            Changes end date to present if currently employed
-//                if (data.currentlyEmployed == 1){
-//                    $endDate = "Present";
-//                }
+            //Changes end date to present if currently employed
+                if ($currentlyEmployed === 1){
+                    $endDate = "Present";
+                }
             
             $workExperience.append('<div style="padding: 0 0 20px 0;">');
             $workExperience.append('<div style="float:right; display:inline"><h4>' + data['WorkExperienceList'][i].startDate + ' - ' + $endDate + '</h4></div>');

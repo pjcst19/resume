@@ -4,23 +4,48 @@
     Author     : Mandy
 --%>
 
-<%@page import="edu.pitt.utilities.Security"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-<!--Security-->
-<%
-    String resumeID = "";
-    if (Security.checkHijackedSession(session, request)) {
-        response.sendRedirect("index.jsp");
-    } else {
-        resumeID = request.getParameter("resumeID");
-    }
-%>
-
 <%@ include file="includes/header.jsp" %>
 
-<script src="js/editResumeFunctions.js" type="text/javascript"></script>
-<script src="js/koDatePickerBinding.js"></script>
+<script src="js/editResumeFunctions.js" type="text/javascript">
+</script>
+
+<script>
+ko.bindingHandlers.datepicker = {
+    init: function(element, valueAccessor, allBindingsAccessor) {
+        //initialize datepicker with some optional options
+        var options = allBindingsAccessor().datepickerOptions || {};
+        $(element).datepicker(options);
+          
+        //handle the field changing
+        ko.utils.registerEventHandler(element, "change", function () {
+            var observable = valueAccessor();
+            observable($(element).datepicker("getDate"));
+        });
+        
+        //handle disposal (if KO removes by the template binding)
+        ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+            $(element).datepicker("destroy");
+        });
+    
+    },
+    //update the control when the view model changes
+    update: function(element, valueAccessor) {
+        var value = ko.utils.unwrapObservable(valueAccessor()),
+            current = $(element).datepicker("getDate");
+        
+        if (value - current !== 0) {
+            $(element).datepicker("setDate", value);   
+        }
+    }
+};
+
+</script>
+
+<script>
+    $(function () {
+        $(".datepicker").datepicker();
+    });
+</script>
 
 
 <div class="panel-heading">
@@ -57,7 +82,7 @@
 
                 <label> GPA </label><input data-bind="value: gpa" type="number" class="form-control" id="txtGPA" name="txtGPA" placeholder="GPA" min="0" max="4" step="0.1" style="width:20%; display:inline" required>
                 <label> Graduation Date </label><input data-bind="datepicker: graduationDate" type="text" class="form-control datepicker" id="txtGraduationDate" name="txtGraduationDate" placeholder="Graduation Date" required style="width:20%; display:inline">
-
+                
 
                 <br><br>
 
@@ -77,8 +102,8 @@
 
                 <label style="display:inline"> Business Name </label><br><input data-bind="value: businessName" type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
                 <label style="display:inline"> Position </label><br><input data-bind="value: position" type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position" required><br>
-                <label style="display:inline"> Start Date </label><input data-bind="datepicker: startDate,  datepickerOptions: { maxDate: '+1M +1D'}" type="date" class="form-control datepicker" style="width:20%; display:inline">
-                <label style="display:inline"> End Date </label><input data-bind="datepicker: endDate, datepickerOptions: { maxDate: '+1M +1D'}" type="date" class="form-control datepicker" style="width:20%; display:inline">
+                <label style="display:inline"> Start Date </label><input data-bind="datepicker: startDate" type="date" class="form-control datepicker" style="width:20%; display:inline">
+                <label style="display:inline"> End Date </label><input data-bind="datepicker: endDate" type="date" class="form-control datepicker" style="width:20%; display:inline">
 
                 <!-- How do I deal with the Radio Button??-->
                 <label style="display:inline">Currently Employed? </label>

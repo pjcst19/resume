@@ -11,7 +11,7 @@
         ResumeModel = function () {
             var self = this;
             self.resumes = ko.observableArray();
-            $.getJSON("rest/resumews?resumeID=00b4443b-4903-489e-b486-2869bb5c317a", function (json) {
+            $.getJSON("rest/resumews?resumeID=<%out.print(resumeID);%>", function (json) {
                 data = json;
 
                 self.EducationList = ko.observableArray();

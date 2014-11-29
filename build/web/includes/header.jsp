@@ -52,4 +52,4 @@
 
 
         <div id="mainContainer" class="container theme-showcase" style="width:900px">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">

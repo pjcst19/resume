@@ -3,9 +3,8 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
-import edu.pitt.utilities.Security;
 
-public final class viewEditResume_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class viewEditResumeDatePicker_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -37,7 +36,7 @@ public final class viewEditResume_jsp extends org.apache.jasper.runtime.HttpJspB
     PageContext _jspx_page_context = null;
 
     try {
-      response.setContentType("text/html;charset=UTF-8");
+      response.setContentType("text/html");
       pageContext = _jspxFactory.getPageContext(this, request, response,
       			null, true, 8192, true);
       _jspx_page_context = pageContext;
@@ -47,20 +46,6 @@ public final class viewEditResume_jsp extends org.apache.jasper.runtime.HttpJspB
       out = pageContext.getOut();
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
-
-      out.write("\n");
-      out.write("\n");
-      out.write("\n");
-      out.write("\n");
-      out.write("\n");
-      out.write("<!--Security-->\n");
-
-    String resumeID = "";
-    if (Security.checkHijackedSession(session, request)) {
-        response.sendRedirect("index.jsp");
-    } else {
-        resumeID = request.getParameter("resumeID");
-    }
 
       out.write('\n');
       out.write('\n');
@@ -117,8 +102,46 @@ public final class viewEditResume_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("            <div class=\"panel panel-primary\">\r\n");
       out.write("\n");
       out.write("\n");
-      out.write("<script src=\"js/editResumeFunctions.js\" type=\"text/javascript\"></script>\n");
-      out.write("<script src=\"js/koDatePickerBinding.js\"></script>\n");
+      out.write("<script src=\"js/editResumeFunctions.js\" type=\"text/javascript\">\n");
+      out.write("</script>\n");
+      out.write("\n");
+      out.write("<script>\n");
+      out.write("ko.bindingHandlers.datepicker = {\n");
+      out.write("    init: function(element, valueAccessor, allBindingsAccessor) {\n");
+      out.write("        //initialize datepicker with some optional options\n");
+      out.write("        var options = allBindingsAccessor().datepickerOptions || {};\n");
+      out.write("        $(element).datepicker(options);\n");
+      out.write("          \n");
+      out.write("        //handle the field changing\n");
+      out.write("        ko.utils.registerEventHandler(element, \"change\", function () {\n");
+      out.write("            var observable = valueAccessor();\n");
+      out.write("            observable($(element).datepicker(\"getDate\"));\n");
+      out.write("        });\n");
+      out.write("        \n");
+      out.write("        //handle disposal (if KO removes by the template binding)\n");
+      out.write("        ko.utils.domNodeDisposal.addDisposeCallback(element, function() {\n");
+      out.write("            $(element).datepicker(\"destroy\");\n");
+      out.write("        });\n");
+      out.write("    \n");
+      out.write("    },\n");
+      out.write("    //update the control when the view model changes\n");
+      out.write("    update: function(element, valueAccessor) {\n");
+      out.write("        var value = ko.utils.unwrapObservable(valueAccessor()),\n");
+      out.write("            current = $(element).datepicker(\"getDate\");\n");
+      out.write("        \n");
+      out.write("        if (value - current !== 0) {\n");
+      out.write("            $(element).datepicker(\"setDate\", value);   \n");
+      out.write("        }\n");
+      out.write("    }\n");
+      out.write("};\n");
+      out.write("\n");
+      out.write("</script>\n");
+      out.write("\n");
+      out.write("<script>\n");
+      out.write("    $(function () {\n");
+      out.write("        $(\".datepicker\").datepicker();\n");
+      out.write("    });\n");
+      out.write("</script>\n");
       out.write("\n");
       out.write("\n");
       out.write("<div class=\"panel-heading\">\n");
@@ -154,8 +177,8 @@ public final class viewEditResume_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("                <label> Minor/Related Area </label><input data-bind=\"value: minor\" type=\"text\" class=\"form-control\" id=\"txtMinorType\" name=\"txtMinorType\" placeholder=\"Minor or Related Area\" style=\"width:31%; display:inline\"><br><br>\n");
       out.write("\n");
       out.write("                <label> GPA </label><input data-bind=\"value: gpa\" type=\"number\" class=\"form-control\" id=\"txtGPA\" name=\"txtGPA\" placeholder=\"GPA\" min=\"0\" max=\"4\" step=\"0.1\" style=\"width:20%; display:inline\" required>\n");
-      out.write("                <label> Graduation Date </label><input data-bind=\"datepicker: graduationDate\" type=\"text\" class=\"form-control datepicker\" id=\"txtGraduationDate\" name=\"txtGraduationDate\" placeholder=\"Graduation Date\" required style=\"width:20%; display:inline\">\n");
-      out.write("\n");
+      out.write("                <label> Graduation Date </label><input data-bind=\"value: graduationDate\" type=\"text\" class=\"form-control datepicker\" id=\"txtGraduationDate\" name=\"txtGraduationDate\" placeholder=\"Graduation Date\" required style=\"width:20%; display:inline\">\n");
+      out.write("                <input data-bind=\"datepicker: graduationDate\"/>\n");
       out.write("\n");
       out.write("                <br><br>\n");
       out.write("\n");
@@ -175,8 +198,8 @@ public final class viewEditResume_jsp extends org.apache.jasper.runtime.HttpJspB
       out.write("\n");
       out.write("                <label style=\"display:inline\"> Business Name </label><br><input data-bind=\"value: businessName\" type=\"text\" class=\"form-control\" id=\"txtBusinessName\" name=\"txtBusinessName\" placeholder=\"Employer\" required autofocus=\"\"><br>\n");
       out.write("                <label style=\"display:inline\"> Position </label><br><input data-bind=\"value: position\" type=\"text\" class=\"form-control\" id=\"txtPosition\" name=\"txtPosition\" placeholder=\"Position\" required><br>\n");
-      out.write("                <label style=\"display:inline\"> Start Date </label><input data-bind=\"datepicker: startDate,  datepickerOptions: { maxDate: '+1M +1D'}\" type=\"date\" class=\"form-control datepicker\" style=\"width:20%; display:inline\">\n");
-      out.write("                <label style=\"display:inline\"> End Date </label><input data-bind=\"datepicker: endDate, datepickerOptions: { maxDate: '+1M +1D'}\" type=\"date\" class=\"form-control datepicker\" style=\"width:20%; display:inline\">\n");
+      out.write("                <label style=\"display:inline\"> Start Date </label><input data-bind=\"value: startDate\" type=\"date\" class=\"form-control datepicker\" style=\"width:20%; display:inline\">\n");
+      out.write("                <label style=\"display:inline\"> End Date </label><input data-bind=\"value: endDate\" type=\"date\" class=\"form-control datepicker\" style=\"width:20%; display:inline\">\n");
       out.write("\n");
       out.write("                <!-- How do I deal with the Radio Button??-->\n");
       out.write("                <label style=\"display:inline\">Currently Employed? </label>\n");
