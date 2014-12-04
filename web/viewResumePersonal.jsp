@@ -86,7 +86,7 @@
         $emailPhoneInfo = $('#emailPhoneInfo');
 
         $userName.append('<h1>' + data.firstName + ' '+ data.lastName + '</h1>');
-        $emailPhoneInfo.append('<h4> <strong>Phone: </strong>' + data.phoneNumber + '&nbsp &nbsp<strong>   Email: </strong>' + data.email + '</h4>');
+        $emailPhoneInfo.append('<h4 style="display:inline"> <strong>Phone: </strong>' + data.phoneNumber + '&nbsp &nbsp<strong>   Email: </strong>' + data.email + '</h4>');
 
     }
     ;
@@ -101,7 +101,7 @@
 
 
         for (var i = 0; i < data['addresses'].length; i++) {
-            $contactInfo.append('<h4>' + data['addresses'][i].addressLine1 + ' ' + data['addresses'][i].addressLine2 + ', '
+            $contactInfo.append('<h4 style="display:inline">' + data['addresses'][i].addressLine1 + ' ' + data['addresses'][i].addressLine2 + ', '
                                 + data['addresses'][i].city + ', ' + data['addresses'][i].state + ' ' + data['addresses'][i].postalCode + '</h4>');
         }
 
@@ -150,16 +150,18 @@
 
     <!-- Header -->
     <header class="row-fluid">
-        <div class="title span9" id="userName">
+        <div class="title span10" id="userName">
             <!--            <h1>John Smith</h1>-->
         </div>
-        <div class="title span9" id="contactInfo">
-            <!--Address Information Appears Here-->
+        <div class="title span10">
+            <span id="contactInfo"></span> - 
+            <span id="emailPhoneInfo"></span>
+            
         </div>
 
-        <div class="title span9" id="emailPhoneInfo">
-            <!--Phone and Email Information Appears Here-->
-        </div>	
+<!--        <div class="title span9" id="emailPhoneInfo">
+            Phone and Email Information Appears Here
+        </div>	-->
     </header>
 
 

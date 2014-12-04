@@ -46,9 +46,9 @@
 
 
                 <br>
-                <button class="btn btn-lg btn-primary" type="button" id="btnEducation" onclick="window.location.href = 'personalInfo.jsp'">Back</button>
-                <button class="btn btn-lg btn-primary" type="button" id="btnAddEducation">Add Education</button>
-                <button class="btn btn-lg btn-primary" type="submit" onclick="submitEdu();"id="btnSubmit" name="btnSubmit">Next</button>
+                <button class="btn btn-lg btn-default" type="button" id="btnEducation" onclick="window.location.href = 'personalInfo.jsp'">Back</button>
+                <button class="btn btn-lg btn-default" type="button" id="btnAddEducation">Add Education</button>
+                <button class="btn btn-lg btn-default" type="submit" onclick="submitEdu();"id="btnSubmit" name="btnSubmit">Next</button>
                 <br>
 
 

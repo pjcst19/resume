@@ -47,7 +47,7 @@
                         </div> 
                     </div>
                     <br>
-                    <button class="btn btn-lg btn-primary" type="submit" name="btnSubmitPersonalInfo" id="btnSubmitPersonalInfo">Submit Change</button>
+                    <button class="btn btn-lg btn-default" type="submit" name="btnSubmitPersonalInfo" id="btnSubmitPersonalInfo">Submit Change</button>
                 </form><br>
 
             </div>

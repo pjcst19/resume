@@ -19,9 +19,25 @@
 <%@ include file="includes/header.jsp" %>
 <%@ include file="js/editResumeFunctions.js.jsp" %>
 
+    <!--Allows the user to show/hide each section of the resume when editing-->
+<script>
+    $(document).ready(function () {
+        $("#editEduButton").click(function () {
+            $("#editEduList").toggle();
+        });
+    });
+
+    $(document).ready(function () {
+        $("#editWorkButton").click(function () {
+            $("#editWorkList").toggle();
+        });
+    });
+    
+</script>
 
 <!--<script src="js/editResumeFunctions.js" type="text/javascript"></script>-->
 <script src="js/koDatePickerBinding.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
 
     function submitJSON(data) {
@@ -47,7 +63,7 @@
 
     <div id="page-header">
         <h2 class="form-signin-heading resumeHeader">Education</h2><br>
-        <button class="expandButton"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" id="editWorkButton"></span></button><br><br>
+        <button class="expandButton"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" id="editEduButton"></span></button><br><br>
     </div>
 
     <div data-bind="foreach: resumes">
