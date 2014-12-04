@@ -145,6 +145,7 @@
 
 </script>
 
+
 <section class="resume">
 
     <!-- Header -->
@@ -176,6 +177,7 @@
     <article class="row-fluid">
         <header class="span3">
             <h2>Work Experience</h2>
+             <button class="expandButton">
         </header>
         <div class="span9" id="workExperience">
             <!--Work Experience Information Appears Here -->
@@ -186,8 +188,7 @@
 
     <!-- Footer -->
     <footer>
-        <a href="#">Download as PDF</a> | <a href="#" onclick="javascript
-                :window.print();">Print</a>
+        <a href="#">Download as PDF</a> | <a href="#" onclick="javascript:window.print();">Print</a>
 
     </footer>
 

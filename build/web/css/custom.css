@@ -268,3 +268,10 @@ p {
 
 .right {float:right;}
 
+.expandButton {background-color:white;
+               border: none;
+               border-radius: 10px;}
+               
+.resumeHeader {display:inline;
+               margin-bottom: 20px;}
+
