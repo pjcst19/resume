@@ -5,9 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-                </div><!-- /container -->
-            </div>
-        </div>
+    </div><!-- /main container -->
+            
+       
 
         <!-- Bootstrap core JavaScript
         ================================================== -->

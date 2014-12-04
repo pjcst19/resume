@@ -21,24 +21,40 @@
 
 <script src="js/editResumeFunctions.js" type="text/javascript"></script>
 <script src="js/koDatePickerBinding.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#editEduButton").click(function () {
+            $("#editEduList").toggle();
+        });
+    });
+
+    $(document).ready(function () {
+        $("#editWorkButton").click(function () {
+            $("#editWorkList").toggle();
+        });
+    });
+</script>
 
 
 <div class="panel-heading">
     <h3 class="panel-title"><strong>Edit Your Resume</strong></h3>
-</div>
+</div><!--/End panel heading-->
 
 <div class="panel-body">
 
     <div id="page-header">
-        <h2 class="form-signin-heading">Education</h2><br>
-    </div>
+        <h2 class="form-signin-heading resumeHeader">Education</h2>
+        <button type="button" class="expandButton"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" id="editEduButton"></span></button><br><br>
+    </div><!--/End page header
 
     <div data-bind="foreach: resumes">
-        <!--            Resume ID: <input data-bind="value: resumeID"><br/>-->
-        <div data-bind="foreach: EducationList">
+    <!--            Resume ID: <input data-bind="value: resumeID"><br/>-->
+    <div data-bind="foreach: EducationList">
 
+        <div id="editEduList">
             <form class="form-signin" method="post" action="processEducation">
-
 
                 <label> University</label>
                 <input data-bind="value: name" type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" required autofocus=""><br>
@@ -63,14 +79,18 @@
 
             </form><br>
 
-        </div>
+        </div><!--End editEduList-->
 
-        <div id="page-header">
-            <h2 class="form-signin-heading">Work Experience</h2><br>
-        </div>
+    </div>
 
-        <div data-bind="foreach: WorkExperienceList">
+    <div id="page-header">
+        <h2 class="form-signin-heading resumeHeader">Work Experience</h2>
+        <button class="expandButton"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" id="editWorkButton"></span></button><br><br>
+    </div>
 
+    <div data-bind="foreach: WorkExperienceList">
+
+        <div id="editWorkList">
 
             <form style="margin:0px 0px 50px 0px;">
 
@@ -90,15 +110,17 @@
 
             </form>
 
-
-
         </div>
 
 
 
-
-    </div>
-    <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>
+    </div><!--end editWorkExperience-->
 
 
-    <%@ include file="includes/footer.jsp" %>
+
+
+</div><!--End Panel Body-->
+<!--<pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>-->
+
+
+<%@ include file="includes/footer.jsp" %>
