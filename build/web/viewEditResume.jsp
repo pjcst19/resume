@@ -37,7 +37,8 @@
 
 <!--<script src="js/editResumeFunctions.js" type="text/javascript"></script>-->
 <script src="js/koDatePickerBinding.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+
 <script>
 
     function submitJSON(data) {
