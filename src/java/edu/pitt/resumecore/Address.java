@@ -257,7 +257,7 @@ public class Address {
     }
 
     private void setModified() {
-        this.modified = DATE_FORMAT.format(Calendar.getInstance().toString());
+        this.modified = DATE_FORMAT.format(Calendar.getInstance().getTime());
         db = new DbUtilities();
         String sql = "UPDATE Address SET modified = '" + this.modified + "' WHERE addressID = '" + this.addressID + "';";
         try {

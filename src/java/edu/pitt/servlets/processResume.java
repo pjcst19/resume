@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,10 +45,14 @@ public class processResume extends HttpServlet {
                 response.sendRedirect("index.jsp");
             } else {
                try {
-                   Resume resume = new Resume(new JSONObject(request.getParameter("resume")));
+                   JSONArray resumeJSONArray = new JSONArray(request.getParameter("resume"));
+                   JSONObject resumeJSONObject = resumeJSONArray.getJSONObject(0);
+                   Resume resume = new Resume(resumeJSONObject);
                } catch (JSONException ex) {
                    Logger.getLogger(processResume.class.getName()).log(Level.SEVERE, null, ex);
+               } finally{
                }
+              
            }
         }
     }

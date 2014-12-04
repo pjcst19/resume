@@ -16,14 +16,10 @@ $(document).ready(function () {
         $('#additionalEducation').append($('<div>').load('eduForm.html'));
         return false;
     });
-});
 
-//Loads the Education Form
-
-$(document).ready(function () {
+    //Loads the Education Form
     $("#eduForm").load("eduForm.html");
 });
-
 
 //Submits all forms on page
 
@@ -47,8 +43,7 @@ function submitEdu() {
     });
     window.location.href = 'workExperience.jsp';
 
-}
-;
+};
 
 
 

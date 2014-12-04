@@ -195,7 +195,7 @@ public class Education {
     }
 
     private void setModified() {
-        this.modified = DATE_FORMAT.format(Calendar.getInstance().toString());
+        this.modified = DATE_FORMAT.format(Calendar.getInstance().getTime());
         db = new DbUtilities();
         String sql = "UPDATE Education SET modified = '" + this.modified + "' WHERE educationID = '" + this.educationID + "';";
         try {

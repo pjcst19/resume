@@ -207,6 +207,7 @@ public class Resume {
      * @param rating the rating to set
      */
     public void setRating(int rating) {
+        db = new DbUtilities();
         String sql = "UPDATE Resume SET rating = '" + rating + "' WHERE resumeID = '" + this.resumeID + "';";
         try {
             db.executeQuery(sql);
@@ -221,7 +222,7 @@ public class Resume {
     }
 
     private void setModified() {
-        this.modified = DATE_FORMAT.format(Calendar.getInstance().toString());
+        this.modified = DATE_FORMAT.format(Calendar.getInstance().getTime());
         db = new DbUtilities();
         String sql = "UPDATE Resume SET modified = '" + this.modified + "' WHERE resumeID = '" + this.resumeID + "';";
         try {
@@ -380,38 +381,48 @@ public class Resume {
             setUserID(resume.getString("userID"));
             setRating(resume.getInt("rating"));
 
-            JSONArray resumeAddressList = resume.getJSONArray("addresses");
-            JSONArray resumeEducationList = resume.getJSONArray("EducationList");
-            JSONArray resumeAwardList = resume.getJSONArray("AwardList");
-            JSONArray resumeWorkExperienceList = resume.getJSONArray("WorkExperienceList");
-
-            int addressListLength = resumeAddressList.length();
-
-            for (int i = 0; i < addressListLength; i++) {
-                Address address = new Address(resumeAddressList.getJSONObject(i));
+            if(resume.has("addresses")){
+                JSONArray resumeAddressList = resume.getJSONArray("addresses");
+                int addressListLength = resumeAddressList.length();
+            
+                for (int i = 0; i < addressListLength; i++) {
+                    Address address = new Address(resumeAddressList.getJSONObject(i));
+                }
             }
             
-            int educationListLength = resumeEducationList.length();
-
-            for (int i = 0; i < educationListLength; i++) {
-                Education education = new Education(resumeEducationList.getJSONObject(i));
+            if(resume.has("EducationList")){
+                JSONArray resumeEducationList = resume.getJSONArray("EducationList");
+                
+                 int educationListLength = resumeEducationList.length();
+            
+                for (int i = 0; i < educationListLength; i++) {
+                    Education education = new Education(resumeEducationList.getJSONObject(i));
+                }
             }
             
-            int awardListLength = resumeAwardList.length();
+            if(resume.has("AwardList")){
+                 JSONArray resumeAwardList = resume.getJSONArray("AwardList");
+                 
+                  int awardListLength = resumeAwardList.length();
 
-            for (int i = 0; i < awardListLength; i++) {
-                Award award = new Award(resumeAwardList.getJSONObject(i));
+                for (int i = 0; i < awardListLength; i++) {
+                    Award award = new Award(resumeAwardList.getJSONObject(i));
+                }
             }
             
-            int workExperienceLength = resumeWorkExperienceList.length();
+            if(resume.has("WorkExperienceList")){
+                JSONArray resumeWorkExperienceList = resume.getJSONArray("WorkExperienceList");
+                
+                int workExperienceLength = resumeWorkExperienceList.length();
 
-            for (int i = 0; i < workExperienceLength; i++) {
-                WorkExperience workExperience = new WorkExperience(resumeWorkExperienceList.getJSONObject(i));
+                for (int i = 0; i < workExperienceLength; i++) {
+                    WorkExperience workExperience = new WorkExperience(resumeWorkExperienceList.getJSONObject(i));
+                }
             }
-
             
         } catch (JSONException ex) {
-            ErrorLogger.log("An error has occurred within getResumeAsJSON. " + ex.getMessage());
+//            ErrorLogger.log("An error has occurred within getResumeAsJSON. " + ex.getMessage());
+             Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

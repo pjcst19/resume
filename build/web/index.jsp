@@ -8,10 +8,9 @@
 <%@ include file="includes/header.jsp" %>
 
 <div class="panel-heading panel-default">
-    <h3 class="panel-title panel-default"><strong>Login</strong></h3>
+    <h2 class="panel-title panel-default"><strong>Login</strong></h2>
 </div><div class="panel-body"><div class="page-header">
         <form class="form-signin" method="post" action="login">
-            <h2 class="form-signin-heading">Login</h2><br>
             <% out.print(errorMessage);%>
             <input type="text" name="txtEmailAddress" id="txtEmailAddress" class="form-control" placeholder="Username" required="required" autofocus>
             <br>

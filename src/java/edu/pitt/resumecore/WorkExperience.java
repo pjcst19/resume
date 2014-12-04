@@ -169,7 +169,7 @@ public class WorkExperience {
 
     public void setCurrentlyEmployed(int currentlyEmployed) {
         db = new DbUtilities();
-        String sql = "UPDATE WorkExperience SET currentlyEmployed = '" + currentlyEmployed + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
+        String sql = "UPDATE WorkExperience SET currentlyEmployed = " + currentlyEmployed + " WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -198,7 +198,7 @@ public class WorkExperience {
     }
 
     private void setModified() {
-        this.modified = DATE_FORMAT.format(Calendar.getInstance().toString());
+        this.modified = DATE_FORMAT.format(Calendar.getInstance().getTime());
         db = new DbUtilities();
         String sql = "UPDATE WorkExperience SET modified = '" + this.modified + "' WHERE workExperienceID = '" + this.workExperienceID + "';";
         try {
