@@ -45,13 +45,10 @@
         <br>
         <button class="btn btn-lg btn-primary" type="button" id="btnEducation" onclick="window.location.href = 'personalInfo.jsp'">Back</button>
         <button class="btn btn-lg btn-primary" type="button" id="btnAddEducation">Add Education</button>
-        <button class="btn btn-lg btn-primary" type="submit" onclick="submitEdu();"id="btnSubmit" name="btnSubmit">Next</button>
+        <button class="btn btn-lg btn-primary" type="submit" onclick="submitEdu();" id="btnSubmit" name="btnSubmit">Next</button>
         <br>
 
 
     </div><!--End of div page-header-->
-</div><!-- /container -->
-</div>
-</div>
-</body>
-</html>
+    
+<%@ include file="includes/header.jsp" %>

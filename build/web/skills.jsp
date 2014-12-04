@@ -1,4 +1,4 @@
-<%-- 
+ <%--
     Document   : skills
     Created on : Apr 15, 2014, 9:08:49 PM
     Author     : Mandy
@@ -8,14 +8,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 
-    //Security security = new Security();
-    //if (security.checkHijackedSession(session, request)){
+    Security security = new Security();
+    if (security.checkHijackedSession(session, request)){
 	//response.sendRedirect("index.jsp");
-//}
+}
 
-     //if (Security.checkHijackedSession(session, request)) {
+     if (Security.checkHijackedSession(session, request)) {
         //response.sendRedirect("index.jsp");
-    //}
+    }
 
 %>
 <!DOCTYPE html>

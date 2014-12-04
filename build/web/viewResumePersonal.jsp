@@ -184,12 +184,6 @@
     </article>
 
 
-    <!-- Footer -->
-    <footer>
-        <a href="#">Download as PDF</a> | <a href="#" onclick="javascript
-                :window.print();">Print</a>
-
-    </footer>
 
 </section><!--End of container-->
 

@@ -6,23 +6,51 @@
         response.sendRedirect("index.jsp");
     }
 %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title></title>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
-
-        <title>Resume Management System</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-        <link href="css/custom.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<%@ include file="includes/header.jsp" %>
+                    <div class="panel-heading"><strong>Search</strong></div>
+                    <div class="col-xs-12">
+                        <br>
+                        <div class="input-group">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    Search by:
+                                </div>
+                                <div class="col-xs-4">
+                                    <select id="searchOption" class="form-control">
+                                        <option value="lastName" selected>Last Name</option>
+                                        <option value="login">Login</option>
+                                        <option value="email">Email</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-5">
+                                    <input type="text" id="txtSearchbox" name="txtSearchbox" class="form-control" placeholder="Enter search terms here">
+                                </div>
+                                <div class="col-xs-1">
+                                    <button class="btn btn-default" type="button">Search</button>
+                                </div>
+                                <br>
+                            </div>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <br>
+                    <br>
+                    <hr>
+                    <table class="table" id ="tblUserList" border="1" cellpadding="5" cellspacing="0">
+                        <tr>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Login </td>
+                            <th>Email</td>
+                            <th>Access Type</th>
+                            <th>Status</th>
+                            <th id="searchCol"></th>
+                            <th>View/Edit</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+      
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
         <script language="javascript">
             var $restPath = "rest/userws?lastName=";
             var $searchField = "lastName";
@@ -148,77 +176,5 @@
                 }
             }
         </script>
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span></button> <a class="navbar-brand" href="#">Resume Management System</a>
-                </div>
-
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="menu.jsp">Home</a></li>
-
-                        <li><a href="#about">Help</a></li>
-                    </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <ul class="nav pull-right">
-                                <a class="btn btn-default navbar-btn" href="logout">Logout</a>
-                            </ul>
-                        </li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </div>
-
-
-        <div>
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><strong>Search</strong></div>
-                    <div class="col-xs-12">
-                        <br>
-                        <div class="input-group">
-                            <div class="row">
-                                <div class="col-xs-2">
-                                    Search by:
-                                </div>
-                                <div class="col-xs-4">
-                                    <select id="searchOption" class="form-control">
-                                        <option value="lastName" selected>Last Name</option>
-                                        <option value="login">Login</option>
-                                        <option value="email">Email</option>
-                                    </select>
-                                </div>
-                                <div class="col-xs-5">
-                                    <input type="text" id="txtSearchbox" name="txtSearchbox" class="form-control" placeholder="Enter search terms here">
-                                </div>
-                                <div class="col-xs-1">
-                                    <button class="btn btn-default" type="button">Search</button>
-                                </div>
-                                <br>
-                            </div>
-                        </div><!-- /input-group -->
-                    </div><!-- /.col-lg-6 -->
-                    <br>
-                    <br>
-                    <hr>
-                    <table class="table" id ="tblUserList" border="1" cellpadding="5" cellspacing="0">
-                        <tr>
-                            <th>Last Name</th>
-                            <th>First Name</th>
-                            <th>Login </td>
-                            <th>Email</td>
-                            <th>Access Type</th>
-                            <th>Status</th>
-                            <th id="searchCol"></th>
-                            <th>View/Edit</th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+        
+        <%@ include file="includes/footer.jsp" %>

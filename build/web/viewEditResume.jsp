@@ -22,7 +22,6 @@
 
 <!--<script src="js/editResumeFunctions.js" type="text/javascript"></script>-->
 <script src="js/koDatePickerBinding.js"></script>
-<<<<<<< HEAD
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <script>
@@ -37,7 +36,7 @@
             $("#editWorkList").toggle();
         });
     });
-=======
+
 <script>
 
     function submitJSON(data) {
@@ -50,7 +49,7 @@
                     //error:
         });
     }
->>>>>>> master
+
 </script>
 
 
@@ -69,16 +68,16 @@
     <!--            Resume ID: <input data-bind="value: resumeID"><br/>-->
     <div data-bind="foreach: EducationList">
 
-<<<<<<< HEAD
+
         <div id="editEduList">
             <form class="form-signin" method="post" action="processEducation">
 
                 <label> University</label>
                 <input data-bind="value: name" type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" required autofocus=""><br>
-=======
+
             <label> University</label>
             <input data-bind="value: name" type="text" class="form-control" id="txtSchoolName" name="txtSchoolName" required autofocus=""><br>
->>>>>>> master
+
 
             <select data-bind="value: type" class="form-control" id="txtDegreeType" name="txtDegreeType" required style="width:15%; display:inline">
                 <option value="Associates">Associates</option>
@@ -109,17 +108,12 @@
         <button class="expandButton"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" id="editWorkButton"></span></button><br><br>
     </div>
 
-<<<<<<< HEAD
     <div data-bind="foreach: WorkExperienceList">
 
         <div id="editWorkList">
 
             <form style="margin:0px 0px 50px 0px;">
 
-
-=======
-            <form>
->>>>>>> master
                 <label style="display:inline"> Business Name </label><br><input data-bind="value: businessName" type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
                 <label style="display:inline"> Position </label><br><input data-bind="value: position" type="text" class="form-control" id="txtPosition" name="txtPosition" placeholder="Position" required><br>
                 <label style="display:inline"> Start Date </label><input data-bind="datepicker: startDate,  datepickerOptions: { maxDate: '+1M +1D'}" type="date" class="form-control datepicker" style="width:20%; display:inline">
@@ -135,25 +129,20 @@
             </form>
 
         </div>
-<<<<<<< HEAD
-
-
-=======
->>>>>>> master
 
     </div><!--end editWorkExperience-->
 
 
 
-<<<<<<< HEAD
+
 
 </div><!--End Panel Body-->
 <!--<pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>-->
-=======
+
     </div>
-    <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>
+<!--    <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>-->
     <button data-bind="click:  this.submitJSON(ko.toJSON($root.resumes, null, 2))">Submit</button>
->>>>>>> master
+
 
 
 <%@ include file="includes/footer.jsp" %>
