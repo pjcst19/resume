@@ -160,7 +160,7 @@
 
         <!-- Displays the JSON - for Testing purposes-->
         <!--    <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>-->
-        <button data-bind="click:  this.submitJSON(ko.toJSON($root.resumes, null, 2))">Submit</button>
+        <button data-bind="click:  this.submitJSON(ko.toJSON($root.resumes, null, 2))" onclick="window.location.href = 'menu.jsp'">Submit</button>
 
         <!--Allows the user to show/hide each section of the resume when editing-->
         <script>

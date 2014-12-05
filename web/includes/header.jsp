@@ -4,6 +4,7 @@
     Author     : jordansfeldman
 --%>
 
+<%@page import="edu.pitt.resumecore.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +28,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-       
+
 
         <!--Scripts for Data Binding -->
         <script src="js/knockout-3.2.0.js"></script>
@@ -47,8 +48,8 @@
                     <!--Main Navigation-->
                     <ul class="nav navbar-nav" id="mainNavigation">
                         <li><a href="menu.jsp">Home</a></li>
-<!--                        <li><a href="personalInfo.jsp">Create Resume</a></li>
-                        <li><a href="listResumes.jsp">View/Edit Resumes</a></li>-->
+                        <li><a href='personalInfo.jsp'>Create Resume</a></li>
+                        <li><a href='listResumes.jsp?userID=" + user.getUserID() + "'>View/Edit Resumes</a></li>
                     </ul>
 
 
@@ -65,4 +66,4 @@
         </div><!--navbar-->
 
 
-       
+

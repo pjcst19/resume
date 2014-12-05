@@ -75,18 +75,3 @@
     });
     </script>
     
-<!--    Allows the user to show/hide each section of the resume when editing
-<script>
-    $(document).ready(function () {
-        $("#editEduButton").click(function () {
-            $("#editEduList").toggle();
-        });
-    });
-
-    $(document).ready(function () {
-        $("#editWorkButton").click(function () {
-            $("#editWorkList").toggle();
-        });
-    });
-    
-</script>-->
