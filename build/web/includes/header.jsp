@@ -6,6 +6,9 @@
 
 <%@page import="edu.pitt.resumecore.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+    User user = (User) session.getAttribute("authenticatedUser");
+%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -49,7 +52,7 @@
                     <ul class="nav navbar-nav" id="mainNavigation">
                         <li><a href="menu.jsp">Home</a></li>
                         <li><a href='personalInfo.jsp'>Create Resume</a></li>
-                        <li><a href='listResumes.jsp?userID=" + user.getUserID() + "'>View/Edit Resumes</a></li>
+                        <li><a href='listResumes.jsp?userID=<% out.print(user.getUserID()); %>'>View/Edit Resumes</a></li>
                     </ul>
 
 

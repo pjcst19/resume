@@ -58,5 +58,7 @@
     </div>
 </div>
 
-<script src="js/editResumeFunctions.js" type="text/javascript">
-    <%@ include file="includes/footer.jsp" %>
+<script src="js/editResumeFunctions.js" type="text/javascript"></script>
+<script src="js/searchResume.js" type="text/javascript"></script>
+
+<%@ include file="includes/footer.jsp" %>

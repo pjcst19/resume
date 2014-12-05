@@ -20,7 +20,7 @@
         <div class="panel-body">
             <ul>
                 <%
-                    User user = (User) session.getAttribute("authenticatedUser");
+                    //User user = (User) session.getAttribute("authenticatedUser");
                     if (user.getRoles().contains("student")) {
                         out.print("<li><a href='listResumes.jsp?userID=" + user.getUserID() + "'>Your Resumes</a></li>");
                         //Need to change this back to personalInfo.jsp

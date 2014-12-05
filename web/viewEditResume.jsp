@@ -21,9 +21,7 @@
 
 
 
-<!--<script src="js/editResumeFunctions.js" type="text/javascript"></script>-->
 <script src="js/koDatePickerBinding.js"></script>
-<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
 
 <script>
 
@@ -50,7 +48,7 @@
 
             <div id="page-header">
                 <h2 class="form-signin-heading resumeHeader">Education</h2><br>
-                <button class="expandButton" type="button"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" id="editEduButton"></span></button><br><br>
+                <button class="expandButton" type="button" id="editEduButton"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" ></span></button><br><br>
             </div>
 
             <div data-bind="foreach: resumes">
@@ -120,14 +118,14 @@
 
                 <div id="page-header">
                     <h2 class="form-signin-heading resumeHeader">Work Experience</h2><br>
-                    <button class="expandButton"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" id="editWorkButton"></span></button><br><br>
+                    <button class="expandButton" id="editWorkButton"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true" ></span></button><br><br>
                 </div>
 
                 <div id="editWorkList">
 
                     <div data-bind="foreach: WorkExperienceList">
 
-                        <div style="margin-bottom:50px">
+                        <div style="margin-bottom:0px">
 
                             <form>
                                 <label style="display:inline"> Business Name </label><br><input data-bind="value: businessName" type="text" class="form-control" id="txtBusinessName" name="txtBusinessName" placeholder="Employer" required autofocus=""><br>
@@ -137,51 +135,33 @@
 
                                 <!-- How do I deal with the Radio Button??-->
                                 <label style="display:inline">Currently Employed? </label>
-                                <input data-bind="checked: currentlyEmployed" type="radio"  id="rdoCurrentlyEmployed>" name="rdoCurrentlyEmployed" value="1" style="display:inline" required> Yes
+                                <input data-bind="checked: currentlyEmployed" type="radio"  id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="1" style="display:inline" required> Yes
                                 <input data-bind="checked: currentlyEmployed" type="radio"  id="rdoCurrentlyEmployed" name="rdoCurrentlyEmployed" value="0" style="display:inline" required> No<br><br>
 
                                 <label style="display:inline"> Description of Work </label><br>
                                 <textarea data-bind="value: description" class="form-control" rows="6" id="txtWorkDescription" name="txtWorkDescription" placeholder="Description of Work Experience" required></textarea><br>
                             </form>
-                            
                         </div>
-
                     </div><!--End editWorkList -->
-
                 </div>
-                <br><br>
-
-
-
-
             </div>
-
         </div>
 
         <!-- Displays the JSON - for Testing purposes-->
         <!--    <pre data-bind="text: ko.toJSON($root.resumes, null, 2)"></pre>-->
-        <button data-bind="click:  this.submitJSON(ko.toJSON($root.resumes, null, 2))" onclick="window.location.href = 'menu.jsp'">Submit</button>
+        <button class="btn" data-bind="click:  this.submitJSON(ko.toJSON($root.resumes, null, 2))" onclick="window.location.href = 'menu.jsp'" style="margin: 5px;">Submit</button>
 
         <!--Allows the user to show/hide each section of the resume when editing-->
         <script>
-            $(document).ready(function () {
-                $("#editEduButton").click(function () {
-                    $("#editEduList").toggle();
-                });
-                
+            
+            $(document).on('click', '#editEduButton', function(){
+                $("#editEduList").toggle();
             });
             
-            $(document).ready(function () {
-                $("#editWorkButton").click(function () {
-                    $("#editWorkList").toggle();
-                });
-                
+            $(document).on('click', '#editWorkButton', function(){
+                $("#editWorkList").toggle();
             });
-
            
-                
-
-
         </script>
 
 
