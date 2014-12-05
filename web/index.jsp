@@ -5,7 +5,7 @@
         errorMessage = "<div class=\"alert alert-warning\" role=\"alert\">" + session.getAttribute("errorMessage") + "</div>";
     }
 %>
-<%@ include file="includes/header.jsp" %>
+<%@ include file="includes/loginHeader.jsp" %>
 <div id="mainContainer" class="container theme-showcase" style="width:900px">
     <div class="panel panel-default">
 
