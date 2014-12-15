@@ -20,7 +20,9 @@ import java.util.logging.Logger;
 public class StringUtilities {
 
     /**
-     * Takes current date, separates month, day, and year with underscores and adds a file extension
+     * Takes current date, separates month, day, and year with underscores and
+     * adds a file extension
+     *
      * @param extension - Extension of a file, usually a .txt
      * @return File name
      */
@@ -28,27 +30,29 @@ public class StringUtilities {
         Date tempDate = new Date();
         return tempDate.getMonth() + "_" + tempDate.getDay() + "_" + tempDate.getYear() + "." + extension;
     }
-    
+
     /**
-    * Checks if a String varialbe consists only of numbers.  For example, if a String variable contains "1234" (only numbers),
-    * this method will return "true".  If a String variable contains even one non-numeric character - "123x4" - this method
-    * will return false. 
-    * @param str - String variable - we need to check if it can be converted to a number without an error
-    * @return boolean (true/false)
+     * Checks if a String varialbe consists only of numbers. For example, if a
+     * String variable contains "1234" (only numbers), this method will return
+     * "true". If a String variable contains even one non-numeric character -
+     * "123x4" - this method will return false.
+     *
+     * @param str - String variable - we need to check if it can be converted to
+     * a number without an error
+     * @return boolean (true/false)
      */
     public static boolean isNumeric(String str) {
         try {
-		double d = Double.parseDouble(str);
-	} 
-	catch (NumberFormatException nfe) {
-		return false;
-	}
-	return true;
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
-    
     /**
      * Replaces dangerous characters in SQL strings to prevent injections
+     *
      * @param data - a string parameter used to concatenate SQL queries
      * @return String with dangerous characters escaped or replaced
      */
@@ -61,6 +65,7 @@ public class StringUtilities {
 
     /**
      * Encodes password using MD5 encryption
+     *
      * @param password - user-provided password
      * @return encoded string
      */
@@ -82,13 +87,16 @@ public class StringUtilities {
         }
         return "";
     }
-    
+
     /**
-     * Checks if a UUID (a globally unique identifier - GUID) is in correct and valid format
-     * @param guid - a UUID in string format - the value that we need to validate
-     * @return  true if valid, false if invalid
+     * Checks if a UUID (a globally unique identifier - GUID) is in correct and
+     * valid format
+     *
+     * @param guid - a UUID in string format - the value that we need to
+     * validate
+     * @return true if valid, false if invalid
      */
-    public static boolean isValidGUID(String guid){
+    public static boolean isValidGUID(String guid) {
         UUID uuid = UUID.fromString(guid);
         return guid.equals(uuid.toString());
     }

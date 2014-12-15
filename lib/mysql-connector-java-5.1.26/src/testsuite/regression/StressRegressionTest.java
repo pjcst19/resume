@@ -2,23 +2,23 @@
  Copyright (c) 2002, 2012, Oracle and/or its affiliates. All rights reserved.
  
 
-  The MySQL Connector/J is licensed under the terms of the GPLv2
-  <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
-  There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
-  this software, see the FLOSS License Exception
-  <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
+ The MySQL Connector/J is licensed under the terms of the GPLv2
+ <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
+ There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
+ this software, see the FLOSS License Exception
+ <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 
-  This program is free software; you can redistribute it and/or modify it under the terms
-  of the GNU General Public License as published by the Free Software Foundation; version 2
-  of the License.
+ This program is free software; you can redistribute it and/or modify it under the terms
+ of the GNU General Public License as published by the Free Software Foundation; version 2
+ of the License.
 
-  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  See the GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ See the GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along with this
-  program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
-  Floor, Boston, MA 02110-1301  USA
+ You should have received a copy of the GNU General Public License along with this
+ program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
+ Floor, Boston, MA 02110-1301  USA
 
 
 
@@ -41,279 +41,279 @@ import testsuite.BaseTestCase;
 
 /**
  * Tests for multi-thread stress regressions.
- * 
+ *
  * @author Mark Matthews
  * @version $Id: StressRegressionTest.java,v 1.1.2.1 2005/05/13 18:58:38
- *          mmatthews Exp $
+ * mmatthews Exp $
  */
 public class StressRegressionTest extends BaseTestCase {
-	private int numThreadsStarted;
 
-	/**
-	 * Creates a new StressRegressionTest
-	 * 
-	 * @param name
-	 *            the name of the test.
-	 */
-	public StressRegressionTest(String name) {
-		super(name);
-	}
+    private int numThreadsStarted;
 
-	/**
-	 * Runs all test cases in this test suite
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(StressRegressionTest.class);
-	}
+    /**
+     * Creates a new StressRegressionTest
+     *
+     * @param name the name of the test.
+     */
+    public StressRegressionTest(String name) {
+        super(name);
+    }
 
-	/**
-	 * 
-	 * 
-	 * @throws Exception
-	 *             ...
-	 */
-	public synchronized void testContention() throws Exception {
-		if (false) {
-			System.out.println("Calculating baseline elapsed time...");
+    /**
+     * Runs all test cases in this test suite
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        junit.textui.TestRunner.run(StressRegressionTest.class);
+    }
 
-			long start = System.currentTimeMillis();
+    /**
+     *
+     *
+     * @throws Exception ...
+     */
+    public synchronized void testContention() throws Exception {
+        if (false) {
+            System.out.println("Calculating baseline elapsed time...");
 
-			contentiousWork(this.conn, this.stmt, 0);
+            long start = System.currentTimeMillis();
 
-			long singleThreadElapsedTimeMillis = System.currentTimeMillis()
-					- start;
+            contentiousWork(this.conn, this.stmt, 0);
 
-			System.out.println("Single threaded execution took "
-					+ singleThreadElapsedTimeMillis + " ms.");
+            long singleThreadElapsedTimeMillis = System.currentTimeMillis()
+                    - start;
 
-			int numThreadsToStart = 95;
+            System.out.println("Single threaded execution took "
+                    + singleThreadElapsedTimeMillis + " ms.");
 
-			System.out.println("\nStarting " + numThreadsToStart + " threads.");
+            int numThreadsToStart = 95;
 
-			this.numThreadsStarted = numThreadsToStart;
+            System.out.println("\nStarting " + numThreadsToStart + " threads.");
 
-			ContentionThread[] threads = new ContentionThread[this.numThreadsStarted];
+            this.numThreadsStarted = numThreadsToStart;
 
-			for (int i = 0; i < numThreadsToStart; i++) {
-				threads[i] = new ContentionThread(i);
-				threads[i].start();
-			}
+            ContentionThread[] threads = new ContentionThread[this.numThreadsStarted];
 
-			for (;;) {
-				try {
-					wait();
+            for (int i = 0; i < numThreadsToStart; i++) {
+                threads[i] = new ContentionThread(i);
+                threads[i].start();
+            }
 
-					if (this.numThreadsStarted == 0) {
-						break;
-					}
-				} catch (InterruptedException ie) {
-					// ignore
-				}
-			}
+            for (;;) {
+                try {
+                    wait();
 
-			// Collect statistics...
-			System.out.println("Done!");
+                    if (this.numThreadsStarted == 0) {
+                        break;
+                    }
+                } catch (InterruptedException ie) {
+                    // ignore
+                }
+            }
 
-			double avgElapsedTimeMillis = 0;
+            // Collect statistics...
+            System.out.println("Done!");
 
-			List<Long> elapsedTimes = new ArrayList<Long>();
+            double avgElapsedTimeMillis = 0;
 
-			for (int i = 0; i < numThreadsToStart; i++) {
-				elapsedTimes.add(new Long(threads[i].elapsedTimeMillis));
+            List<Long> elapsedTimes = new ArrayList<Long>();
 
-				avgElapsedTimeMillis += ((double) threads[i].elapsedTimeMillis / numThreadsToStart);
-			}
+            for (int i = 0; i < numThreadsToStart; i++) {
+                elapsedTimes.add(new Long(threads[i].elapsedTimeMillis));
 
-			Collections.sort(elapsedTimes);
+                avgElapsedTimeMillis += ((double) threads[i].elapsedTimeMillis / numThreadsToStart);
+            }
 
-			System.out.println("Average elapsed time per-thread was "
-					+ avgElapsedTimeMillis + " ms.");
-			System.out.println("Median elapsed time per-thread was "
-					+ elapsedTimes.get(elapsedTimes.size() / 2) + " ms.");
-			System.out.println("Minimum elapsed time per-thread was "
-					+ elapsedTimes.get(0) + " ms.");
-			System.out.println("Maximum elapsed time per-thread was "
-					+ elapsedTimes.get(elapsedTimes.size() - 1) + " ms.");
-		}
-	}
+            Collections.sort(elapsedTimes);
 
-	/**
-	 * 
-	 * 
-	 * @throws Exception
-	 *             ...
-	 */
-	public void testCreateConnections() throws Exception {
-		new CreateThread().start();
-	}
+            System.out.println("Average elapsed time per-thread was "
+                    + avgElapsedTimeMillis + " ms.");
+            System.out.println("Median elapsed time per-thread was "
+                    + elapsedTimes.get(elapsedTimes.size() / 2) + " ms.");
+            System.out.println("Minimum elapsed time per-thread was "
+                    + elapsedTimes.get(0) + " ms.");
+            System.out.println("Maximum elapsed time per-thread was "
+                    + elapsedTimes.get(elapsedTimes.size() - 1) + " ms.");
+        }
+    }
 
-	/**
-	 * 
-	 * 
-	 * @throws Exception
-	 *             ...
-	 */
-	public void testCreateConnectionsUnderLoad() throws Exception {
-		new CreateThread(new BusyThread()).start();
-	}
+    /**
+     *
+     *
+     * @throws Exception ...
+     */
+    public void testCreateConnections() throws Exception {
+        new CreateThread().start();
+    }
 
-	/**
-	 * 
-	 * @param threadConn
-	 * @param threadStmt
-	 * @param threadNumber
-	 */
-	void contentiousWork(Connection threadConn, Statement threadStmt,
-			int threadNumber) {
-		Date now = new Date();
+    /**
+     *
+     *
+     * @throws Exception ...
+     */
+    public void testCreateConnectionsUnderLoad() throws Exception {
+        new CreateThread(new BusyThread()).start();
+    }
 
-		try {
-			for (int i = 0; i < 1000; i++) {
-				ResultSet threadRs = threadStmt.executeQuery("SELECT 1, 2");
+    /**
+     *
+     * @param threadConn
+     * @param threadStmt
+     * @param threadNumber
+     */
+    void contentiousWork(Connection threadConn, Statement threadStmt,
+            int threadNumber) {
+        Date now = new Date();
 
-				while (threadRs.next()) {
-					threadRs.getString(1);
-					threadRs.getString(2);
-				}
+        try {
+            for (int i = 0; i < 1000; i++) {
+                ResultSet threadRs = threadStmt.executeQuery("SELECT 1, 2");
 
-				threadRs.close();
+                while (threadRs.next()) {
+                    threadRs.getString(1);
+                    threadRs.getString(2);
+                }
 
-				PreparedStatement pStmt = threadConn
-						.prepareStatement("SELECT ?");
-				pStmt.setTimestamp(1, new Timestamp(now.getTime()));
+                threadRs.close();
 
-				threadRs = pStmt.executeQuery();
+                PreparedStatement pStmt = threadConn
+                        .prepareStatement("SELECT ?");
+                pStmt.setTimestamp(1, new Timestamp(now.getTime()));
 
-				while (threadRs.next()) {
-					threadRs.getTimestamp(1);
-				}
+                threadRs = pStmt.executeQuery();
 
-				threadRs.close();
-				pStmt.close();
-			}
-		} catch (Exception ex) {
-			throw new RuntimeException(ex.toString());
-		}
-	}
+                while (threadRs.next()) {
+                    threadRs.getTimestamp(1);
+                }
 
-	synchronized void reportDone() {
+                threadRs.close();
+                pStmt.close();
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.toString());
+        }
+    }
+
+    synchronized void reportDone() {
 		// TODO: This test should just be refactored to use an executor and futures.
-		//this.numThreadsStarted--;
-		notify();
-	}
+        //this.numThreadsStarted--;
+        notify();
+    }
 
-	public class BusyThread extends Thread {
-		boolean stop = false;
+    public class BusyThread extends Thread {
 
-		public void run() {
-			while (!this.stop) {
-			}
-		}
-	}
+        boolean stop = false;
 
-	class ContentionThread extends Thread {
-		Connection threadConn;
+        public void run() {
+            while (!this.stop) {
+            }
+        }
+    }
 
-		Statement threadStmt;
+    class ContentionThread extends Thread {
 
-		int threadNumber;
+        Connection threadConn;
 
-		long elapsedTimeMillis;
+        Statement threadStmt;
 
-		public ContentionThread(int num) throws SQLException {
-			this.threadNumber = num;
-			this.threadConn = getConnectionWithProps(new Properties());
-			this.threadStmt = this.threadConn.createStatement();
+        int threadNumber;
 
-			System.out.println(this.threadConn);
-		}
+        long elapsedTimeMillis;
 
-		public void run() {
-			long start = System.currentTimeMillis();
+        public ContentionThread(int num) throws SQLException {
+            this.threadNumber = num;
+            this.threadConn = getConnectionWithProps(new Properties());
+            this.threadStmt = this.threadConn.createStatement();
 
-			try {
-				contentiousWork(this.threadConn, this.threadStmt,
-						this.threadNumber);
-				this.elapsedTimeMillis = System.currentTimeMillis() - start;
+            System.out.println(this.threadConn);
+        }
 
-				System.out
-						.println("Thread " + this.threadNumber + " finished.");
-			} finally {
-				if (this.elapsedTimeMillis == 0) {
-					this.elapsedTimeMillis = System.currentTimeMillis() - start;
-				}
+        public void run() {
+            long start = System.currentTimeMillis();
 
-				reportDone();
+            try {
+                contentiousWork(this.threadConn, this.threadStmt,
+                        this.threadNumber);
+                this.elapsedTimeMillis = System.currentTimeMillis() - start;
 
-				try {
-					this.threadStmt.close();
-					this.threadConn.close();
-				} catch (SQLException ex) {
-					// ignore
-				}
-			}
-		}
-	}
+                System.out
+                        .println("Thread " + this.threadNumber + " finished.");
+            } finally {
+                if (this.elapsedTimeMillis == 0) {
+                    this.elapsedTimeMillis = System.currentTimeMillis() - start;
+                }
 
-	class CreateThread extends Thread {
-		BusyThread busyThread;
+                reportDone();
 
-		int numConnections = 15;
+                try {
+                    this.threadStmt.close();
+                    this.threadConn.close();
+                } catch (SQLException ex) {
+                    // ignore
+                }
+            }
+        }
+    }
 
-		public CreateThread() {
-		}
+    class CreateThread extends Thread {
 
-		public CreateThread(BusyThread toStop) {
-			this.busyThread = toStop;
-		}
+        BusyThread busyThread;
 
-		public CreateThread(int numConns) {
-			this.numConnections = numConns;
-		}
+        int numConnections = 15;
 
-		public void run() {
-			try {
-				Connection[] connList = new Connection[this.numConnections];
+        public CreateThread() {
+        }
 
-				long maxConnTime = Long.MIN_VALUE;
-				long minConnTime = Long.MAX_VALUE;
-				double averageTime = 0;
+        public CreateThread(BusyThread toStop) {
+            this.busyThread = toStop;
+        }
 
-				Properties nullProps = new Properties();
+        public CreateThread(int numConns) {
+            this.numConnections = numConns;
+        }
 
-				for (int i = 0; i < this.numConnections; i++) {
-					long startTime = System.currentTimeMillis();
-					connList[i] = getConnectionWithProps(nullProps);
+        public void run() {
+            try {
+                Connection[] connList = new Connection[this.numConnections];
 
-					long endTime = System.currentTimeMillis();
-					long ellapsedTime = endTime - startTime;
+                long maxConnTime = Long.MIN_VALUE;
+                long minConnTime = Long.MAX_VALUE;
+                double averageTime = 0;
 
-					if (ellapsedTime < minConnTime) {
-						minConnTime = ellapsedTime;
-					}
+                Properties nullProps = new Properties();
 
-					if (ellapsedTime > maxConnTime) {
-						maxConnTime = ellapsedTime;
-					}
+                for (int i = 0; i < this.numConnections; i++) {
+                    long startTime = System.currentTimeMillis();
+                    connList[i] = getConnectionWithProps(nullProps);
 
-					averageTime += ((double) ellapsedTime / this.numConnections);
-				}
+                    long endTime = System.currentTimeMillis();
+                    long ellapsedTime = endTime - startTime;
 
-				if (this.busyThread != null) {
-					this.busyThread.stop = true;
-				}
+                    if (ellapsedTime < minConnTime) {
+                        minConnTime = ellapsedTime;
+                    }
 
-				for (int i = 0; i < this.numConnections; i++) {
-					connList[i].close();
-				}
+                    if (ellapsedTime > maxConnTime) {
+                        maxConnTime = ellapsedTime;
+                    }
 
-				System.out.println(minConnTime + "/" + maxConnTime + "/"
-						+ averageTime);
-			} catch (Exception ex) {
-				throw new RuntimeException(ex);
-			}
-		}
-	}
+                    averageTime += ((double) ellapsedTime / this.numConnections);
+                }
+
+                if (this.busyThread != null) {
+                    this.busyThread.stop = true;
+                }
+
+                for (int i = 0; i < this.numConnections; i++) {
+                    connList[i].close();
+                }
+
+                System.out.println(minConnTime + "/" + maxConnTime + "/"
+                        + averageTime);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
 }

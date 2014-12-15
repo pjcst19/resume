@@ -23,7 +23,7 @@ import org.json.JSONObject;
 /**
  * Creates a Resume object
  *
- * @author jordanstevenfeldman
+ * @author Jordan FeldmanStringUtilities.cleanMySqlInsert(
  */
 public class Resume {
 
@@ -82,18 +82,19 @@ public class Resume {
 
     /**
      * Creates an Resume object from JSON
+     *
      * @param resume JSON object for an Resume object
      */
-    public Resume(JSONObject resume){
+    public Resume(JSONObject resume) {
         try {
 //            setAllResumeProperties(resume.getString("resumeID")); 
-            this.resumeID = resume.getString("resumeID"); 
+            this.resumeID = resume.getString("resumeID");
             setResumeFromJSON(resume);
         } catch (JSONException ex) {
             Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void setAllResumeProperties(String resumeID) {
         String sql1 = "SELECT * FROM rms.Resume R LEFT JOIN rms.ResumeAddress ON resumeID = fk_resumeID LEFT JOIN rms.Address ON fk_addressID = addressID WHERE R.resumeID = '" + StringUtilities.cleanMySqlInsert(resumeID) + "'";
         System.out.println(sql1);
@@ -106,8 +107,8 @@ public class Resume {
                 this.userID = rs.getString("fk_userID");
                 this.created = rs.getTimestamp("created").toString();
                 this.modified = rs.getTimestamp("modified").toString();
-                if (rs.getString("addressID") != null){
-                 
+                if (rs.getString("addressID") != null) {
+
                     Address address = new Address(rs.getString("addressID"));
                     this.addresses.add(address);
                 }
@@ -381,48 +382,48 @@ public class Resume {
             setUserID(resume.getString("userID"));
             setRating(resume.getInt("rating"));
 
-            if(resume.has("addresses")){
+            if (resume.has("addresses")) {
                 JSONArray resumeAddressList = resume.getJSONArray("addresses");
                 int addressListLength = resumeAddressList.length();
-            
+
                 for (int i = 0; i < addressListLength; i++) {
                     Address address = new Address(resumeAddressList.getJSONObject(i));
                 }
             }
-            
-            if(resume.has("EducationList")){
+
+            if (resume.has("EducationList")) {
                 JSONArray resumeEducationList = resume.getJSONArray("EducationList");
-                
-                 int educationListLength = resumeEducationList.length();
-            
+
+                int educationListLength = resumeEducationList.length();
+
                 for (int i = 0; i < educationListLength; i++) {
                     Education education = new Education(resumeEducationList.getJSONObject(i));
                 }
             }
-            
-            if(resume.has("AwardList")){
-                 JSONArray resumeAwardList = resume.getJSONArray("AwardList");
-                 
-                  int awardListLength = resumeAwardList.length();
+
+            if (resume.has("AwardList")) {
+                JSONArray resumeAwardList = resume.getJSONArray("AwardList");
+
+                int awardListLength = resumeAwardList.length();
 
                 for (int i = 0; i < awardListLength; i++) {
                     Award award = new Award(resumeAwardList.getJSONObject(i));
                 }
             }
-            
-            if(resume.has("WorkExperienceList")){
+
+            if (resume.has("WorkExperienceList")) {
                 JSONArray resumeWorkExperienceList = resume.getJSONArray("WorkExperienceList");
-                
+
                 int workExperienceLength = resumeWorkExperienceList.length();
 
                 for (int i = 0; i < workExperienceLength; i++) {
                     WorkExperience workExperience = new WorkExperience(resumeWorkExperienceList.getJSONObject(i));
                 }
             }
-            
+
         } catch (JSONException ex) {
 //            ErrorLogger.log("An error has occurred within getResumeAsJSON. " + ex.getMessage());
-             Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Resume.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -118,7 +118,7 @@ public class User {
         } finally {
             String sql2 = "SELECT * FROM rms.User LEFT JOIN rms.UserAddress ON userID = fk_userID ";
             sql2 += "LEFT JOIN rms.Address ON fk_addressID = addressID ";
-            sql2 += "WHERE userID = '" + userID + '"';
+            sql2 += "WHERE userID = '" + userID + "'";
             setAllUserProperties(sql2);
             db.closeMySQLConnection();
         }
@@ -644,7 +644,7 @@ public class User {
             roles.remove("employer");
             sql = "DELETE FROM rms.Employer WHERE fk_userID = '" + this.userID + "';";
             this.setPlaceOfWork("");
-            this.setIndustry("");
+//            this.setIndustry("");
         }
 
         if (role.equals("staff")) {

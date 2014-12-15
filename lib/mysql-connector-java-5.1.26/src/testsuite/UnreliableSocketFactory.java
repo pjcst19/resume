@@ -2,23 +2,23 @@
  Copyright (c) 2008, 2012, Oracle and/or its affiliates. All rights reserved.
  
 
-  The MySQL Connector/J is licensed under the terms of the GPLv2
-  <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
-  There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
-  this software, see the FLOSS License Exception
-  <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
+ The MySQL Connector/J is licensed under the terms of the GPLv2
+ <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
+ There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
+ this software, see the FLOSS License Exception
+ <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 
-  This program is free software; you can redistribute it and/or modify it under the terms
-  of the GNU General Public License as published by the Free Software Foundation; version 2
-  of the License.
+ This program is free software; you can redistribute it and/or modify it under the terms
+ of the GNU General Public License as published by the Free Software Foundation; version 2
+ of the License.
 
-  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  See the GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ See the GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along with this
-  program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
-  Floor, Boston, MA 02110-1301  USA
+ You should have received a copy of the GNU General Public License along with this
+ program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
+ Floor, Boston, MA 02110-1301  USA
 
 
 
@@ -45,447 +45,448 @@ import com.mysql.jdbc.SocketFactory;
 import com.mysql.jdbc.StandardSocketFactory;
 
 /**
- * Configure "socketFactory" to use this class in your JDBC URL, and it will operate
- * as normal, unless you map some host aliases to actual IP addresses, and then have
- * the test driver call hangOnConnect/Read/Write() which simulate the given failure
- * condition for the host with the <b>alias</b> argument, and will honor connect or 
- * socket timeout properties.
- * 
- * You can also cause a host to be immediately-downed by calling downHost() with an alias.
+ * Configure "socketFactory" to use this class in your JDBC URL, and it will
+ * operate as normal, unless you map some host aliases to actual IP addresses,
+ * and then have the test driver call hangOnConnect/Read/Write() which simulate
+ * the given failure condition for the host with the <b>alias</b> argument, and
+ * will honor connect or socket timeout properties.
+ *
+ * You can also cause a host to be immediately-downed by calling downHost() with
+ * an alias.
  */
 public class UnreliableSocketFactory extends StandardSocketFactory {
-	public static final long DEFAULT_TIMEOUT_MILLIS = 10 * 60 * 1000; // ugh
-
-	private static final Map<String, String> MAPPED_HOSTS = new HashMap<String, String>();
-	
-	static final Set<String> HUNG_READ_HOSTS = new HashSet<String>();
-	
-	static final Set<String> HUNG_WRITE_HOSTS = new HashSet<String>();
-	
-	static final Set<String> HUNG_CONNECT_HOSTS = new HashSet<String>();
-	
-	static final Set<String> IMMEDIATELY_DOWNED_HOSTS = new HashSet<String>();
-	
-	private String hostname;
-	private int portNumber;
-	private Properties props;
-	
-	public static void flushAllHostLists(){
-		IMMEDIATELY_DOWNED_HOSTS.clear();
-		HUNG_CONNECT_HOSTS.clear();
-		HUNG_READ_HOSTS.clear();
-		HUNG_WRITE_HOSTS.clear();
-	}
-	
-	
-	public static void mapHost(String alias, String orig) {
-		MAPPED_HOSTS.put(alias, orig);
-	}
-	
-	public static void hangOnRead(String hostname) {
-		HUNG_READ_HOSTS.add(hostname);
-	}
-	
-	public static void dontHangOnRead(String hostname) {
-		HUNG_READ_HOSTS.remove(hostname);
-	}
-	
-	public static void hangOnWrite(String hostname) {
-		HUNG_WRITE_HOSTS.add(hostname);
-	}
-	
-	public static void dontHangOnWrite (String hostname) {
-		HUNG_WRITE_HOSTS.remove(hostname);
-	}
-	
-	public static void hangOnConnect(String hostname) {
-		HUNG_CONNECT_HOSTS.add(hostname);
-	}
-	
-	public static void dontHangOnConnect(String hostname) {
-		HUNG_CONNECT_HOSTS.remove(hostname);
-	}
-	
-	public static void downHost(String hostname) {
-		IMMEDIATELY_DOWNED_HOSTS.add(hostname);
-		
-	}
-	
-	public static void dontDownHost(String hostname) {
-		IMMEDIATELY_DOWNED_HOSTS.remove(hostname);
-	}
-	
-	public Socket connect(String host_name, int port_number, Properties prop)
-			throws SocketException, IOException {
-		this.hostname = host_name;
-		this.portNumber = port_number;
-		this.props = prop;
-		return getNewSocket();
-	}
-	
-	private Socket getNewSocket() throws SocketException, IOException {
-		if (IMMEDIATELY_DOWNED_HOSTS.contains(hostname)) {
-
-			sleepMillisForProperty(props, "connectTimeout");
-
-			throw new SocketTimeoutException();
-		}
-		
-		String hostnameToConnectTo = MAPPED_HOSTS.get(hostname);
-		
-		if (hostnameToConnectTo == null) {
-			hostnameToConnectTo = hostname;
-		}
-		
-		if (NonRegisteringDriver.isHostPropertiesList(hostnameToConnectTo)) {
-			Properties hostSpecificProps = NonRegisteringDriver.expandHostKeyValues(hostnameToConnectTo);
-			
-			String protocol = hostSpecificProps.getProperty(NonRegisteringDriver.PROTOCOL_PROPERTY_KEY);
-			
-			if ("unix".equalsIgnoreCase(protocol)) {
-				SocketFactory factory;
-				try {
-					factory = (SocketFactory) Class
-							.forName(
-									"org.newsclub.net.mysql.AFUNIXDatabaseSocketFactory")
-							.newInstance();
-				} catch (InstantiationException e) {
-					throw new SocketException(e.getMessage());
-				} catch (IllegalAccessException e) {
-					throw new SocketException(e.getMessage());
-				} catch (ClassNotFoundException e) {
-					throw new SocketException(e.getMessage());
-				}
 
-				String path = hostSpecificProps
-						.getProperty(NonRegisteringDriver.PATH_PROPERTY_KEY);
+    public static final long DEFAULT_TIMEOUT_MILLIS = 10 * 60 * 1000; // ugh
 
-				if (path != null) {
-					hostSpecificProps.setProperty("junixsocket.file", path);
-				}
+    private static final Map<String, String> MAPPED_HOSTS = new HashMap<String, String>();
 
-				return new HangingSocket(factory.connect(hostnameToConnectTo,
-						portNumber, hostSpecificProps), props, hostname);
-			}
+    static final Set<String> HUNG_READ_HOSTS = new HashSet<String>();
 
-		}
-		
-		return new HangingSocket(super.connect(hostnameToConnectTo, portNumber, props), props, hostname);
-	}
-	
-	
+    static final Set<String> HUNG_WRITE_HOSTS = new HashSet<String>();
 
-	public Socket afterHandshake() throws SocketException, IOException {
-		return getNewSocket();
-	}
+    static final Set<String> HUNG_CONNECT_HOSTS = new HashSet<String>();
 
-	public Socket beforeHandshake() throws SocketException, IOException {
-		return getNewSocket();
-	}
+    static final Set<String> IMMEDIATELY_DOWNED_HOSTS = new HashSet<String>();
 
-	static void sleepMillisForProperty(Properties props, String name) {
-		try {
-			Thread.sleep(Long.parseLong(props.getProperty(name, String
-					.valueOf(DEFAULT_TIMEOUT_MILLIS))));
-		} catch (NumberFormatException e) {
-			throw new RuntimeException(e);
-		} catch (InterruptedException e) {
-			// ignore
-		}
-	}
+    private String hostname;
+    private int portNumber;
+    private Properties props;
 
-	class HangingSocket extends Socket {
-		public void bind(SocketAddress bindpoint) throws IOException {
+    public static void flushAllHostLists() {
+        IMMEDIATELY_DOWNED_HOSTS.clear();
+        HUNG_CONNECT_HOSTS.clear();
+        HUNG_READ_HOSTS.clear();
+        HUNG_WRITE_HOSTS.clear();
+    }
 
-			underlyingSocket.bind(bindpoint);
-		}
+    public static void mapHost(String alias, String orig) {
+        MAPPED_HOSTS.put(alias, orig);
+    }
 
-		public synchronized void close() throws IOException {
+    public static void hangOnRead(String hostname) {
+        HUNG_READ_HOSTS.add(hostname);
+    }
 
-			underlyingSocket.close();
-		}
+    public static void dontHangOnRead(String hostname) {
+        HUNG_READ_HOSTS.remove(hostname);
+    }
 
-		public SocketChannel getChannel() {
+    public static void hangOnWrite(String hostname) {
+        HUNG_WRITE_HOSTS.add(hostname);
+    }
 
-			return underlyingSocket.getChannel();
-		}
+    public static void dontHangOnWrite(String hostname) {
+        HUNG_WRITE_HOSTS.remove(hostname);
+    }
 
-		public InetAddress getInetAddress() {
+    public static void hangOnConnect(String hostname) {
+        HUNG_CONNECT_HOSTS.add(hostname);
+    }
 
-			return underlyingSocket.getInetAddress();
-		}
+    public static void dontHangOnConnect(String hostname) {
+        HUNG_CONNECT_HOSTS.remove(hostname);
+    }
 
-		public InputStream getInputStream() throws IOException {
+    public static void downHost(String hostname) {
+        IMMEDIATELY_DOWNED_HOSTS.add(hostname);
 
-			return new HangingInputStream(underlyingSocket.getInputStream(), props, aliasedHostname);
-		}
+    }
 
-		public boolean getKeepAlive() throws SocketException {
+    public static void dontDownHost(String hostname) {
+        IMMEDIATELY_DOWNED_HOSTS.remove(hostname);
+    }
 
-			return underlyingSocket.getKeepAlive();
-		}
+    public Socket connect(String host_name, int port_number, Properties prop)
+            throws SocketException, IOException {
+        this.hostname = host_name;
+        this.portNumber = port_number;
+        this.props = prop;
+        return getNewSocket();
+    }
 
-		public InetAddress getLocalAddress() {
+    private Socket getNewSocket() throws SocketException, IOException {
+        if (IMMEDIATELY_DOWNED_HOSTS.contains(hostname)) {
 
-			return underlyingSocket.getLocalAddress();
-		}
+            sleepMillisForProperty(props, "connectTimeout");
 
-		public int getLocalPort() {
+            throw new SocketTimeoutException();
+        }
 
-			return underlyingSocket.getLocalPort();
-		}
+        String hostnameToConnectTo = MAPPED_HOSTS.get(hostname);
 
-		public SocketAddress getLocalSocketAddress() {
+        if (hostnameToConnectTo == null) {
+            hostnameToConnectTo = hostname;
+        }
 
-			return underlyingSocket.getLocalSocketAddress();
-		}
+        if (NonRegisteringDriver.isHostPropertiesList(hostnameToConnectTo)) {
+            Properties hostSpecificProps = NonRegisteringDriver.expandHostKeyValues(hostnameToConnectTo);
 
-		public boolean getOOBInline() throws SocketException {
+            String protocol = hostSpecificProps.getProperty(NonRegisteringDriver.PROTOCOL_PROPERTY_KEY);
 
-			return underlyingSocket.getOOBInline();
-		}
+            if ("unix".equalsIgnoreCase(protocol)) {
+                SocketFactory factory;
+                try {
+                    factory = (SocketFactory) Class
+                            .forName(
+                                    "org.newsclub.net.mysql.AFUNIXDatabaseSocketFactory")
+                            .newInstance();
+                } catch (InstantiationException e) {
+                    throw new SocketException(e.getMessage());
+                } catch (IllegalAccessException e) {
+                    throw new SocketException(e.getMessage());
+                } catch (ClassNotFoundException e) {
+                    throw new SocketException(e.getMessage());
+                }
 
-		public OutputStream getOutputStream() throws IOException {
-			return new HangingOutputStream(underlyingSocket.getOutputStream(), props, aliasedHostname);
-		}
+                String path = hostSpecificProps
+                        .getProperty(NonRegisteringDriver.PATH_PROPERTY_KEY);
 
-		public int getPort() {
+                if (path != null) {
+                    hostSpecificProps.setProperty("junixsocket.file", path);
+                }
 
-			return underlyingSocket.getPort();
-		}
+                return new HangingSocket(factory.connect(hostnameToConnectTo,
+                        portNumber, hostSpecificProps), props, hostname);
+            }
 
-		public synchronized int getReceiveBufferSize() throws SocketException {
+        }
 
-			return underlyingSocket.getReceiveBufferSize();
-		}
+        return new HangingSocket(super.connect(hostnameToConnectTo, portNumber, props), props, hostname);
+    }
 
-		public SocketAddress getRemoteSocketAddress() {
+    public Socket afterHandshake() throws SocketException, IOException {
+        return getNewSocket();
+    }
 
-			return underlyingSocket.getRemoteSocketAddress();
-		}
+    public Socket beforeHandshake() throws SocketException, IOException {
+        return getNewSocket();
+    }
 
-		public boolean getReuseAddress() throws SocketException {
+    static void sleepMillisForProperty(Properties props, String name) {
+        try {
+            Thread.sleep(Long.parseLong(props.getProperty(name, String
+                    .valueOf(DEFAULT_TIMEOUT_MILLIS))));
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            // ignore
+        }
+    }
 
-			return underlyingSocket.getReuseAddress();
-		}
+    class HangingSocket extends Socket {
 
-		public synchronized int getSendBufferSize() throws SocketException {
+        public void bind(SocketAddress bindpoint) throws IOException {
 
-			return underlyingSocket.getSendBufferSize();
-		}
+            underlyingSocket.bind(bindpoint);
+        }
 
-		public int getSoLinger() throws SocketException {
+        public synchronized void close() throws IOException {
 
-			return underlyingSocket.getSoLinger();
-		}
+            underlyingSocket.close();
+        }
 
-		public synchronized int getSoTimeout() throws SocketException {
+        public SocketChannel getChannel() {
 
-			return underlyingSocket.getSoTimeout();
-		}
+            return underlyingSocket.getChannel();
+        }
 
-		public boolean getTcpNoDelay() throws SocketException {
-			return underlyingSocket.getTcpNoDelay();
-		}
+        public InetAddress getInetAddress() {
 
-		public int getTrafficClass() throws SocketException {
-			return underlyingSocket.getTrafficClass();
-		}
+            return underlyingSocket.getInetAddress();
+        }
 
-		public boolean isBound() {
-			return underlyingSocket.isBound();
-		}
+        public InputStream getInputStream() throws IOException {
 
-		public boolean isClosed() {
-			return underlyingSocket.isClosed();
-		}
+            return new HangingInputStream(underlyingSocket.getInputStream(), props, aliasedHostname);
+        }
 
-		public boolean isConnected() {
-			return underlyingSocket.isConnected();
-		}
+        public boolean getKeepAlive() throws SocketException {
 
-		public boolean isInputShutdown() {
-			return underlyingSocket.isInputShutdown();
-		}
+            return underlyingSocket.getKeepAlive();
+        }
 
-		public boolean isOutputShutdown() {
-			return underlyingSocket.isOutputShutdown();
-		}
+        public InetAddress getLocalAddress() {
 
-		public void sendUrgentData(int data) throws IOException {
-			underlyingSocket.sendUrgentData(data);
-		}
+            return underlyingSocket.getLocalAddress();
+        }
 
-		public void setKeepAlive(boolean on) throws SocketException {
-			underlyingSocket.setKeepAlive(on);
-		}
+        public int getLocalPort() {
 
-		public void setOOBInline(boolean on) throws SocketException {
-			underlyingSocket.setOOBInline(on);
-		}
+            return underlyingSocket.getLocalPort();
+        }
 
-		public synchronized void setReceiveBufferSize(int size)
-				throws SocketException {
-			underlyingSocket.setReceiveBufferSize(size);
-		}
+        public SocketAddress getLocalSocketAddress() {
 
-		public void setReuseAddress(boolean on) throws SocketException {
-			underlyingSocket.setReuseAddress(on);
-		}
+            return underlyingSocket.getLocalSocketAddress();
+        }
 
-		public synchronized void setSendBufferSize(int size)
-				throws SocketException {
-			underlyingSocket.setSendBufferSize(size);
-		}
+        public boolean getOOBInline() throws SocketException {
 
-		public void setSoLinger(boolean on, int linger) throws SocketException {
-			underlyingSocket.setSoLinger(on, linger);
-		}
+            return underlyingSocket.getOOBInline();
+        }
 
-		public synchronized void setSoTimeout(int timeout)
-				throws SocketException {
-			underlyingSocket.setSoTimeout(timeout);
-		}
+        public OutputStream getOutputStream() throws IOException {
+            return new HangingOutputStream(underlyingSocket.getOutputStream(), props, aliasedHostname);
+        }
 
-		public void setTcpNoDelay(boolean on) throws SocketException {
-			underlyingSocket.setTcpNoDelay(on);
-		}
+        public int getPort() {
 
-		public void setTrafficClass(int tc) throws SocketException {
-			underlyingSocket.setTrafficClass(tc);
-		}
+            return underlyingSocket.getPort();
+        }
 
-		public void shutdownInput() throws IOException {
-			underlyingSocket.shutdownInput();
-		}
+        public synchronized int getReceiveBufferSize() throws SocketException {
 
-		public void shutdownOutput() throws IOException {
-			underlyingSocket.shutdownOutput();
-		}
+            return underlyingSocket.getReceiveBufferSize();
+        }
 
-		public String toString() {
-			return underlyingSocket.toString();
-		}
+        public SocketAddress getRemoteSocketAddress() {
 
-		final Socket underlyingSocket;
-		final Properties props;
-		final String aliasedHostname;
-		
-		HangingSocket(Socket realSocket, Properties props, String aliasedHostname) {
-			underlyingSocket = realSocket;
-			this.props = props;
-			this.aliasedHostname = aliasedHostname;
-		}
+            return underlyingSocket.getRemoteSocketAddress();
+        }
 
-	}
+        public boolean getReuseAddress() throws SocketException {
 
-	static class HangingInputStream extends InputStream {
-		final InputStream underlyingInputStream;
-		final Properties props;
-		final String aliasedHostname;
-		
-		HangingInputStream(InputStream realInputStream, Properties props, String aliasedHostname) {
-			underlyingInputStream = realInputStream;
-			this.props = props;
-			this.aliasedHostname = aliasedHostname;
-		}
+            return underlyingSocket.getReuseAddress();
+        }
 
-		public int available() throws IOException {
-			return underlyingInputStream.available();
-		}
+        public synchronized int getSendBufferSize() throws SocketException {
 
-		public void close() throws IOException {
-			underlyingInputStream.close();
-		}
+            return underlyingSocket.getSendBufferSize();
+        }
 
-		public synchronized void mark(int readlimit) {
-			underlyingInputStream.mark(readlimit);
-		}
+        public int getSoLinger() throws SocketException {
 
-		public boolean markSupported() {
-			return underlyingInputStream.markSupported();
-		}
+            return underlyingSocket.getSoLinger();
+        }
 
-		public int read(byte[] b, int off, int len) throws IOException {
-			failIfRequired();
+        public synchronized int getSoTimeout() throws SocketException {
 
-			return underlyingInputStream.read(b, off, len);
-		}
+            return underlyingSocket.getSoTimeout();
+        }
 
-		public int read(byte[] b) throws IOException {
-			failIfRequired();
+        public boolean getTcpNoDelay() throws SocketException {
+            return underlyingSocket.getTcpNoDelay();
+        }
 
-			return underlyingInputStream.read(b);
-		}
+        public int getTrafficClass() throws SocketException {
+            return underlyingSocket.getTrafficClass();
+        }
 
-		public synchronized void reset() throws IOException {
-			underlyingInputStream.reset();
-		}
+        public boolean isBound() {
+            return underlyingSocket.isBound();
+        }
 
-		public long skip(long n) throws IOException {
-			failIfRequired();
+        public boolean isClosed() {
+            return underlyingSocket.isClosed();
+        }
 
-			return underlyingInputStream.skip(n);
-		}
+        public boolean isConnected() {
+            return underlyingSocket.isConnected();
+        }
 
-		private void failIfRequired() throws SocketTimeoutException {
-			if (HUNG_READ_HOSTS.contains(aliasedHostname) || IMMEDIATELY_DOWNED_HOSTS.contains(aliasedHostname)) {
-				sleepMillisForProperty(props, "socketTimeout");
+        public boolean isInputShutdown() {
+            return underlyingSocket.isInputShutdown();
+        }
 
-				throw new SocketTimeoutException();
-			}
-		}
+        public boolean isOutputShutdown() {
+            return underlyingSocket.isOutputShutdown();
+        }
 
-		public int read() throws IOException {
-			failIfRequired();
+        public void sendUrgentData(int data) throws IOException {
+            underlyingSocket.sendUrgentData(data);
+        }
 
-			return underlyingInputStream.read();
-		}
-	}
-	
-	static class HangingOutputStream extends OutputStream {
+        public void setKeepAlive(boolean on) throws SocketException {
+            underlyingSocket.setKeepAlive(on);
+        }
 
-			final Properties props;
-			final String aliasedHostname;
-			final OutputStream underlyingOutputStream;
-			
-			HangingOutputStream(OutputStream realOutputStream, Properties props, String aliasedHostname) {
-				underlyingOutputStream = realOutputStream;
-				this.props = props;
-				this.aliasedHostname = aliasedHostname;
-			}
+        public void setOOBInline(boolean on) throws SocketException {
+            underlyingSocket.setOOBInline(on);
+        }
 
-			public void close() throws IOException {
-				failIfRequired();
-				underlyingOutputStream.close();
-			}
+        public synchronized void setReceiveBufferSize(int size)
+                throws SocketException {
+            underlyingSocket.setReceiveBufferSize(size);
+        }
 
-			public void flush() throws IOException {
-				underlyingOutputStream.flush();
-			}
+        public void setReuseAddress(boolean on) throws SocketException {
+            underlyingSocket.setReuseAddress(on);
+        }
 
-			public void write(byte[] b, int off, int len) throws IOException {
-				failIfRequired();
-				underlyingOutputStream.write(b, off, len);
-			}
+        public synchronized void setSendBufferSize(int size)
+                throws SocketException {
+            underlyingSocket.setSendBufferSize(size);
+        }
 
-			public void write(byte[] b) throws IOException {
-				failIfRequired();
-				underlyingOutputStream.write(b);
-			}
+        public void setSoLinger(boolean on, int linger) throws SocketException {
+            underlyingSocket.setSoLinger(on, linger);
+        }
 
-			public void write(int b) throws IOException {
-				failIfRequired();
-				underlyingOutputStream.write(b);
-			}
-			
-			private void failIfRequired() throws SocketTimeoutException {
-				if (HUNG_WRITE_HOSTS.contains(aliasedHostname) || IMMEDIATELY_DOWNED_HOSTS.contains(aliasedHostname)) {
-					sleepMillisForProperty(props, "socketTimeout");
+        public synchronized void setSoTimeout(int timeout)
+                throws SocketException {
+            underlyingSocket.setSoTimeout(timeout);
+        }
 
-					throw new SocketTimeoutException();
-				}
-			}
-		
-	}
+        public void setTcpNoDelay(boolean on) throws SocketException {
+            underlyingSocket.setTcpNoDelay(on);
+        }
+
+        public void setTrafficClass(int tc) throws SocketException {
+            underlyingSocket.setTrafficClass(tc);
+        }
+
+        public void shutdownInput() throws IOException {
+            underlyingSocket.shutdownInput();
+        }
+
+        public void shutdownOutput() throws IOException {
+            underlyingSocket.shutdownOutput();
+        }
+
+        public String toString() {
+            return underlyingSocket.toString();
+        }
+
+        final Socket underlyingSocket;
+        final Properties props;
+        final String aliasedHostname;
+
+        HangingSocket(Socket realSocket, Properties props, String aliasedHostname) {
+            underlyingSocket = realSocket;
+            this.props = props;
+            this.aliasedHostname = aliasedHostname;
+        }
+
+    }
+
+    static class HangingInputStream extends InputStream {
+
+        final InputStream underlyingInputStream;
+        final Properties props;
+        final String aliasedHostname;
+
+        HangingInputStream(InputStream realInputStream, Properties props, String aliasedHostname) {
+            underlyingInputStream = realInputStream;
+            this.props = props;
+            this.aliasedHostname = aliasedHostname;
+        }
+
+        public int available() throws IOException {
+            return underlyingInputStream.available();
+        }
+
+        public void close() throws IOException {
+            underlyingInputStream.close();
+        }
+
+        public synchronized void mark(int readlimit) {
+            underlyingInputStream.mark(readlimit);
+        }
+
+        public boolean markSupported() {
+            return underlyingInputStream.markSupported();
+        }
+
+        public int read(byte[] b, int off, int len) throws IOException {
+            failIfRequired();
+
+            return underlyingInputStream.read(b, off, len);
+        }
+
+        public int read(byte[] b) throws IOException {
+            failIfRequired();
+
+            return underlyingInputStream.read(b);
+        }
+
+        public synchronized void reset() throws IOException {
+            underlyingInputStream.reset();
+        }
+
+        public long skip(long n) throws IOException {
+            failIfRequired();
+
+            return underlyingInputStream.skip(n);
+        }
+
+        private void failIfRequired() throws SocketTimeoutException {
+            if (HUNG_READ_HOSTS.contains(aliasedHostname) || IMMEDIATELY_DOWNED_HOSTS.contains(aliasedHostname)) {
+                sleepMillisForProperty(props, "socketTimeout");
+
+                throw new SocketTimeoutException();
+            }
+        }
+
+        public int read() throws IOException {
+            failIfRequired();
+
+            return underlyingInputStream.read();
+        }
+    }
+
+    static class HangingOutputStream extends OutputStream {
+
+        final Properties props;
+        final String aliasedHostname;
+        final OutputStream underlyingOutputStream;
+
+        HangingOutputStream(OutputStream realOutputStream, Properties props, String aliasedHostname) {
+            underlyingOutputStream = realOutputStream;
+            this.props = props;
+            this.aliasedHostname = aliasedHostname;
+        }
+
+        public void close() throws IOException {
+            failIfRequired();
+            underlyingOutputStream.close();
+        }
+
+        public void flush() throws IOException {
+            underlyingOutputStream.flush();
+        }
+
+        public void write(byte[] b, int off, int len) throws IOException {
+            failIfRequired();
+            underlyingOutputStream.write(b, off, len);
+        }
+
+        public void write(byte[] b) throws IOException {
+            failIfRequired();
+            underlyingOutputStream.write(b);
+        }
+
+        public void write(int b) throws IOException {
+            failIfRequired();
+            underlyingOutputStream.write(b);
+        }
+
+        private void failIfRequired() throws SocketTimeoutException {
+            if (HUNG_WRITE_HOSTS.contains(aliasedHostname) || IMMEDIATELY_DOWNED_HOSTS.contains(aliasedHostname)) {
+                sleepMillisForProperty(props, "socketTimeout");
+
+                throw new SocketTimeoutException();
+            }
+        }
+
+    }
 }

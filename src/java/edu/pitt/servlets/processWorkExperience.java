@@ -5,13 +5,10 @@
  */
 package edu.pitt.servlets;
 
-import edu.pitt.resumecore.Award;
 import edu.pitt.resumecore.Resume;
 import edu.pitt.resumecore.WorkExperience;
-import edu.pitt.utilities.Security;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,10 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Processes the creation of a new WorkExperience object
  *
  * @author Mandy
  */
-@WebServlet(name = "processWorkExperience", urlPatterns = {"/processWorkExperience"})
 public class processWorkExperience extends HttpServlet {
 
     /**
@@ -42,11 +39,6 @@ public class processWorkExperience extends HttpServlet {
 
             HttpSession session = request.getSession(true);
 
-//            Security security = new Security();
-//            if (security.checkHijackedSession(session, request)) {
-//                response.sendRedirect("index.jsp");
-//            }
-
             Resume resume = (Resume) session.getAttribute("currentResume");
             String businessName = "";
             String position = "";
@@ -55,10 +47,7 @@ public class processWorkExperience extends HttpServlet {
             String description = "";
             String stringCurrentlyEmployed = "";
             Integer currentlyEmployed = null;
-            //String awardName = "";
-            //String awardDescription = "";
-            
-             stringCurrentlyEmployed =  request.getParameter("rdoCurrentlyEmployed");
+            stringCurrentlyEmployed = request.getParameter("rdoCurrentlyEmployed");
 
             //What error handling do we want to do?
             businessName = request.getParameter("txtBusinessName");
@@ -67,23 +56,12 @@ public class processWorkExperience extends HttpServlet {
             endDate = request.getParameter("txtEndDate");//Date?
             description = request.getParameter("txtWorkDescription");
             currentlyEmployed = Integer.parseInt(stringCurrentlyEmployed);
-            
-            
-            //awardName = request.getParameter("txtAward");
-            //awardDescription = request.getParameter("txtDesription");
 
             WorkExperience workExperience = new WorkExperience(businessName, position, startDate, endDate, currentlyEmployed, description);
             resume.addWorkExperience(workExperience);
-
-            //Award award = new Award(awardName, awardDescription);
-            //resume.addAward(award);
-            
-            System.out.println(workExperience.getWorkExperienceID());
-            
-            //response.sendRedirect("menu.jsp");
-
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -32,7 +32,7 @@ $(document).ready(function () {
 function post_form_data(data) {
     $.ajax({
         type: 'POST',
-        url: 'processWorkExperience',
+        url: '../process/processWorkExperience',
         data: data,
         async: false
                 //success: ,

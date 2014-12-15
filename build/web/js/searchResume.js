@@ -1,5 +1,5 @@
 
-var $restPath = "rest/searchws?lastName=";
+var $restPath = "../rest/searchws?lastName=";
 var $searchField = "lastName";
 $dataTitle = "Last Name";
 var xhr;
@@ -13,23 +13,23 @@ $(document).ready(function () {
         $option = $("#searchOption :selected").text();
 
         if ($option === "Last Name") {
-            $restPath = "rest/searchws?lastName=";
+            $restPath = "../rest/searchws?lastName=";
             $searchField = "lastName";
             $dataTitle = "Last Name";
 
         }
         else if ($option === "Major/Minor") {
-            $restPath = "rest/searchws?field=";
+            $restPath = "../rest/searchws?field=";
             $searchField = "field";
             $dataTitle = "Major/Minor";
         }
         else if ($option === "GPA is greater than") {
-            $restPath = "rest/searchws?gpa=";
+            $restPath = "../rest/searchws?gpa=";
             $searchField = "gpa";
             $dataTitle = "GPA";
         }
         else if ($option === "Job Description") {
-            $restPath = "rest/searchws?description=";
+            $restPath = "../rest/searchws?description=";
             $searchField = "description";
             $dataTitle = "Job Description";
         }

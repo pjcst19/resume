@@ -6,7 +6,7 @@
 package edu.pitt.rest;
 
 import edu.pitt.utilities.DbUtilities;
-import edu.pitt.utilities.Security;
+import edu.pitt.utilities.StringUtilities;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -21,10 +21,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 /**
+ * Searches for a Resume given various params
  *
  * @author Jordan Feldman
  */
-@WebServlet(name = "searchws", urlPatterns = {"/rest/searchws"})
 public class searchws extends HttpServlet {
 
     /**
@@ -40,31 +40,28 @@ public class searchws extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         DbUtilities db = null;
-        if (Security.checkHijackedSession(request.getSession(false), request)) {
-            response.sendRedirect("./index.jsp");
-        }
         try (PrintWriter out = response.getWriter()) {
             String sql = "";
 
             if (request.getParameter("resumeID") != null) {
-                String resumeID = request.getParameter("resumeID");
+                String resumeID = StringUtilities.cleanMySqlInsert(request.getParameter("resumeID"));
                 sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,resumeID FROM User U JOIN Resume R ON U.userID = R.fk_userID WHERE resumeID = %s", resumeID);
 
             }
             if (request.getParameter("field") != null) {
-                String field = request.getParameter("field");
+                String field = StringUtilities.cleanMySqlInsert(request.getParameter("field"));
                 sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,field FROM User U JOIN Resume R ON U.userID = R.fk_userID JOIN ResumeEducation RE ON R.resumeID = RE.fk_resumeID JOIN Education E ON E.educationID = RE.fk_educationID WHERE field LIKE '%s%%'", field);
             }
             if (request.getParameter("gpa") != null) {
-                String gpa = request.getParameter("gpa");
+                String gpa = StringUtilities.cleanMySqlInsert(request.getParameter("gpa"));
                 sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,gpa FROM User U JOIN Resume R ON U.userID = R.fk_userID JOIN ResumeEducation RE ON R.resumeID = RE.fk_resumeID JOIN Education E ON E.educationID = RE.fk_educationID WHERE gpa > %s", gpa);
             }
             if (request.getParameter("description") != null) {
-                String description = request.getParameter("description");
-                sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,description FROM User U JOIN Resume R ON U.userID = R.fk_userID JOIN ResumeWorkExperience RWE ON R.resumeID = RWE.fk_resumeID JOIN WorkExperience WE ON WE.workExperienceID = RWE.fk_workExperienceID WHERE description LIKE '%s%%'", description);
+                String description = StringUtilities.cleanMySqlInsert(request.getParameter("description"));
+                sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,description FROM User U JOIN Resume R ON U.userID = R.fk_userID JOIN ResumeWorkExperience RWE ON R.resumeID = RWE.fk_resumeID JOIN WorkExperience WE ON WE.workExperienceID = RWE.fk_workExperienceID WHERE description LIKE '%%s%%'", description);
             }
             if (request.getParameter("lastName") != null) {
-                String lastName = request.getParameter("lastName");
+                String lastName = StringUtilities.cleanMySqlInsert(request.getParameter("lastName"));
                 sql = String.format("SELECT lastName,firstName,resumeID,R.created,R.modified,lastName FROM User U JOIN Resume R ON U.userID = R.fk_userID WHERE lastName LIKE '%s%%'", lastName);
             }
 
@@ -78,7 +75,6 @@ public class searchws extends HttpServlet {
             } finally {
                 out.print(ja);
                 db.closeMySQLConnection();
-                System.out.println(sql);
             }
 
         } catch (SQLException ex) {

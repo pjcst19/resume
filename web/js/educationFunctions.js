@@ -26,7 +26,7 @@ $(document).ready(function () {
 function post_form_data(data) {
     $.ajax({
         type: 'POST',
-        url: 'processEducation',
+        url: '../process/processEducation',
         data: data,
         async: false
                 //success: ,
@@ -43,7 +43,8 @@ function submitEdu() {
     });
     window.location.href = 'workExperience.jsp';
 
-};
+}
+;
 
 
 

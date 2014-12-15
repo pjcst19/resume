@@ -8,14 +8,8 @@ package edu.pitt.servlets;
 import edu.pitt.resumecore.Education;
 import edu.pitt.resumecore.Resume;
 import edu.pitt.resumecore.User;
-import edu.pitt.utilities.Security;
-import edu.pitt.utilities.StringUtilities;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,10 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Processes creation of new Education object
  *
  * @author Mandy
  */
-@WebServlet(name = "processEducation", urlPatterns = {"/processEducation"})
 public class processEducation extends HttpServlet {
 
     /**
@@ -45,15 +39,8 @@ public class processEducation extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession(true);
 
-//        Security security = new Security();
-//        if (security.checkHijackedSession(session, request)) {
-//            response.sendRedirect("index.jsp");
-//        }
-
-        
-
             User user = (User) session.getAttribute("authenticatedUser");
-            Resume resume = new Resume(user.getUserID(),0);
+            Resume resume = new Resume(user.getUserID(), 0);
             String schoolName = "";
             String degreeType = "";
             String major = "";
@@ -62,44 +49,35 @@ public class processEducation extends HttpServlet {
             String stringGPA = "";
             String graduationDate = "";
 
-            stringGPA =  request.getParameter("txtGPA");
-            
+            stringGPA = request.getParameter("txtGPA");
+
             schoolName = request.getParameter("txtSchoolName");
             degreeType = request.getParameter("txtDegreeType");
             major = request.getParameter("txtMajorType");
             minor = request.getParameter("txtMinorType");
             gpa = Double.parseDouble(stringGPA);
             graduationDate = request.getParameter("txtGraduationDate");
-            
-            // out.println(schoolName + "<br />");
-            
-//            java.util.Date dt = new java.util.Date();
-//
-//            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//
-//            String currentTime = sdf.format(dt);
-            
+
             Education education = new Education(schoolName, degreeType, major, minor, gpa, graduationDate);
             resume.addEducation(education);
-            
+
             session.setAttribute("currentResume", resume);
 
-            //response.sendRedirect("workExperience.jsp");
         }
-      
 
     }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -113,7 +91,7 @@ public class processEducation extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -124,7 +102,7 @@ public class processEducation extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

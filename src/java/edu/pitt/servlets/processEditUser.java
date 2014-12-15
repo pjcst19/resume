@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Processes the changes made to a User
  *
  * @author Jordan
  */
-@WebServlet(name = "processEditUser", urlPatterns = {"/processEditUser"})
 public class processEditUser extends HttpServlet {
 
     /**
@@ -42,17 +42,17 @@ public class processEditUser extends HttpServlet {
             if (Security.checkHijackedSession(session, request)) {
                 response.sendRedirect("index.jsp");
             } else {
-                
+
                 System.out.println(session.getAttribute("selectedUserID"));
 
                 User user = new User((String) session.getAttribute("selectedUserID"));
 
-                if (!request.getParameter("txtFirstName").isEmpty()){
+                if (!request.getParameter("txtFirstName").isEmpty()) {
                     String firstName = request.getParameter("txtFirstName");
                     user.setFirstName(firstName);
                 }
 
-                if (!request.getParameter("txtLastName").isEmpty()){
+                if (!request.getParameter("txtLastName").isEmpty()) {
                     String lastName = request.getParameter("txtLastName");
                     user.setLastName(lastName);
 
@@ -72,48 +72,42 @@ public class processEditUser extends HttpServlet {
                     String password = request.getParameter("txtPassword");
                     user.setPassword(password);
                 }
-                
-                 if (request.getParameter("chkEmployer") != null) {
-                     user.setRoleEmployer("", "");
-                }
-                 else{
-                     user.removeRole("employer");
-                 }
-                 
-                  if (request.getParameter("chkStaff") != null) {
-                    user.setRoleStaff("", "");
-                }
-                  else{
-                     user.removeRole("staff");
-                 }
-                  
-                   if (request.getParameter("chkStudent") != null) {
-                       user.setRoleStudent("", new Date());
-                }
-                   else{
-                     user.removeRole("student");
-                 }
-                   
-                   if(request.getParameter("radStatus") != null){
-                       String status = request.getParameter("radStatus");
-                       System.out.println(status);
-                       if(status.equals("enabled")){
-                           user.setEnabled();
-                       }
-                       else if(status.equals("disabled")){
-                           user.setDisabled();
-                       }
-                   }
-                
 
-                response.sendRedirect("listUsers.jsp");
+                if (request.getParameter("chkEmployer") != null) {
+                    user.setRoleEmployer("", "");
+                } else {
+                    user.removeRole("employer");
+                }
+
+                if (request.getParameter("chkStaff") != null) {
+                    user.setRoleStaff("", "");
+                } else {
+                    user.removeRole("staff");
+                }
+
+                if (request.getParameter("chkStudent") != null) {
+                    user.setRoleStudent("", new Date());
+                } else {
+                    user.removeRole("student");
+                }
+
+                if (request.getParameter("radStatus") != null) {
+                    String status = request.getParameter("radStatus");
+                    System.out.println(status);
+                    if (status.equals("enabled")) {
+                        user.setEnabled();
+                    } else if (status.equals("disabled")) {
+                        user.setDisabled();
+                    }
+                }
+
+                response.sendRedirect("../pages/listUsers.jsp");
 
             }
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

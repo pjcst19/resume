@@ -7,6 +7,7 @@ package edu.pitt.rest;
 
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.Security;
+import edu.pitt.utilities.StringUtilities;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -21,10 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 /**
+ * Gets user info for the viewEditUser section of site
  *
  * @author Jordan Feldman
  */
-@WebServlet(name = "viewEditUser", urlPatterns = {"/rest/viewEditUser"})
 public class viewEditUser extends HttpServlet {
 
     /**
@@ -42,16 +43,11 @@ public class viewEditUser extends HttpServlet {
 
         DbUtilities db = new DbUtilities();
 
-        //DbUtilities db = null;
-
-        if (Security.checkHijackedSession(request.getSession(false), request)) {
-            response.sendRedirect("./index.jsp");
-        }
         try (PrintWriter out = response.getWriter()) {
             String sql = "SELECT      lastName,     firstName,     login,     email,     IF(peoplesoftID IS NOT NULL,         'Student',         IF(employeeID IS NOT NULL,             'Staff',             IF(placeOfWork IS NOT NULL,                 'Employer',                 'N/A'))) AS userType,     userID, enabled FROM     rms.User U         LEFT JOIN     Student S ON U.userID = S.fk_userID         LEFT JOIN     Staff ST ON U.userID = ST.fk_userID         LEFT JOIN     Employer E ON U.userID = E.fk_userID";
 
             if (request.getParameter("userID") != null) {
-                String userID = request.getParameter("userID");
+                String userID = StringUtilities.cleanMySqlInsert(request.getParameter("userID"));
                 sql += String.format(" WHERE userID   = '%s'", userID);
             }
 

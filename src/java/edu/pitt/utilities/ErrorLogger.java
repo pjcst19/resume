@@ -13,12 +13,14 @@ import java.util.Date;
 
 /**
  * Logs errors to text file with current data
+ *
  * @author Jordan S. Feldman
  */
 public class ErrorLogger {
 
     /**
      * Writes error description to log file
+     *
      * @param errorDescription
      */
     public static void log(String errorDescription) {
@@ -38,6 +40,6 @@ public class ErrorLogger {
 //			e.printStackTrace();
 //		}
 
-	}
+    }
 
 }

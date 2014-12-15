@@ -22,7 +22,6 @@ import javax.servlet.http.HttpSession;
  *
  * @author Mandy
  */
-@WebServlet(name = "processPersonalInfo", urlPatterns = {"/processPersonalInfo"})
 public class processPersonalInfo extends HttpServlet {
 
     /**
@@ -94,7 +93,6 @@ public class processPersonalInfo extends HttpServlet {
 
                 if (request.getParameter("radUSEligible") != null) {
                     workEligibility = request.getParameter("radUSEligible");
-                    System.out.println(workEligibility);
                     if (workEligibility.equals("true")) {
                         user.setUSEligibleEnabled();
                     } else if (workEligibility.equals("false")) {
@@ -104,7 +102,6 @@ public class processPersonalInfo extends HttpServlet {
 
                 if (request.getParameter("radWkEvidence") != null) {
                     workEligibilityProof = request.getParameter("radWkEvidence");
-                    System.out.println(workEligibilityProof);
                     if (workEligibilityProof.equals("true")) {
                         user.setUSProofEnabled();
                     } else if (workEligibilityProof.equals("false")) {
@@ -120,7 +117,7 @@ public class processPersonalInfo extends HttpServlet {
                 Address address = new Address(addressLine1, addressLine2, city, state, province, postalCode, country);
                 user.addAddress(address);
 
-                response.sendRedirect("education.jsp");
+                response.sendRedirect("pages/education.jsp");
 
             }
         }

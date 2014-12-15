@@ -6,7 +6,7 @@
 package edu.pitt.rest;
 
 import edu.pitt.utilities.DbUtilities;
-import edu.pitt.utilities.Security;
+import edu.pitt.utilities.StringUtilities;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -21,10 +21,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 /**
+ * Searches for user given various parameters
  *
  * @author Jordan Feldman
  */
-@WebServlet(name = "userws", urlPatterns = {"/rest/userws"})
 public class userws extends HttpServlet {
 
     /**
@@ -41,26 +41,19 @@ public class userws extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
 
         DbUtilities db = new DbUtilities();
-
-        //DbUtilities db = null;
-
-        if (Security.checkHijackedSession(request.getSession(false), request)) {
-            response.sendRedirect("./index.jsp");
-        }
         try (PrintWriter out = response.getWriter()) {
             String sql = "SELECT lastName, firstName, login, email, IF(peoplesoftID IS NOT NULL, 'true', 'false') AS Student, IF(employeeID IS NOT NULL, 'true', 'false') AS Staff, IF(placeOfWork IS NOT NULL, 'true', 'false') AS Employer, userID, enabled FROM rms.User U LEFT JOIN Student S ON U.userID = S.fk_userID LEFT JOIN Staff ST ON U.userID = ST.fk_userID LEFT JOIN Employer E ON U.userID = E.fk_userID";
 
             if (request.getParameter("lastName") != null) {
-                String lastName = request.getParameter("lastName");
+                String lastName = StringUtilities.cleanMySqlInsert(request.getParameter("lastName"));
                 sql += String.format(" WHERE lastName  LIKE '%s%%'", lastName);
             } else if (request.getParameter("login") != null) {
-                String login = request.getParameter("login");
+                String login = StringUtilities.cleanMySqlInsert(request.getParameter("login"));
                 sql += String.format(" WHERE login  LIKE '%s%%'", login);
             } else if (request.getParameter("email") != null) {
-                String email = request.getParameter("email");
+                String email = StringUtilities.cleanMySqlInsert(request.getParameter("email"));
                 sql += String.format(" WHERE email  LIKE '%s%%'", email);
             }
-
 
             db = new DbUtilities();
 

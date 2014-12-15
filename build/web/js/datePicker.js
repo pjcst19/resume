@@ -5,6 +5,6 @@
  */
 
 
-    $(function () {
-        $(".datepicker").datepicker({ maxDate: "+1D" });
-    });
+$(function () {
+    $(".datepicker").datepicker({maxDate: "+1D"});
+});

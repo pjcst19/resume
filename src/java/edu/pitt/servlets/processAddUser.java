@@ -20,10 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Adds a user to the DB
  *
  * @author Jordan
  */
-@WebServlet(name = "processAddUser", urlPatterns = {"/processAddUser"})
 public class processAddUser extends HttpServlet {
 
     /**
@@ -52,12 +52,12 @@ public class processAddUser extends HttpServlet {
                 ArrayList<Address> addresses = new ArrayList();
                 String email = "";
                 String phoneNumber = "";
-                
-                  if (!request.getParameter("txtFirstName").isEmpty()){
+
+                if (!request.getParameter("txtFirstName").isEmpty()) {
                     firstName = request.getParameter("txtFirstName");
                 }
 
-                if (!request.getParameter("txtLastName").isEmpty()){
+                if (!request.getParameter("txtLastName").isEmpty()) {
                     lastName = request.getParameter("txtLastName");
                 }
 
@@ -72,41 +72,38 @@ public class processAddUser extends HttpServlet {
                 if (!request.getParameter("txtPassword").isEmpty()) {
                     password = request.getParameter("txtPassword");
                 }
-                
-                        
+
                 User user = new User(firstName, lastName, middleInitial, login, password, addresses, email, phoneNumber);
-                
-                 if (request.getParameter("chkEmployer") != null) {
-                     user.setRoleEmployer("", "");
+
+                if (request.getParameter("chkEmployer") != null) {
+                    user.setRoleEmployer("", "");
                 }
-                 
-                  if (request.getParameter("chkStaff") != null) {
+
+                if (request.getParameter("chkStaff") != null) {
                     user.setRoleStaff("", "");
                 }
-                  
-                   if (request.getParameter("chkStudent") != null) {
-                       user.setRoleStudent("", new Date());
+
+                if (request.getParameter("chkStudent") != null) {
+                    user.setRoleStudent("", new Date());
                 }
-                   
-                   if(request.getParameter("radStatus") != null){
-                       String status = request.getParameter("radStatus");
-                       System.out.println(status);
-                       if(status.equals("enabled")){
-                           user.setEnabled();
-                       }
-                       else if(status.equals("disabled")){
-                           user.setDisabled();
-                       }
-                   }
-                   
-                response.sendRedirect("listUsers.jsp");
+
+                if (request.getParameter("radStatus") != null) {
+                    String status = request.getParameter("radStatus");
+                    System.out.println(status);
+                    if (status.equals("enabled")) {
+                        user.setEnabled();
+                    } else if (status.equals("disabled")) {
+                        user.setDisabled();
+                    }
+                }
+
+                response.sendRedirect("../pages/listUsers.jsp");
 
             }
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

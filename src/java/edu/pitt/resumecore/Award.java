@@ -19,8 +19,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
+ * Creates an Award objects and maintains it with the DB
  *
- * @author Naveen
+ * @author Jordan Feldman
  */
 public class Award {
 
@@ -31,15 +32,14 @@ public class Award {
     private String modified;
 
     private DbUtilities db;
-    
-    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     public Award(String awardID) {
         setAllAwardProperties(StringUtilities.cleanMySqlInsert(awardID));
     }
-    
-    public Award(String name, String description){
+
+    public Award(String name, String description) {
         awardID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Award ";
@@ -53,28 +53,34 @@ public class Award {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of the Award constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
             setAllAwardProperties(awardID);
         }
     }
-    
+
     /**
      * Creates an Award object from JSON
+     *
      * @param award JSON object for an Award object
      */
-    public Award(JSONObject award){
+    public Award(JSONObject award) {
         try {
-            this.awardID = award.getString("awardID"); 
+            this.awardID = award.getString("awardID");
             setAwardFromJSON(award);
         } catch (JSONException ex) {
             Logger.getLogger(Award.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void setAllAwardProperties(String awardID){
+
+    /**
+     * Sets all Award properties given an awardID
+     *
+     * @param awardID awardID
+     */
+    private void setAllAwardProperties(String awardID) {
         db = new DbUtilities();
-        String sql = "SELECT * FROM rms.Award WHERE awardID = '" +StringUtilities.cleanMySqlInsert(awardID) + "'";
+        String sql = "SELECT * FROM rms.Award WHERE awardID = '" + StringUtilities.cleanMySqlInsert(awardID) + "'";
         try {
             ResultSet rs = db.getResultSet(sql);
             if (rs.next()) {
@@ -86,12 +92,13 @@ public class Award {
         } catch (SQLException ex) {
             ErrorLogger.log("An error has occurred in Award(String awardID) constructor of Award class. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
             this.awardID = StringUtilities.cleanMySqlInsert(awardID);
         }
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         db = new DbUtilities();
         String sql = "UPDATE Award SET name = '" + StringUtilities.cleanMySqlInsert(name) + "' WHERE awardID = '" + this.awardID + "';";
         try {
@@ -99,14 +106,14 @@ public class Award {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setName. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
         }
         this.name = StringUtilities.cleanMySqlInsert(name);
         setModified();
     }
-    
-    public void setDescription(String description){
+
+    public void setDescription(String description) {
         db = new DbUtilities();
         String sql = "UPDATE Award SET description = '" + StringUtilities.cleanMySqlInsert(description) + "' WHERE awardID = '" + this.awardID + "';";
         try {
@@ -114,13 +121,13 @@ public class Award {
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of setDescription. " + ex.getMessage());
             ErrorLogger.log(sql);
-        }finally{
+        } finally {
             db.closeMySQLConnection();
         }
         this.description = StringUtilities.cleanMySqlInsert(description);
         setModified();
     }
-    
+
     private void setModified() {
         this.modified = DATE_FORMAT.format(Calendar.getInstance().getTime());
         db = new DbUtilities();
@@ -134,23 +141,28 @@ public class Award {
             db.closeMySQLConnection();
         }
     }
-    
-    public String getAwardID(){
+
+    public String getAwardID() {
         return awardID;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    
-    public String getDescription(){
+
+    public String getDescription() {
         return description;
     }
-    
-    public JSONObject getAwardAsJson(){
-        
+
+    /**
+     * Get the JSON for an Award
+     *
+     * @return JSOB Object of an Award
+     */
+    public JSONObject getAwardAsJson() {
+
         JSONObject award = new JSONObject();
-        
+
         try {
             award.put("awardID", this.awardID);
             award.put("name", this.name);
@@ -162,9 +174,14 @@ public class Award {
         }
         return award;
     }
-    
-    public final void setAwardFromJSON(JSONObject award){
-                
+
+    /**
+     * Given the JSON of an award set its properties
+     *
+     * @param award JSON Object
+     */
+    public final void setAwardFromJSON(JSONObject award) {
+
         try {
             setName(award.getString("name"));
             setDescription(award.getString("description"));

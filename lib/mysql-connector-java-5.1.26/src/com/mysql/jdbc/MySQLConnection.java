@@ -1,23 +1,23 @@
 /*
-  Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
+ Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
 
-  The MySQL Connector/J is licensed under the terms of the GPLv2
-  <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
-  There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
-  this software, see the FLOSS License Exception
-  <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
+ The MySQL Connector/J is licensed under the terms of the GPLv2
+ <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
+ There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
+ this software, see the FLOSS License Exception
+ <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 
-  This program is free software; you can redistribute it and/or modify it under the terms
-  of the GNU General Public License as published by the Free Software Foundation; version 2
-  of the License.
+ This program is free software; you can redistribute it and/or modify it under the terms
+ of the GNU General Public License as published by the Free Software Foundation; version 2
+ of the License.
 
-  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  See the GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ See the GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along with this
-  program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
-  Floor, Boston, MA 02110-1301  USA
+ You should have received a copy of the GNU General Public License along with this
+ program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
+ Floor, Boston, MA 02110-1301  USA
  
  */
 package com.mysql.jdbc;
@@ -32,178 +32,178 @@ import java.util.Timer;
 import com.mysql.jdbc.log.Log;
 
 public interface MySQLConnection extends Connection, ConnectionProperties {
-	
-	public boolean isProxySet();
 
-	void createNewIO(boolean isForReconnect) throws SQLException;
+    public boolean isProxySet();
 
-	void dumpTestcaseQuery(String query);
+    void createNewIO(boolean isForReconnect) throws SQLException;
 
-	Connection duplicate() throws SQLException;
+    void dumpTestcaseQuery(String query);
 
-	ResultSetInternalMethods execSQL(StatementImpl callingStatement,
-			String sql, int maxRows, Buffer packet, int resultSetType,
-			int resultSetConcurrency, boolean streamResults, String catalog,
-			Field[] cachedMetadata) throws SQLException;
+    Connection duplicate() throws SQLException;
 
-	ResultSetInternalMethods execSQL(StatementImpl callingStatement,
-			String sql, int maxRows, Buffer packet, int resultSetType,
-			int resultSetConcurrency, boolean streamResults, String catalog,
-			Field[] cachedMetadata, boolean isBatch) throws SQLException;
+    ResultSetInternalMethods execSQL(StatementImpl callingStatement,
+            String sql, int maxRows, Buffer packet, int resultSetType,
+            int resultSetConcurrency, boolean streamResults, String catalog,
+            Field[] cachedMetadata) throws SQLException;
 
-	String extractSqlFromPacket(String possibleSqlQuery, Buffer queryPacket,
-			int endOfQueryPacketPosition) throws SQLException;
+    ResultSetInternalMethods execSQL(StatementImpl callingStatement,
+            String sql, int maxRows, Buffer packet, int resultSetType,
+            int resultSetConcurrency, boolean streamResults, String catalog,
+            Field[] cachedMetadata, boolean isBatch) throws SQLException;
 
-	StringBuffer generateConnectionCommentBlock(StringBuffer buf);
+    String extractSqlFromPacket(String possibleSqlQuery, Buffer queryPacket,
+            int endOfQueryPacketPosition) throws SQLException;
 
-	int getActiveStatementCount();
+    StringBuffer generateConnectionCommentBlock(StringBuffer buf);
 
-	int getAutoIncrementIncrement();
+    int getActiveStatementCount();
 
-	CachedResultSetMetaData getCachedMetaData(String sql);
+    int getAutoIncrementIncrement();
 
-	Calendar getCalendarInstanceForSessionOrNew();
+    CachedResultSetMetaData getCachedMetaData(String sql);
 
-	Timer getCancelTimer();
+    Calendar getCalendarInstanceForSessionOrNew();
 
-	String getCharacterSetMetadata();
+    Timer getCancelTimer();
 
-	SingleByteCharsetConverter getCharsetConverter(String javaEncodingName)
-			throws SQLException;
+    String getCharacterSetMetadata();
 
-	String getCharsetNameForIndex(int charsetIndex) throws SQLException;
+    SingleByteCharsetConverter getCharsetConverter(String javaEncodingName)
+            throws SQLException;
 
-	TimeZone getDefaultTimeZone();
+    String getCharsetNameForIndex(int charsetIndex) throws SQLException;
 
-	String getErrorMessageEncoding();
+    TimeZone getDefaultTimeZone();
 
-	ExceptionInterceptor getExceptionInterceptor();
+    String getErrorMessageEncoding();
 
-	String getHost();
+    ExceptionInterceptor getExceptionInterceptor();
 
-	long getId();
+    String getHost();
 
-	long getIdleFor();
+    long getId();
 
-	MysqlIO getIO() throws SQLException;
+    long getIdleFor();
 
-	Log getLog() throws SQLException;
+    MysqlIO getIO() throws SQLException;
 
-	int getMaxBytesPerChar(String javaCharsetName) throws SQLException;
+    Log getLog() throws SQLException;
 
-	int getMaxBytesPerChar(Integer charsetIndex, String javaCharsetName) throws SQLException;
+    int getMaxBytesPerChar(String javaCharsetName) throws SQLException;
 
-	java.sql.Statement getMetadataSafeStatement() throws SQLException;
+    int getMaxBytesPerChar(Integer charsetIndex, String javaCharsetName) throws SQLException;
 
-	int getNetBufferLength();
+    java.sql.Statement getMetadataSafeStatement() throws SQLException;
 
-	Properties getProperties();
+    int getNetBufferLength();
 
-	boolean getRequiresEscapingEncoder();
+    Properties getProperties();
 
-	String getServerCharacterEncoding();
+    boolean getRequiresEscapingEncoder();
 
-	int getServerMajorVersion();
+    String getServerCharacterEncoding();
 
-	int getServerMinorVersion();
+    int getServerMajorVersion();
 
-	int getServerSubMinorVersion();
+    int getServerMinorVersion();
 
-	TimeZone getServerTimezoneTZ();
+    int getServerSubMinorVersion();
 
-	String getServerVariable(String variableName);
+    TimeZone getServerTimezoneTZ();
 
-	String getServerVersion();
+    String getServerVariable(String variableName);
 
-	Calendar getSessionLockedCalendar();
+    String getServerVersion();
 
-	String getStatementComment();
+    Calendar getSessionLockedCalendar();
 
-	List<StatementInterceptorV2> getStatementInterceptorsInstances();
+    String getStatementComment();
 
-	String getURL();
+    List<StatementInterceptorV2> getStatementInterceptorsInstances();
 
-	String getUser();
+    String getURL();
 
-	Calendar getUtcCalendar();
+    String getUser();
 
-	void incrementNumberOfPreparedExecutes();
+    Calendar getUtcCalendar();
 
-	void incrementNumberOfPrepares();
+    void incrementNumberOfPreparedExecutes();
 
-	void incrementNumberOfResultSetsCreated();
+    void incrementNumberOfPrepares();
 
-	void initializeResultsMetadataFromCache(String sql,
-			CachedResultSetMetaData cachedMetaData,
-			ResultSetInternalMethods resultSet) throws SQLException;
+    void incrementNumberOfResultSetsCreated();
 
-	void initializeSafeStatementInterceptors() throws SQLException;
+    void initializeResultsMetadataFromCache(String sql,
+            CachedResultSetMetaData cachedMetaData,
+            ResultSetInternalMethods resultSet) throws SQLException;
 
-	boolean isAbonormallyLongQuery(long millisOrNanos);
+    void initializeSafeStatementInterceptors() throws SQLException;
 
-	boolean isClientTzUTC();
+    boolean isAbonormallyLongQuery(long millisOrNanos);
 
-	boolean isCursorFetchEnabled() throws SQLException;
+    boolean isClientTzUTC();
 
-	boolean isReadInfoMsgEnabled();
+    boolean isCursorFetchEnabled() throws SQLException;
 
-	public boolean isReadOnly() throws SQLException;
+    boolean isReadInfoMsgEnabled();
 
-	public boolean isReadOnly(boolean useSessionStatus) throws SQLException;
+    public boolean isReadOnly() throws SQLException;
 
-	boolean isRunningOnJDK13();
+    public boolean isReadOnly(boolean useSessionStatus) throws SQLException;
 
-	boolean isServerTzUTC();
+    boolean isRunningOnJDK13();
 
-	boolean lowerCaseTableNames();
+    boolean isServerTzUTC();
 
-	void maxRowsChanged(Statement stmt);
+    boolean lowerCaseTableNames();
 
-	void pingInternal(boolean checkForClosedConnection, int timeoutMillis)
-			throws SQLException;
+    void maxRowsChanged(Statement stmt);
 
-	void realClose(boolean calledExplicitly, boolean issueRollback,
-			boolean skipLocalTeardown, Throwable reason) throws SQLException;
+    void pingInternal(boolean checkForClosedConnection, int timeoutMillis)
+            throws SQLException;
 
-	void recachePreparedStatement(ServerPreparedStatement pstmt)
-			throws SQLException;
+    void realClose(boolean calledExplicitly, boolean issueRollback,
+            boolean skipLocalTeardown, Throwable reason) throws SQLException;
 
-	void registerQueryExecutionTime(long queryTimeMs);
+    void recachePreparedStatement(ServerPreparedStatement pstmt)
+            throws SQLException;
 
-	void registerStatement(Statement stmt);
+    void registerQueryExecutionTime(long queryTimeMs);
 
-	void reportNumberOfTablesAccessed(int numTablesAccessed);
+    void registerStatement(Statement stmt);
 
-	boolean serverSupportsConvertFn() throws SQLException;
+    void reportNumberOfTablesAccessed(int numTablesAccessed);
 
-	void setProxy(MySQLConnection proxy);
+    boolean serverSupportsConvertFn() throws SQLException;
 
-	void setReadInfoMsgEnabled(boolean flag);
+    void setProxy(MySQLConnection proxy);
 
-	void setReadOnlyInternal(boolean readOnlyFlag) throws SQLException;
+    void setReadInfoMsgEnabled(boolean flag);
 
-	void shutdownServer() throws SQLException;
+    void setReadOnlyInternal(boolean readOnlyFlag) throws SQLException;
 
-	boolean storesLowerCaseTableName();
+    void shutdownServer() throws SQLException;
 
-	void throwConnectionClosedException() throws SQLException;
+    boolean storesLowerCaseTableName();
 
-	void transactionBegun() throws SQLException;
+    void throwConnectionClosedException() throws SQLException;
 
-	void transactionCompleted() throws SQLException;
+    void transactionBegun() throws SQLException;
 
-	void unregisterStatement(Statement stmt);
+    void transactionCompleted() throws SQLException;
 
-	void unSafeStatementInterceptors() throws SQLException;
+    void unregisterStatement(Statement stmt);
 
-	void unsetMaxRows(Statement stmt) throws SQLException;
+    void unSafeStatementInterceptors() throws SQLException;
 
-	boolean useAnsiQuotedIdentifiers();
+    void unsetMaxRows(Statement stmt) throws SQLException;
 
-	boolean useMaxRows();
-	
-	String getConnectionAttributes() throws SQLException;
-		
-	MySQLConnection getLoadBalanceSafeProxy();
-	
+    boolean useAnsiQuotedIdentifiers();
+
+    boolean useMaxRows();
+
+    String getConnectionAttributes() throws SQLException;
+
+    MySQLConnection getLoadBalanceSafeProxy();
+
 }

@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.pitt.servlets;
 
-import edu.pitt.resumecore.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -37,8 +35,8 @@ public class logout extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
-            HttpSession session = request.getSession(true);
+
+            HttpSession session = request.getSession(false);
             session.invalidate();
             response.sendRedirect("index.jsp");
         }

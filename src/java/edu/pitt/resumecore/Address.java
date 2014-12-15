@@ -90,17 +90,18 @@ public class Address {
 
     /**
      * Creates an Address object from JSON
+     *
      * @param address JSON object for an Address
      */
-    public Address(JSONObject address){
+    public Address(JSONObject address) {
         try {
-            this.addressID = address.getString("addressID"); 
+            this.addressID = address.getString("addressID");
             setAddressFromJSON(address);
         } catch (JSONException ex) {
             Logger.getLogger(Address.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      *
      * @param addressID ID of address to be looked up and properties set from

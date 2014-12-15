@@ -6,7 +6,6 @@
 package edu.pitt.rest;
 
 import edu.pitt.resumecore.User;
-import edu.pitt.utilities.Security;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,10 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Gets all user info as JSON
  *
  * @author jordansfeldman
  */
-@WebServlet(name = "userInfows", urlPatterns = {"/rest/userInfows"})
 public class userInfows extends HttpServlet {
 
     /**
@@ -34,17 +33,13 @@ public class userInfows extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-//        if (Security.checkHijackedSession(request.getSession(false), request)) {
-//            response.sendRedirect("rest/index.jsp");
-//        } else {
-            try (PrintWriter out = response.getWriter()) {
-                if (request.getParameter("userID") != null) {
-                    String userID = request.getParameter("userID");
-                    User user = new User(userID);
-                    out.print(user.getUserAsJSON());
-                }
+        try (PrintWriter out = response.getWriter()) {
+            if (request.getParameter("userID") != null) {
+                String userID = request.getParameter("userID");
+                User user = new User(userID);
+                out.print(user.getUserAsJSON());
             }
+        }
 //        }
     }
 

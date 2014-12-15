@@ -8,9 +8,9 @@ package edu.pitt.rest;
 import edu.pitt.resumecore.User;
 import edu.pitt.utilities.DbUtilities;
 import edu.pitt.utilities.Security;
+import edu.pitt.utilities.StringUtilities;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -21,13 +21,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
-import org.json.JSONException;
 
 /**
+ * Searches for User info based on given parameters
  *
- * @author jordanstevenfeldman
+ * @author Jordan Feldman
  */
-@WebServlet(name = "userlistws", urlPatterns = {"/rest/userlistws"})
 public class userlistws extends HttpServlet {
 
     /**
@@ -57,19 +56,19 @@ public class userlistws extends HttpServlet {
             String sql = "";
 
             if (request.getParameter("lastName") != null) {
-                lastName = request.getParameter("lastName");
+                lastName = StringUtilities.cleanMySqlInsert(request.getParameter("lastName"));
             }
             if (request.getParameter("userID") != null) {
-                userID = request.getParameter("userID");
+                userID = StringUtilities.cleanMySqlInsert(request.getParameter("userID"));
             }
             if (request.getParameter("field") != null) {
-                field = request.getParameter("field");
+                field = StringUtilities.cleanMySqlInsert(request.getParameter("field"));
             }
             if (request.getParameter("gpa") != null) {
-                gpa = request.getParameter("gpa");
+                gpa = StringUtilities.cleanMySqlInsert(request.getParameter("gpa"));
             }
             if (request.getParameter("jobDescription") != null) {
-                jobDescription = request.getParameter("jobDescription");
+                jobDescription = StringUtilities.cleanMySqlInsert(request.getParameter("jobDescription"));
             }
 
             if (!lastName.equals("")) {

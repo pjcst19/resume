@@ -18,11 +18,7 @@ public class Security {
     public static boolean isValidSession(HttpSession session) {
 
         if (session != null) {
-            if (session.getAttribute("authenticatedUser") != null) {
-                return false;
-            } else {
-                return true;
-            }
+            return session.getAttribute("authenticatedUser") == null;
         } else {
             return false;
         }

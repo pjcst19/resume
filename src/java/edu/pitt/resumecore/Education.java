@@ -19,8 +19,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
+ * Creates an Education object and maintains it with the DB
  *
- * @author Naveen
+ * @author Jordan Feldman
  */
 public class Education {
 
@@ -66,14 +67,15 @@ public class Education {
         }
 
     }
-    
-     /**
+
+    /**
      * Creates an Education object from JSON
+     *
      * @param education JSON object for an Education object
      */
-    public Education(JSONObject education){
+    public Education(JSONObject education) {
         try {
-            this.educationID = education.getString("educationID"); 
+            this.educationID = education.getString("educationID");
             setEducationFromJSON(education);
         } catch (JSONException ex) {
             Logger.getLogger(Education.class.getName()).log(Level.SEVERE, null, ex);
@@ -236,6 +238,11 @@ public class Education {
         return graduationDate;
     }
 
+    /**
+     * Gets an Education object as JSON
+     *
+     * @return Education object JSON
+     */
     public JSONObject getEducationAsJson() {
 
         JSONObject education = new JSONObject();
@@ -257,6 +264,11 @@ public class Education {
         return education;
     }
 
+    /**
+     * Sets an Education object's properties given JSON
+     *
+     * @param education JSON Object
+     */
     public final void setEducationFromJSON(JSONObject education) {
 
         try {

@@ -6,7 +6,6 @@
 package edu.pitt.servlets;
 
 import edu.pitt.resumecore.Resume;
-import edu.pitt.utilities.Security;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -15,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,22 +36,19 @@ public class processResume extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(true);
-        
         try (PrintWriter out = response.getWriter()) {
-           if (Security.checkHijackedSession(session, request)) {
-                response.sendRedirect("index.jsp");
-            } else {
-               try {
-                   JSONArray resumeJSONArray = new JSONArray(request.getParameter("resume"));
-                   JSONObject resumeJSONObject = resumeJSONArray.getJSONObject(0);
-                   Resume resume = new Resume(resumeJSONObject);
-               } catch (JSONException ex) {
-                   Logger.getLogger(processResume.class.getName()).log(Level.SEVERE, null, ex);
-               } finally{
-               }
-              
-           }
+
+            try {
+                JSONArray resumeJSONArray = new JSONArray(request.getParameter("resume"));
+
+                for (int i = 0; i < resumeJSONArray.length(); i++) {
+                    JSONObject resumeJSONObject = resumeJSONArray.getJSONObject(i);
+                    Resume resume = new Resume(resumeJSONObject);
+                }
+
+            } catch (JSONException ex) {
+                Logger.getLogger(processResume.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

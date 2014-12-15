@@ -7,10 +7,9 @@ package edu.pitt.rest;
 
 import edu.pitt.resumecore.User;
 import edu.pitt.utilities.DbUtilities;
-import edu.pitt.utilities.Security;
+import edu.pitt.utilities.StringUtilities;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -21,13 +20,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
-import org.json.JSONException;
 
 /**
+ * Validates User login
  *
  * @author jordanstevenfeldman
  */
-@WebServlet(name = "userlistloginws", urlPatterns = {"/rest/userlistloginws"})
 public class userlistloginws extends HttpServlet {
 
     /**
@@ -42,16 +40,13 @@ public class userlistloginws extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        if (Security.checkHijackedSession(request.getSession(false), request)) {
-            response.sendRedirect("index.jsp");
-        }
         DbUtilities db = new DbUtilities();
         try (PrintWriter out = response.getWriter()) {
             String login = "";
             String password = "";
             if (request.getParameter("login") != null && request.getParameter("password") != null) {
-                login = request.getParameter("login");
-                password = request.getParameter("password");
+                login = StringUtilities.cleanMySqlInsert(request.getParameter("login"));
+                password = StringUtilities.cleanMySqlInsert(request.getParameter("password"));
             }
 
             if (!login.equals("") && !password.equals("")) {
@@ -59,8 +54,6 @@ public class userlistloginws extends HttpServlet {
                 db = new DbUtilities();
                 String sql = "SELECT * FROM rms.User ";
                 sql += "WHERE login = '" + login + "' AND password = '" + password + "'";
-
-                System.out.println(sql);
 
                 JSONArray fullUserList = new JSONArray();
                 ResultSet rs = db.getResultSet(sql);

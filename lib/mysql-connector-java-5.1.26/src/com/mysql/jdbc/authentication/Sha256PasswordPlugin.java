@@ -1,26 +1,25 @@
 /*
-  Copyright (c) 2012, Oracle and/or its affiliates. All rights reserved.
+ Copyright (c) 2012, Oracle and/or its affiliates. All rights reserved.
 
-  The MySQL Connector/J is licensed under the terms of the GPLv2
-  <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
-  There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
-  this software, see the FLOSS License Exception
-  <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
+ The MySQL Connector/J is licensed under the terms of the GPLv2
+ <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
+ There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
+ this software, see the FLOSS License Exception
+ <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 
-  This program is free software; you can redistribute it and/or modify it under the terms
-  of the GNU General Public License as published by the Free Software Foundation; version 2
-  of the License.
+ This program is free software; you can redistribute it and/or modify it under the terms
+ of the GNU General Public License as published by the Free Software Foundation; version 2
+ of the License.
 
-  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  See the GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ See the GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along with this
-  program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
-  Floor, Boston, MA 02110-1301  USA
+ You should have received a copy of the GNU General Public License along with this
+ program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
+ Floor, Boston, MA 02110-1301  USA
 
  */
-
 package com.mysql.jdbc.authentication;
 
 import java.sql.SQLException;
@@ -37,47 +36,47 @@ import com.mysql.jdbc.StringUtils;
  *
  */
 public class Sha256PasswordPlugin implements AuthenticationPlugin {
-	
-	private String password = null;
 
-	public void init(Connection conn, Properties props) throws SQLException {
-	}
+    private String password = null;
 
-	public void destroy() {
-		this.password = null;
-	}
+    public void init(Connection conn, Properties props) throws SQLException {
+    }
 
-	public String getProtocolPluginName() {
-		return "sha256_password";
-	}
+    public void destroy() {
+        this.password = null;
+    }
 
-	public boolean requiresConfidentiality() {
-		return true;
-	}
+    public String getProtocolPluginName() {
+        return "sha256_password";
+    }
 
-	public boolean isReusable() {
-		return true;
-	}
+    public boolean requiresConfidentiality() {
+        return true;
+    }
 
-	public void setAuthenticationParameters(String user, String password) {
-		this.password = password;
-	}
+    public boolean isReusable() {
+        return true;
+    }
 
-	public boolean nextAuthenticationStep(Buffer fromServer, List<Buffer> toServer) throws SQLException {
-		toServer.clear();
+    public void setAuthenticationParameters(String user, String password) {
+        this.password = password;
+    }
 
-		Buffer bresp = new Buffer(StringUtils.getBytes(this.password != null ? this.password : ""));
+    public boolean nextAuthenticationStep(Buffer fromServer, List<Buffer> toServer) throws SQLException {
+        toServer.clear();
 
-		bresp.setPosition(bresp.getBufLength());
-		int oldBufLength = bresp.getBufLength();
-		
-		bresp.writeByte((byte)0);
-		
-		bresp.setBufLength(oldBufLength + 1);
-		bresp.setPosition(0);
+        Buffer bresp = new Buffer(StringUtils.getBytes(this.password != null ? this.password : ""));
 
-		toServer.add(bresp);
-		return true;
-	}
+        bresp.setPosition(bresp.getBufLength());
+        int oldBufLength = bresp.getBufLength();
+
+        bresp.writeByte((byte) 0);
+
+        bresp.setBufLength(oldBufLength + 1);
+        bresp.setPosition(0);
+
+        toServer.add(bresp);
+        return true;
+    }
 
 }

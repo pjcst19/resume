@@ -6,20 +6,18 @@
 package edu.pitt.rest;
 
 import edu.pitt.resumecore.Resume;
-import edu.pitt.utilities.Security;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Given a resumeID this class returns a resume as JSON
  *
- * @author Mandy
+ * @author Jordan Feldman
  */
-@WebServlet(name = "resumews", urlPatterns = {"/rest/resumews"})
 public class resumews extends HttpServlet {
 
     /**
@@ -35,19 +33,14 @@ public class resumews extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
 
-//        if (Security.checkHijackedSession(request.getSession(false), request)) {
-//            response.sendRedirect("rest/index.jsp");
-//        } else {
-            try (PrintWriter out = response.getWriter()) {
-
-                if (request.getParameter("resumeID") != null) {
-                    String resumeID = request.getParameter("resumeID");
-                    Resume resume = new Resume(resumeID);
-                    out.print(resume.getResumeAsJson());
-                }
+        try (PrintWriter out = response.getWriter()) {
+            if (null != request.getParameter("resumeID")) {
+                String resumeID = request.getParameter("resumeID");
+                Resume resume = new Resume(resumeID);
+                out.print(resume.getResumeAsJson());
             }
         }
-//    }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -1,12 +1,12 @@
 <%-- 
     Document   : header
     Created on : Sep 25, 2014, 6:16:09 PM
-    Author     : jordansfeldman
+    Author     : Jordan Feldman
 --%>
 
 <%@page import="edu.pitt.resumecore.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
+<%
     User user = (User) session.getAttribute("authenticatedUser");
 %>
 <!DOCTYPE html>
@@ -19,13 +19,13 @@
         <meta name="author" content="">
 
         <title>Resume Management System </title>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
         <!--Stylesheet for Resume-->
-        <link href="assets/css/style.css" rel="stylesheet">
-        <link href="css/custom.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+        <link href="../css/style.css" rel="stylesheet">
+        <link href="../css/custom.css" rel="stylesheet" type="text/css">
+        <link rel="../stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css">
+        <link rel="../stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 
         <!--jquery scripts -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
@@ -34,8 +34,8 @@
 
 
         <!--Scripts for Data Binding -->
-        <script src="js/knockout-3.2.0.js"></script>
-        <script src="js/knockout.mapping.js"></script>
+        <script src="../js/knockout-3.2.0.js"></script>
+        <script src="../js/knockout.mapping.js"></script>
     </head>
 
 
@@ -52,7 +52,7 @@
                     <ul class="nav navbar-nav" id="mainNavigation">
                         <li><a href="menu.jsp">Home</a></li>
                         <li><a href='personalInfo.jsp'>Create Resume</a></li>
-                        <li><a href='listResumes.jsp?userID=<% out.print(user.getUserID()); %>'>View/Edit Resumes</a></li>
+                        <li><a href='listResumes.jsp?userID=<% out.print(user.getUserID());%>'>View/Edit Resumes</a></li>
                     </ul>
 
 
@@ -60,7 +60,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <ul class="nav pull-right">
-                                <li> <a class="btn btn-default navbar-btn" href="logout">Logout</a></li>
+                                <li> <a class="btn btn-default navbar-btn" href="../logout">Logout</a></li>
                             </ul>
                         </li>
                     </ul>

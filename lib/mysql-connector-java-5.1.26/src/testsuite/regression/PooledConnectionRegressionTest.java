@@ -2,23 +2,23 @@
  Copyright (c) 2002, 2012, Oracle and/or its affiliates. All rights reserved.
  
 
-  The MySQL Connector/J is licensed under the terms of the GPLv2
-  <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
-  There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
-  this software, see the FLOSS License Exception
-  <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
+ The MySQL Connector/J is licensed under the terms of the GPLv2
+ <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
+ There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
+ this software, see the FLOSS License Exception
+ <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 
-  This program is free software; you can redistribute it and/or modify it under the terms
-  of the GNU General Public License as published by the Free Software Foundation; version 2
-  of the License.
+ This program is free software; you can redistribute it and/or modify it under the terms
+ of the GNU General Public License as published by the Free Software Foundation; version 2
+ of the License.
 
-  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  See the GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ See the GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along with this
-  program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
-  Floor, Boston, MA 02110-1301  USA
+ You should have received a copy of the GNU General Public License along with this
+ program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
+ Floor, Boston, MA 02110-1301  USA
 
 
  
@@ -49,7 +49,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlXADataSource;
  * Tests a PooledConnection implementation provided by a JDBC driver. Test case
  * provided by Johnny Macchione from bug database record BUG#884. According to
  * the JDBC 2.0 specification:
- * 
+ *
  * <p>
  * "Each call to PooledConnection.getConnection() must return a newly
  * constructed Connection object that exhibits the default Connection behavior.
@@ -61,7 +61,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlXADataSource;
  * application if it wishes, and give it out to someone else. This capability
  * will not likely be used frequently in practice."
  * </p>
- * 
+ *
  * <p>
  * "When the application calls Connection.close(), an event is triggered that
  * tells the connection pool it can recycle the physical database connection. In
@@ -69,7 +69,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlXADataSource;
  * object which originally produced the Connection object generating the event
  * can be put back in the connection pool."
  * </p>
- * 
+ *
  * <p>
  * "A Connection-EventListener will also be notified when a fatal error occurs,
  * so that it can make a note not to put a bad PooledConnection object back in
@@ -80,7 +80,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlXADataSource;
  * previous section does not generate a connection close event."
  * </p>
  * The JDBC 3.0 specification states the same in other words:
- * 
+ *
  * <p>
  * "The Connection.close method closes the logical handle, but the physical
  * connection is maintained. The connection pool manager is notified that the
@@ -88,7 +88,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlXADataSource;
  * application attempts to reuse the logical handle, the Connection
  * implementation throws an SQLException."
  * </p>
- * 
+ *
  * <p>
  * "For a given PooledConnection object, only the most recently produced logical
  * Connection object will be valid. Any previously existing Connection object is
@@ -98,7 +98,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlXADataSource;
  * from a client. This is an unlikely scenario but may be useful if the
  * application server is trying to force an orderly shutdown."
  * </p>
- * 
+ *
  * <p>
  * "A connection pool manager shuts down a physical connection by calling the
  * method PooledConnection.close. This method is typically called only in
@@ -111,328 +111,326 @@ import com.mysql.jdbc.jdbc2.optional.MysqlXADataSource;
  * generating a close event when calling the method PooledConnection.close(),
  * even if a logical Connection is open for this PooledConnection, bc the
  * PooledConnection will obviously not be returned to the pool.
- * 
+ *
  * @author fcr
  */
 public final class PooledConnectionRegressionTest extends BaseTestCase {
-	private ConnectionPoolDataSource cpds;
 
-	// Count nb of closeEvent.
-	protected int closeEventCount;
+    private ConnectionPoolDataSource cpds;
 
-	// Count nb of connectionErrorEvent
-	protected int connectionErrorEventCount;
+    // Count nb of closeEvent.
+    protected int closeEventCount;
 
-	/**
-	 * Creates a new instance of ProgressPooledConnectionTest
-	 * 
-	 * @param testname
-	 *            DOCUMENT ME!
-	 */
-	public PooledConnectionRegressionTest(String testname) {
-		super(testname);
-	}
+    // Count nb of connectionErrorEvent
+    protected int connectionErrorEventCount;
 
-	/**
-	 * Set up test case before a test is run.
-	 * 
-	 * @throws Exception
-	 *             DOCUMENT ME!
-	 */
-	public void setUp() throws Exception {
-		super.setUp();
+    /**
+     * Creates a new instance of ProgressPooledConnectionTest
+     *
+     * @param testname DOCUMENT ME!
+     */
+    public PooledConnectionRegressionTest(String testname) {
+        super(testname);
+    }
 
-		// Reset event count.
-		this.closeEventCount = 0;
-		this.connectionErrorEventCount = 0;
+    /**
+     * Set up test case before a test is run.
+     *
+     * @throws Exception DOCUMENT ME!
+     */
+    public void setUp() throws Exception {
+        super.setUp();
 
-		MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
+        // Reset event count.
+        this.closeEventCount = 0;
+        this.connectionErrorEventCount = 0;
 
-		ds.setURL(BaseTestCase.dbUrl);
+        MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
 
-		this.cpds = ds;
-	}
+        ds.setURL(BaseTestCase.dbUrl);
 
-	/**
-	 * Runs all test cases in this test suite
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(PooledConnectionRegressionTest.class);
-	}
+        this.cpds = ds;
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return a test suite composed of this test case.
-	 */
-	public static Test suite() {
-		TestSuite suite = new TestSuite(PooledConnectionRegressionTest.class);
+    /**
+     * Runs all test cases in this test suite
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        junit.textui.TestRunner.run(PooledConnectionRegressionTest.class);
+    }
 
-		return suite;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return a test suite composed of this test case.
+     */
+    public static Test suite() {
+        TestSuite suite = new TestSuite(PooledConnectionRegressionTest.class);
 
-	/**
-	 * After the test is run.
-	 */
-	public void tearDown() throws Exception {
-		this.cpds = null;
-		super.tearDown();
-	}
+        return suite;
+    }
 
-	/**
-	 * Tests fix for BUG#7136 ... Statement.getConnection() returning physical
-	 * connection instead of logical connection.
-	 */
-	public void testBug7136() {
-		final ConnectionEventListener conListener = new ConnectionListener();
-		PooledConnection pc = null;
-		this.closeEventCount = 0;
+    /**
+     * After the test is run.
+     */
+    public void tearDown() throws Exception {
+        this.cpds = null;
+        super.tearDown();
+    }
 
-		try {
-			pc = this.cpds.getPooledConnection();
+    /**
+     * Tests fix for BUG#7136 ... Statement.getConnection() returning physical
+     * connection instead of logical connection.
+     */
+    public void testBug7136() {
+        final ConnectionEventListener conListener = new ConnectionListener();
+        PooledConnection pc = null;
+        this.closeEventCount = 0;
 
-			pc.addConnectionEventListener(conListener);
+        try {
+            pc = this.cpds.getPooledConnection();
 
-			Connection _conn = pc.getConnection();
+            pc.addConnectionEventListener(conListener);
 
-			Connection connFromStatement = _conn.createStatement()
-					.getConnection();
+            Connection _conn = pc.getConnection();
 
-			// This should generate a close event.
-
-			connFromStatement.close();
-
-			assertEquals("One close event should've been registered", 1,
-					this.closeEventCount);
-
-			this.closeEventCount = 0;
-
-			_conn = pc.getConnection();
-
-			Connection connFromPreparedStatement = _conn.prepareStatement(
-					"SELECT 1").getConnection();
+            Connection connFromStatement = _conn.createStatement()
+                    .getConnection();
 
 			// This should generate a close event.
+            connFromStatement.close();
 
-			connFromPreparedStatement.close();
+            assertEquals("One close event should've been registered", 1,
+                    this.closeEventCount);
 
-			assertEquals("One close event should've been registered", 1,
-					this.closeEventCount);
+            this.closeEventCount = 0;
 
-		} catch (SQLException ex) {
-			fail(ex.toString());
-		} finally {
-			if (pc != null) {
-				try {
-					pc.close();
-				} catch (SQLException ex) {
-					ex.printStackTrace();
-				}
-			}
-		}
-	}
+            _conn = pc.getConnection();
 
-	/**
-	 * Test the nb of closeEvents generated when a Connection is reclaimed. No
-	 * event should be generated in that case.
-	 */
-	public void testConnectionReclaim() {
-		final ConnectionEventListener conListener = new ConnectionListener();
-		PooledConnection pc = null;
-		final int NB_TESTS = 5;
+            Connection connFromPreparedStatement = _conn.prepareStatement(
+                    "SELECT 1").getConnection();
 
-		try {
-			pc = this.cpds.getPooledConnection();
+			// This should generate a close event.
+            connFromPreparedStatement.close();
 
-			pc.addConnectionEventListener(conListener);
+            assertEquals("One close event should've been registered", 1,
+                    this.closeEventCount);
 
-			for (int i = 0; i < NB_TESTS; i++) {
-				Connection _conn = pc.getConnection();
+        } catch (SQLException ex) {
+            fail(ex.toString());
+        } finally {
+            if (pc != null) {
+                try {
+                    pc.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
 
-				try {
-					// Try to reclaim connection.
-					System.out.println("Before connection reclaim.");
+    /**
+     * Test the nb of closeEvents generated when a Connection is reclaimed. No
+     * event should be generated in that case.
+     */
+    public void testConnectionReclaim() {
+        final ConnectionEventListener conListener = new ConnectionListener();
+        PooledConnection pc = null;
+        final int NB_TESTS = 5;
 
-					_conn = pc.getConnection();
+        try {
+            pc = this.cpds.getPooledConnection();
 
-					System.out.println("After connection reclaim.");
-				} finally {
-					if (_conn != null) {
-						System.out.println("Before connection.close().");
+            pc.addConnectionEventListener(conListener);
 
-						// This should generate a close event.
-						_conn.close();
+            for (int i = 0; i < NB_TESTS; i++) {
+                Connection _conn = pc.getConnection();
 
-						System.out.println("After connection.close().");
-					}
-				}
-			}
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			fail(ex.toString());
-		} finally {
-			if (pc != null) {
-				try {
-					System.out.println("Before pooledConnection.close().");
+                try {
+                    // Try to reclaim connection.
+                    System.out.println("Before connection reclaim.");
 
-					// This should not generate a close event.
-					pc.close();
+                    _conn = pc.getConnection();
 
-					System.out.println("After pooledConnection.close().");
-				} catch (SQLException ex) {
-					ex.printStackTrace();
-					fail(ex.toString());
-				}
-			}
-		}
+                    System.out.println("After connection reclaim.");
+                } finally {
+                    if (_conn != null) {
+                        System.out.println("Before connection.close().");
 
-		assertEquals("Wrong nb of CloseEvents: ", NB_TESTS,
-				this.closeEventCount);
-	}
+                        // This should generate a close event.
+                        _conn.close();
 
-	/**
-	 * Tests that PacketTooLargeException doesn't clober the connection.
-	 * 
-	 * @throws Exception
-	 *             if the test fails.
-	 */
-	public void testPacketTooLargeException() throws Exception {
-		final ConnectionEventListener conListener = new ConnectionListener();
-		PooledConnection pc = null;
+                        System.out.println("After connection.close().");
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            fail(ex.toString());
+        } finally {
+            if (pc != null) {
+                try {
+                    System.out.println("Before pooledConnection.close().");
 
-		pc = this.cpds.getPooledConnection();
+                    // This should not generate a close event.
+                    pc.close();
 
-		pc.addConnectionEventListener(conListener);
+                    System.out.println("After pooledConnection.close().");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    fail(ex.toString());
+                }
+            }
+        }
 
-		createTable("testPacketTooLarge", "(field1 LONGBLOB)");
+        assertEquals("Wrong nb of CloseEvents: ", NB_TESTS,
+                this.closeEventCount);
+    }
 
-		Connection connFromPool = pc.getConnection();
-		PreparedStatement pstmtFromPool = ((ConnectionWrapper) connFromPool)
-				.clientPrepare("INSERT INTO testPacketTooLarge VALUES (?)");
+    /**
+     * Tests that PacketTooLargeException doesn't clober the connection.
+     *
+     * @throws Exception if the test fails.
+     */
+    public void testPacketTooLargeException() throws Exception {
+        final ConnectionEventListener conListener = new ConnectionListener();
+        PooledConnection pc = null;
 
-		this.rs = this.stmt
-				.executeQuery("SHOW VARIABLES LIKE 'max_allowed_packet'");
-		this.rs.next();
+        pc = this.cpds.getPooledConnection();
 
-		int maxAllowedPacket = this.rs.getInt(2);
+        pc.addConnectionEventListener(conListener);
 
-		int numChars = (int) (maxAllowedPacket * 1.2);
+        createTable("testPacketTooLarge", "(field1 LONGBLOB)");
 
-		pstmtFromPool.setBinaryStream(
-				1,
-				new BufferedInputStream(new FileInputStream(newTempBinaryFile(
-						"testPacketTooLargeException", numChars))), numChars);
+        Connection connFromPool = pc.getConnection();
+        PreparedStatement pstmtFromPool = ((ConnectionWrapper) connFromPool)
+                .clientPrepare("INSERT INTO testPacketTooLarge VALUES (?)");
 
-		try {
-			pstmtFromPool.executeUpdate();
-			fail("Expecting PacketTooLargeException");
-		} catch (PacketTooBigException ptbe) {
-			// We're expecting this one...
-		}
+        this.rs = this.stmt
+                .executeQuery("SHOW VARIABLES LIKE 'max_allowed_packet'");
+        this.rs.next();
+
+        int maxAllowedPacket = this.rs.getInt(2);
+
+        int numChars = (int) (maxAllowedPacket * 1.2);
+
+        pstmtFromPool.setBinaryStream(
+                1,
+                new BufferedInputStream(new FileInputStream(newTempBinaryFile(
+                                        "testPacketTooLargeException", numChars))), numChars);
+
+        try {
+            pstmtFromPool.executeUpdate();
+            fail("Expecting PacketTooLargeException");
+        } catch (PacketTooBigException ptbe) {
+            // We're expecting this one...
+        }
 
 		// This should still work okay, even though the last query on the
-		// same
-		// connection didn't...
-		connFromPool.createStatement().executeQuery("SELECT 1");
+        // same
+        // connection didn't...
+        connFromPool.createStatement().executeQuery("SELECT 1");
 
-		assertTrue(this.connectionErrorEventCount == 0);
-		assertTrue(this.closeEventCount == 0);
-	}
+        assertTrue(this.connectionErrorEventCount == 0);
+        assertTrue(this.closeEventCount == 0);
+    }
 
-	/**
-	 * Test the nb of closeEvents generated by a PooledConnection. A
-	 * JDBC-compliant driver should only generate 1 closeEvent each time
-	 * connection.close() is called.
-	 */
-	public void testCloseEvent() {
-		final ConnectionEventListener conListener = new ConnectionListener();
-		PooledConnection pc = null;
-		final int NB_TESTS = 5;
+    /**
+     * Test the nb of closeEvents generated by a PooledConnection. A
+     * JDBC-compliant driver should only generate 1 closeEvent each time
+     * connection.close() is called.
+     */
+    public void testCloseEvent() {
+        final ConnectionEventListener conListener = new ConnectionListener();
+        PooledConnection pc = null;
+        final int NB_TESTS = 5;
 
-		try {
-			pc = this.cpds.getPooledConnection();
+        try {
+            pc = this.cpds.getPooledConnection();
 
-			pc.addConnectionEventListener(conListener);
+            pc.addConnectionEventListener(conListener);
 
-			for (int i = 0; i < NB_TESTS; i++) {
-				Connection pConn = pc.getConnection();
+            for (int i = 0; i < NB_TESTS; i++) {
+                Connection pConn = pc.getConnection();
 
-				System.out.println("Before connection.close().");
+                System.out.println("Before connection.close().");
 
-				// This should generate a close event.
-				pConn.close();
+                // This should generate a close event.
+                pConn.close();
 
-				System.out.println("After connection.close().");
-			}
-		} catch (SQLException ex) {
-			fail(ex.toString());
-		} finally {
-			if (pc != null) {
-				try {
-					System.out.println("Before pooledConnection.close().");
+                System.out.println("After connection.close().");
+            }
+        } catch (SQLException ex) {
+            fail(ex.toString());
+        } finally {
+            if (pc != null) {
+                try {
+                    System.out.println("Before pooledConnection.close().");
 
-					// This should not generate a close event.
-					pc.close();
+                    // This should not generate a close event.
+                    pc.close();
 
-					System.out.println("After pooledConnection.close().");
-				} catch (SQLException ex) {
-					ex.printStackTrace();
-				}
-			}
-		}
-		assertEquals("Wrong nb of CloseEvents: ", NB_TESTS,
-				this.closeEventCount);
-	}
+                    System.out.println("After pooledConnection.close().");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        assertEquals("Wrong nb of CloseEvents: ", NB_TESTS,
+                this.closeEventCount);
+    }
 
-	/**
-	 * Listener for PooledConnection events.
-	 */
-	protected final class ConnectionListener implements ConnectionEventListener {
-		/** */
-		public void connectionClosed(ConnectionEvent event) {
-			PooledConnectionRegressionTest.this.closeEventCount++;
-			System.out
-					.println(PooledConnectionRegressionTest.this.closeEventCount
-							+ " - Connection closed.");
-		}
+    /**
+     * Listener for PooledConnection events.
+     */
+    protected final class ConnectionListener implements ConnectionEventListener {
 
-		/** */
-		public void connectionErrorOccurred(ConnectionEvent event) {
-			PooledConnectionRegressionTest.this.connectionErrorEventCount++;
-			System.out.println("Connection error: " + event.getSQLException());
-		}
-	}
+        /**
+         *          */
+        public void connectionClosed(ConnectionEvent event) {
+            PooledConnectionRegressionTest.this.closeEventCount++;
+            System.out
+                    .println(PooledConnectionRegressionTest.this.closeEventCount
+                            + " - Connection closed.");
+        }
 
-	/**
-	 * Tests fix for BUG#35489 - Prepared statements from pooled connections
-	 * cause NPE when closed() under JDBC4
-	 * 
-	 * @throws Exception
-	 *             if the test fails
-	 */
-	public void testBug35489() throws Exception {
-		MysqlConnectionPoolDataSource pds = new MysqlConnectionPoolDataSource();
-		pds.setUrl(dbUrl);
-		this.pstmt = pds.getPooledConnection().getConnection()
-				.prepareStatement("SELECT 1");
-		this.pstmt.execute();
-		this.pstmt.close();
+        /**
+         *          */
+        public void connectionErrorOccurred(ConnectionEvent event) {
+            PooledConnectionRegressionTest.this.connectionErrorEventCount++;
+            System.out.println("Connection error: " + event.getSQLException());
+        }
+    }
 
-		MysqlXADataSource xads = new MysqlXADataSource();
-		xads.setUrl(dbUrl);
-		this.pstmt = xads.getXAConnection().getConnection()
-				.prepareStatement("SELECT 1");
-		this.pstmt.execute();
-		this.pstmt.close();
+    /**
+     * Tests fix for BUG#35489 - Prepared statements from pooled connections
+     * cause NPE when closed() under JDBC4
+     *
+     * @throws Exception if the test fails
+     */
+    public void testBug35489() throws Exception {
+        MysqlConnectionPoolDataSource pds = new MysqlConnectionPoolDataSource();
+        pds.setUrl(dbUrl);
+        this.pstmt = pds.getPooledConnection().getConnection()
+                .prepareStatement("SELECT 1");
+        this.pstmt.execute();
+        this.pstmt.close();
 
-		xads = new MysqlXADataSource();
-		xads.setUrl(dbUrl);
-		xads.setPinGlobalTxToPhysicalConnection(true);
-		this.pstmt = xads.getXAConnection().getConnection()
-				.prepareStatement("SELECT 1");
-		this.pstmt.execute();
-		this.pstmt.close();
-	}
+        MysqlXADataSource xads = new MysqlXADataSource();
+        xads.setUrl(dbUrl);
+        this.pstmt = xads.getXAConnection().getConnection()
+                .prepareStatement("SELECT 1");
+        this.pstmt.execute();
+        this.pstmt.close();
+
+        xads = new MysqlXADataSource();
+        xads.setUrl(dbUrl);
+        xads.setPinGlobalTxToPhysicalConnection(true);
+        this.pstmt = xads.getXAConnection().getConnection()
+                .prepareStatement("SELECT 1");
+        this.pstmt.execute();
+        this.pstmt.close();
+    }
 }

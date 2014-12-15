@@ -700,548 +700,548 @@ and the full path to the rt.jar from Java-6 with the property &quot;com.mysql.jd
 	    jdbc-compliance-location must be set
 	    prior to running this test. 
 	     
-	-->
+    -->
 
-	<target name="test-compliance" depends="compile">
-		<property name="com.mysql.jdbc.test.jvm" value="java"/>
-		<mkdir dir="${junit.results}"/>
-		<echo message="Running compliance tests against ${com.mysql.jdbc.compliance.url} with jvm ${com.mysql.jdbc.testsuite.jvm}"/>
+    <target name="test-compliance" depends="compile">
+        <property name="com.mysql.jdbc.test.jvm" value="java"/>
+        <mkdir dir="${junit.results}"/>
+        <echo message="Running compliance tests against ${com.mysql.jdbc.compliance.url} with jvm ${com.mysql.jdbc.testsuite.jvm}"/>
 
-		<property name="junit.compliance.results" 
-			value="${junit.results}/${test.result.prefix}/compliance"/>
+        <property name="junit.compliance.results" 
+                          value="${junit.results}/${test.result.prefix}/compliance"/>
 
-		<mkdir dir="${junit.results}/${test.result.prefix}"/>
-		<mkdir dir="${junit.compliance.results}"/>
-		<mkdir dir="${junit.compliance.results}/report"/>
+        <mkdir dir="${junit.results}/${test.result.prefix}"/>
+        <mkdir dir="${junit.compliance.results}"/>
+        <mkdir dir="${junit.compliance.results}/report"/>
 
-		<junit fork="${com.mysql.jdbc.junit.fork}" forkmode="once"
-		    printsummary="yes" jvm="${com.mysql.jdbc.testsuite.jvm}"
-			errorProperty="tests.compliance.failed"
-			failureProperty="tests.compliance.failed">
-			<jvmarg value="-Xmx128m"/>
+        <junit fork="${com.mysql.jdbc.junit.fork}" forkmode="once"
+                       printsummary="yes" jvm="${com.mysql.jdbc.testsuite.jvm}"
+                       errorProperty="tests.compliance.failed"
+                       failureProperty="tests.compliance.failed">
+            <jvmarg value="-Xmx128m"/>
 
-			<!-- For java.sql.SavePoint on old JVMs -->
+            <!-- For java.sql.SavePoint on old JVMs -->
 
-			<jvmarg value="-Xverify:none"/>
+            <jvmarg value="-Xverify:none"/>
 
-			<sysproperty key="com.mysql.jdbc.compliance.url" value="${com.mysql.jdbc.compliance.url}"/>
+            <sysproperty key="com.mysql.jdbc.compliance.url" value="${com.mysql.jdbc.compliance.url}"/>
 
-			<classpath>
-				<pathelement location="${buildDir}/${fullProdName}"/>
-				<fileset dir="${sourceDir}/lib-nodist">
-					<include name="**/*.jar"/>
-				</fileset>
-				<fileset dir="${buildDir}/${fullProdName}/lib">
-					<include name="**/*.jar"/>
-				</fileset>
-				<pathelement path="${java.class.path}" />
-				<pathelement location="${jdbc-compliance-location}"/>
-			</classpath>
+            <classpath>
+                <pathelement location="${buildDir}/${fullProdName}"/>
+                <fileset dir="${sourceDir}/lib-nodist">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="${buildDir}/${fullProdName}/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement path="${java.class.path}" />
+                <pathelement location="${jdbc-compliance-location}"/>
+            </classpath>
 
-			<formatter type="xml"/>
+            <formatter type="xml"/>
 
-			<test todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.BatchUpdateTest"/>
-			<test todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.ConnectionTest"/>
-			<test todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.DatabaseMetaDataTest"/>
-			<test todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.EscapeSyntaxTest"/>
-			<test todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.PreparedStatementTest"/>
-			<test todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.ResultSetMetadataTest"/>
-			<test todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.ResultSetTest"/>
-			<test todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.StatementTest"/>
-		</junit>
+            <test todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.BatchUpdateTest"/>
+            <test todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.ConnectionTest"/>
+            <test todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.DatabaseMetaDataTest"/>
+            <test todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.EscapeSyntaxTest"/>
+            <test todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.PreparedStatementTest"/>
+            <test todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.ResultSetMetadataTest"/>
+            <test todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.ResultSetTest"/>
+            <test todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.StatementTest"/>
+        </junit>
 
-		<junitreport todir="${junit.compliance.results}/report">
-			<fileset dir="${junit.compliance.results}">
-				<include name="**/TEST-*.xml"/>
-			</fileset>
-			<report format="frames" todir="${junit.compliance.results}/report"/>
-		</junitreport>
+        <junitreport todir="${junit.compliance.results}/report">
+            <fileset dir="${junit.compliance.results}">
+                <include name="**/TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.compliance.results}/report"/>
+        </junitreport>
 
-		<!-- Don't fail the build if we're doing multi-tests -->
-		<if>
-			<equals arg1="${test.result.prefix}" arg2="" />
-			<then>
-				<fail message="Tests failed. Check logs and/or reports in ${junit.compliance.results}." if="tests.compliance.failed"/>
-			</then>
-			<else>
-				<echo message="Not checking test failures because we're doing a multi-test..." />
-			</else>
-		</if>
+        <!-- Don't fail the build if we're doing multi-tests -->
+        <if>
+            <equals arg1="${test.result.prefix}" arg2="" />
+            <then>
+                <fail message="Tests failed. Check logs and/or reports in ${junit.compliance.results}." if="tests.compliance.failed"/>
+            </then>
+            <else>
+                <echo message="Not checking test failures because we're doing a multi-test..." />
+            </else>
+        </if>
 
-	</target>
+    </target>
 
 
-	<target name="compile" depends="init, compile-driver, compile-testsuite, compile.integration">
-	</target>
+    <target name="compile" depends="init, compile-driver, compile-testsuite, compile.integration">
+    </target>
 
-	<!-- Compiles the driver itself -->
+    <!-- Compiles the driver itself -->
 
-	<target name="compile-driver" depends="compile-driver-jdbc3, compile-driver-jdbc4" />
+    <target name="compile-driver" depends="compile-driver-jdbc3, compile-driver-jdbc4" />
 
-	<target name="compile-driver-jdbc3" depends="init, -clean-output">
-		<javac sourcepath="" srcdir="${buildDir}/${fullProdName}" 
-			destdir="${compiler.output}" 
-			deprecation="off" 
-			debug="${debug.enable}">
-			<include name="**/*.java" />
-			<exclude name="testsuite/**" />
-			<exclude name="com/mysql/jdbc/integration/**" />
-			<exclude name="com/mysql/jdbc/log/Log4JLogger.java" />
-			<exclude name="**/JDBC4*.java" />
-			<exclude name="com/mysql/jdbc/exceptions/jdbc4/*" />
+    <target name="compile-driver-jdbc3" depends="init, -clean-output">
+        <javac sourcepath="" srcdir="${buildDir}/${fullProdName}" 
+                       destdir="${compiler.output}" 
+                       deprecation="off" 
+                       debug="${debug.enable}">
+            <include name="**/*.java" />
+            <exclude name="testsuite/**" />
+            <exclude name="com/mysql/jdbc/integration/**" />
+            <exclude name="com/mysql/jdbc/log/Log4JLogger.java" />
+            <exclude name="**/JDBC4*.java" />
+            <exclude name="com/mysql/jdbc/exceptions/jdbc4/*" />
 
-			<classpath refid="project.build.classpath" />
-		</javac>
-	</target>
+            <classpath refid="project.build.classpath" />
+        </javac>
+    </target>
 
-	<target name="compile-driver-jdbc4" depends="compile-driver-jdbc3">
+    <target name="compile-driver-jdbc4" depends="compile-driver-jdbc3">
 
-		<javac destdir="${compiler.output}" 
-			deprecation="off" 
-			debug="${debug.enable}"
-			fork="yes"
-			executable="${com.mysql.jdbc.java6.javac}"
-			compiler="modern"
-			sourcepath="" srcdir="${buildDir}/${fullProdName}"
-			bootclasspath="${com.mysql.jdbc.java6.rtjar}">
-			<include name="**/JDBC4*.java" />
-			<include name="com/mysql/jdbc/exceptions/jdbc4/*" />
+        <javac destdir="${compiler.output}" 
+                       deprecation="off" 
+                       debug="${debug.enable}"
+                       fork="yes"
+                       executable="${com.mysql.jdbc.java6.javac}"
+                       compiler="modern"
+                       sourcepath="" srcdir="${buildDir}/${fullProdName}"
+                       bootclasspath="${com.mysql.jdbc.java6.rtjar}">
+            <include name="**/JDBC4*.java" />
+            <include name="com/mysql/jdbc/exceptions/jdbc4/*" />
 
-			<classpath refid="project.build.classpath" />
-		</javac>
+            <classpath refid="project.build.classpath" />
+        </javac>
 
-	</target>
+    </target>
 
-	<!-- Compiles integration 'helpers' for third-party software -->
-	<target name="compile.integration" 
-		depends="compile-driver, 
+    <!-- Compiles integration 'helpers' for third-party software -->
+    <target name="compile.integration" 
+                depends="compile-driver, 
 				 compile-integration-c3p0, 
 		         compile-integration-jboss,
 				 compile-integration-log4j"/>
 
-	<target name="compile-integration-c3p0" 
-		depends="compile-driver"
-		if="com.mysql.jdbc.c3p0Present">
-		<javac srcdir="${buildDir}/${fullProdName}" 
-				destdir="${compiler.output}" 
-				deprecation="off" 
-				debug="${debug.enable}" 
-				includes="com/mysql/jdbc/integration/c3p0/**">
-			<classpath refid="project.build.classpath" />
-		</javac>
-	</target>
+    <target name="compile-integration-c3p0" 
+                depends="compile-driver"
+                if="com.mysql.jdbc.c3p0Present">
+        <javac srcdir="${buildDir}/${fullProdName}" 
+                       destdir="${compiler.output}" 
+                       deprecation="off" 
+                       debug="${debug.enable}" 
+                       includes="com/mysql/jdbc/integration/c3p0/**">
+            <classpath refid="project.build.classpath" />
+        </javac>
+    </target>
 
-	<target name="compile-integration-jboss" 
-			depends="compile-driver"
-			if="com.mysql.jdbc.jbossPresent">
-		<javac srcdir="${buildDir}/${fullProdName}" 
-					destdir="${compiler.output}" 
-					deprecation="off" 
-					debug="${debug.enable}" 
-					includes="com/mysql/jdbc/integration/jboss/**">
-			<classpath refid="project.build.classpath" />
-		</javac>
-	</target>
+    <target name="compile-integration-jboss" 
+                depends="compile-driver"
+                if="com.mysql.jdbc.jbossPresent">
+        <javac srcdir="${buildDir}/${fullProdName}" 
+                       destdir="${compiler.output}" 
+                       deprecation="off" 
+                       debug="${debug.enable}" 
+                       includes="com/mysql/jdbc/integration/jboss/**">
+            <classpath refid="project.build.classpath" />
+        </javac>
+    </target>
 
-	<target name="compile-integration-log4j" 
-			depends="compile-driver"
-			if="com.mysql.jdbc.log4jPresent">
-		<javac srcdir="${buildDir}/${fullProdName}" 
-				destdir="${compiler.output}" 
-				deprecation="off" 
-				debug="${debug.enable}" 
-				includes="com/mysql/jdbc/log/Log4JLogger.java">
-			<classpath refid="project.build.classpath" />
-		</javac>
-	</target>
+    <target name="compile-integration-log4j" 
+                depends="compile-driver"
+                if="com.mysql.jdbc.log4jPresent">
+        <javac srcdir="${buildDir}/${fullProdName}" 
+                       destdir="${compiler.output}" 
+                       deprecation="off" 
+                       debug="${debug.enable}" 
+                       includes="com/mysql/jdbc/log/Log4JLogger.java">
+            <classpath refid="project.build.classpath" />
+        </javac>
+    </target>
 
-	<!-- Compiles the JUnit testsuite -->
+    <!-- Compiles the JUnit testsuite -->
 
-	<target name="compile-testsuite" depends="init, compile-driver">
-		<javac 
-			srcdir="${buildDir}/${fullProdName}" 
-			destdir="${compiler.output}" 
-			deprecation="off" 
-			debug="${debug.enable}"
-			includes="testsuite/**"
-			excludes="testsuite/requiresNonRedists/**, testsuite/**/jdbc4/**">
-			<classpath refid="project.build.classpath"/>
-		</javac>
+    <target name="compile-testsuite" depends="init, compile-driver">
+        <javac 
+            srcdir="${buildDir}/${fullProdName}" 
+            destdir="${compiler.output}" 
+            deprecation="off" 
+            debug="${debug.enable}"
+            includes="testsuite/**"
+            excludes="testsuite/requiresNonRedists/**, testsuite/**/jdbc4/**">
+            <classpath refid="project.build.classpath"/>
+        </javac>
 
-		<javac destdir="${compiler.output}" 
-					deprecation="off" 
-					debug="${debug.enable}"
-					fork="yes"
-					executable="${com.mysql.jdbc.java6.javac}"
-					compiler="modern"
-					sourcepath="" srcdir="${buildDir}/${fullProdName}"
-					bootclasspath="${com.mysql.jdbc.java6.rtjar}">
-			<include name="testsuite/**/jdbc4/**" />
+        <javac destdir="${compiler.output}" 
+                       deprecation="off" 
+                       debug="${debug.enable}"
+                       fork="yes"
+                       executable="${com.mysql.jdbc.java6.javac}"
+                       compiler="modern"
+                       sourcepath="" srcdir="${buildDir}/${fullProdName}"
+                       bootclasspath="${com.mysql.jdbc.java6.rtjar}">
+            <include name="testsuite/**/jdbc4/**" />
 
-			<classpath refid="project.build.classpath" />
-		</javac>
-	</target>
+            <classpath refid="project.build.classpath" />
+        </javac>
+    </target>
 
-	<target name="real-clean">
-		<delete dir="${buildDir}"/>
-		<delete>
-			<fileset dir="${distDir}" 
-				includes="${fullProdName}.zip,${fullProdName}.tar.gz"/>
-		</delete>
-	</target>
+    <target name="real-clean">
+        <delete dir="${buildDir}"/>
+        <delete>
+            <fileset dir="${distDir}" 
+                                 includes="${fullProdName}.zip,${fullProdName}.tar.gz"/>
+        </delete>
+    </target>
 
-	<target name="clean" unless="com.mysql.jdbc.noCleanBetweenCompiles">
-		<delete dir="${buildDir}"/>
-	</target>
+    <target name="clean" unless="com.mysql.jdbc.noCleanBetweenCompiles">
+        <delete dir="${buildDir}"/>
+    </target>
 
-	<target name="-clean-output" unless="com.mysql.jdbc.noCleanBetweenCompiles">
-		<delete>
-			<fileset dir="${buildDir}" 
-						includes="**/*.class"/>
-		</delete>
-	</target>
+    <target name="-clean-output" unless="com.mysql.jdbc.noCleanBetweenCompiles">
+        <delete>
+            <fileset dir="${buildDir}" 
+                                 includes="**/*.class"/>
+        </delete>
+    </target>
 
-	<target name="docs-generate-dynamic-docs" 
-		depends="docs-generate-properties-table, docs-generate-error-mapping-table"/>
+    <target name="docs-generate-dynamic-docs" 
+                depends="docs-generate-properties-table, docs-generate-error-mapping-table"/>
 
-	<target name="docs-generate-properties-table" depends="compile-driver">
-		<tempfile property="properties-xml" suffix=".xml" />
+    <target name="docs-generate-properties-table" depends="compile-driver">
+        <tempfile property="properties-xml" suffix=".xml" />
 
-		<java classname="com.mysql.jdbc.util.PropertiesDocGenerator"
-			output="${properties-xml}" classpath="${buildDir}/${fullProdName}"/>
-		<tempfile property="docsPropXslTempfile" suffix="xsl"/>
-		<copy file="${buildDir}/${fullProdName}/doc/sources/connPropsToDocbook.xsl" tofile="${docsPropXslTempfile}"/>
+        <java classname="com.mysql.jdbc.util.PropertiesDocGenerator"
+                      output="${properties-xml}" classpath="${buildDir}/${fullProdName}"/>
+        <tempfile property="docsPropXslTempfile" suffix="xsl"/>
+        <copy file="${buildDir}/${fullProdName}/doc/sources/connPropsToDocbook.xsl" tofile="${docsPropXslTempfile}"/>
 
-		<style in="${properties-xml}" style="${docsPropXslTempfile}"
-		       out="${buildDir}/${fullProdName}/docs/sources/connPropsDocBook.xml"/>
-		<delete file="${properties-xml}"/>
-		<delete file="${docsPropXslTempfile}"/>
-	</target>
+        <style in="${properties-xml}" style="${docsPropXslTempfile}"
+                       out="${buildDir}/${fullProdName}/docs/sources/connPropsDocBook.xml"/>
+        <delete file="${properties-xml}"/>
+        <delete file="${docsPropXslTempfile}"/>
+    </target>
 
-	<target name="docs-generate-error-mapping-table" depends="compile-driver">
-		<tempfile property="errorsMapping-xml" suffix=".xml" />
+    <target name="docs-generate-error-mapping-table" depends="compile-driver">
+        <tempfile property="errorsMapping-xml" suffix=".xml" />
 
-		<java classname="com.mysql.jdbc.util.ErrorMappingsDocGenerator"
-				output="${errorsMapping-xml}" classpath="${buildDir}/${fullProdName}"/>
-		<tempfile property="docsErrorXslTempfile" suffix="xsl"/>
-		<copy file="${buildDir}/${fullProdName}/doc/sources/errorMapToDocbook.xsl" tofile="${docsErrorXslTempfile}"/>
+        <java classname="com.mysql.jdbc.util.ErrorMappingsDocGenerator"
+                      output="${errorsMapping-xml}" classpath="${buildDir}/${fullProdName}"/>
+        <tempfile property="docsErrorXslTempfile" suffix="xsl"/>
+        <copy file="${buildDir}/${fullProdName}/doc/sources/errorMapToDocbook.xsl" tofile="${docsErrorXslTempfile}"/>
 
-		<style in="${errorsMapping-xml}" style="${docsErrorXslTempfile}"
-			       out="${buildDir}/${fullProdName}/docs/sources/errorMappingDocBook.xml"/>
-		<delete file="${docsErrorXslTempfile}"/>
-	</target>
+        <style in="${errorsMapping-xml}" style="${docsErrorXslTempfile}"
+                       out="${buildDir}/${fullProdName}/docs/sources/errorMappingDocBook.xml"/>
+        <delete file="${docsErrorXslTempfile}"/>
+    </target>
 
-	<!-- 
-	     Targets below this point are for code coverage and depend on
-	     the 'Emma' project which you can download from 
-	     http://emma.sourceforge.net/
-	-->
+    <!-- 
+         Targets below this point are for code coverage and depend on
+         the 'Emma' project which you can download from 
+         http://emma.sourceforge.net/
+    -->
 
-	<target name="emma" description="turns on EMMA instrumentation/reporting" >
-		<!-- directory that contains emma.jar and emma_ant.jar: -->
-		<property name="emma.dir" value="${sourceDir}/lib-coverage" />
+    <target name="emma" description="turns on EMMA instrumentation/reporting" >
+        <!-- directory that contains emma.jar and emma_ant.jar: -->
+        <property name="emma.dir" value="${sourceDir}/lib-coverage" />
 
-		<path id="emma.lib" >
-			<pathelement location="${emma.dir}/emma.jar" />
-			<pathelement location="${emma.dir}/emma_ant.jar" />
-		</path>
+        <path id="emma.lib" >
+            <pathelement location="${emma.dir}/emma.jar" />
+            <pathelement location="${emma.dir}/emma_ant.jar" />
+        </path>
 
-		<taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+        <taskdef resource="emma_ant.properties" classpathref="emma.lib" />
 
-		<property name="emma.enabled" value="true" />
-		<property name="emma.coverage.dir" value="${buildDir}/${fullProdName}-coverage" />
-	</target>
+        <property name="emma.enabled" value="true" />
+        <property name="emma.coverage.dir" value="${buildDir}/${fullProdName}-coverage" />
+    </target>
 
-	<target name="instrument" depends="init, compile" 
-		description="runs the examples" >
+    <target name="instrument" depends="init, compile" 
+                description="runs the examples" >
 
-		<emma enabled="${emma.enabled}" >
-			<instr instrpathref="built.driver.only.classpath"
-	             destdir="${compiler.output}"	
-	             metadatafile="${emma.coverage.dir}/metadata.emma"
-	             merge="true"
-	      		 mode="overwrite">
-				<filter excludes="*Test*" />
-				<filter excludes="org.junit.*" />
-			</instr>
-		</emma>
+        <emma enabled="${emma.enabled}" >
+            <instr instrpathref="built.driver.only.classpath"
+                               destdir="${compiler.output}"	
+                               metadatafile="${emma.coverage.dir}/metadata.emma"
+                               merge="true"
+                               mode="overwrite">
+                <filter excludes="*Test*" />
+                <filter excludes="org.junit.*" />
+            </instr>
+        </emma>
 
-	</target>
+    </target>
 
-	<target name="test-emma-report" depends="test-coverage, test-coverage-compliance">
-		<emma enabled="${emma.enabled}" >
-			<report sourcepath="${buildDir}/${fullProdName}" >
-				<fileset dir="${emma.coverage.dir}" >
-					<include name="*.emma" />
-				</fileset>
+    <target name="test-emma-report" depends="test-coverage, test-coverage-compliance">
+        <emma enabled="${emma.enabled}" >
+            <report sourcepath="${buildDir}/${fullProdName}" >
+                <fileset dir="${emma.coverage.dir}" >
+                    <include name="*.emma" />
+                </fileset>
 
-				<txt outfile="${emma.coverage.dir}/coverage.txt" />
-				<html outfile="${emma.coverage.dir}/coverage.html" />
-			</report>
-		</emma>
-	</target>
+                <txt outfile="${emma.coverage.dir}/coverage.txt" />
+                <html outfile="${emma.coverage.dir}/coverage.html" />
+            </report>
+        </emma>
+    </target>
 
-	<target name="test-coverage-all-report" depends="test-coverage-multijvm, test-coverage-compliance-multijvm">
-		<emma enabled="${emma.enabled}" >
-			<report sourcepath="${buildDir}/${fullProdName}" >
-				<fileset dir="${emma.coverage.dir}" >
-					<include name="*.emma" />
-				</fileset>
+    <target name="test-coverage-all-report" depends="test-coverage-multijvm, test-coverage-compliance-multijvm">
+        <emma enabled="${emma.enabled}" >
+            <report sourcepath="${buildDir}/${fullProdName}" >
+                <fileset dir="${emma.coverage.dir}" >
+                    <include name="*.emma" />
+                </fileset>
 
-				<txt outfile="${emma.coverage.dir}/coverage.txt" />
-				<html outfile="${emma.coverage.dir}/coverage.html" />
-			</report>
-		</emma>
-	</target>
-
-
-	<target name="test-coverage" depends="instrument">
-		<property name="com.mysql.jdbc.testsuite.jvm" value="java"/>
-		<mkdir dir="${junit.results}"/>
-		<echo message="Running unit tests against ${com.mysql.jdbc.testsuite.url} with jvm ${com.mysql.jdbc.testsuite.jvm}"/>
-
-		<property name="junit.unitregress.results" value="${junit.results}/${test.result.prefix}/unitregress" />
-
-		<mkdir dir="${junit.results}/${test.result.prefix}"/>
-		<mkdir dir="${junit.unitregress.results}"/>
-
-		<mkdir dir="${junit.unitregress.results}/report"/>
-
-		<junit printSummary="yes" fork="${com.mysql.jdbc.junit.fork}" jvm="${com.mysql.jdbc.testsuite.jvm}">
-			<jvmarg value="-Xmx128m" />
-			<jvmarg value="-Xverify:none" />
-			<!-- For java.sql.SavePoint on old JVMs -->
-			<jvmarg value="-Demma.coverage.out.file=${emma.coverage.dir}/coverage.emma" />
-			<jvmarg value="-Demma.coverage.out.merge=true" />
-			<sysproperty key="com.mysql.jdbc.testsuite.url" value="${com.mysql.jdbc.testsuite.url}"/>
-			<classpath>
-				<fileset dir="${sourceDir}/lib-nodist">
-					<include name="**/*.jar"/>
-				</fileset>
-				<fileset dir="${buildDir}/${fullProdName}/lib">
-					<include name="**/*.jar"/>
-				</fileset>
-				<pathelement location="${buildDir}/${fullProdName}" />
-				<pathelement path="${java.class.path}" />
-				<pathelement location="${emma.dir}/emma.jar" />
-				<pathelement location="${emma.dir}/emma_ant.jar" />
-			</classpath>
-
-			<formatter type="xml"/>
-
-			<batchtest fork="yes" todir="${junit.unitregress.results}">
-				<fileset dir="${buildDir}/${fullProdName}">
-					<include name="**/*Test.java" />
-					<exclude name="**/perf/*.java"/>
-				</fileset>
-			</batchtest>
-		</junit>
+                <txt outfile="${emma.coverage.dir}/coverage.txt" />
+                <html outfile="${emma.coverage.dir}/coverage.html" />
+            </report>
+        </emma>
+    </target>
 
 
-		<junitreport todir="${junit.unitregress.results}/report">
-			<fileset dir="${junit.unitregress.results}">
-				<include name="**/TEST-*.xml"/>
-			</fileset>
-			<report format="frames" todir="${junit.unitregress.results}/report"/>
-		</junitreport>
-	</target>
+    <target name="test-coverage" depends="instrument">
+        <property name="com.mysql.jdbc.testsuite.jvm" value="java"/>
+        <mkdir dir="${junit.results}"/>
+        <echo message="Running unit tests against ${com.mysql.jdbc.testsuite.url} with jvm ${com.mysql.jdbc.testsuite.jvm}"/>
 
-	<target name="test-coverage-compliance" depends="instrument">
-		<property name="com.mysql.jdbc.test.jvm" value="java"/>
-		<mkdir dir="${junit.results}"/>
-		<echo message="Running compliance tests against ${com.mysql.jdbc.compliance.url} with jvm ${com.mysql.jdbc.testsuite.jvm}"/>
+        <property name="junit.unitregress.results" value="${junit.results}/${test.result.prefix}/unitregress" />
 
-		<property name="junit.compliance.results" 
-			value="${junit.results}/${test.result.prefix}/compliance"/>
+        <mkdir dir="${junit.results}/${test.result.prefix}"/>
+        <mkdir dir="${junit.unitregress.results}"/>
 
-		<mkdir dir="${junit.results}/${test.result.prefix}"/>
-		<mkdir dir="${junit.compliance.results}"/>
-		<mkdir dir="${junit.compliance.results}/report"/>
+        <mkdir dir="${junit.unitregress.results}/report"/>
 
-		<junit printsummary="yes" jvm="${com.mysql.jdbc.testsuite.jvm}">
-			<jvmarg value="-Xmx128m"/>
-			<jvmarg value="-Xverify:none"/>
-			<!-- For java.sql.SavePoint on old JVMs -->
-			<jvmarg value="-Demma.coverage.out.file=${emma.coverage.dir}/coverage.emma" />
-			<jvmarg value="-Demma.coverage.out.merge=true" />
-			<sysproperty key="com.mysql.jdbc.compliance.url" value="${com.mysql.jdbc.compliance.url}"/>
-			<classpath>
-				<pathelement location="${buildDir}/${fullProdName}"/>
-				<fileset dir="${sourceDir}/lib-nodist">
-					<include name="**/*.jar"/>
-				</fileset>
-				<fileset dir="${buildDir}/${fullProdName}/lib">
-					<include name="**/*.jar"/>
-				</fileset>
-				<pathelement path="${java.class.path}" />
-				<pathelement location="${jdbc-compliance-location}"/>
-				<pathelement location="${emma.dir}/emma.jar" />
-				<pathelement location="${emma.dir}/emma_ant.jar" />
-			</classpath>
+        <junit printSummary="yes" fork="${com.mysql.jdbc.junit.fork}" jvm="${com.mysql.jdbc.testsuite.jvm}">
+            <jvmarg value="-Xmx128m" />
+            <jvmarg value="-Xverify:none" />
+            <!-- For java.sql.SavePoint on old JVMs -->
+            <jvmarg value="-Demma.coverage.out.file=${emma.coverage.dir}/coverage.emma" />
+            <jvmarg value="-Demma.coverage.out.merge=true" />
+            <sysproperty key="com.mysql.jdbc.testsuite.url" value="${com.mysql.jdbc.testsuite.url}"/>
+            <classpath>
+                <fileset dir="${sourceDir}/lib-nodist">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="${buildDir}/${fullProdName}/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement location="${buildDir}/${fullProdName}" />
+                <pathelement path="${java.class.path}" />
+                <pathelement location="${emma.dir}/emma.jar" />
+                <pathelement location="${emma.dir}/emma_ant.jar" />
+            </classpath>
 
-			<formatter type="xml"/>
+            <formatter type="xml"/>
+
+            <batchtest fork="yes" todir="${junit.unitregress.results}">
+                <fileset dir="${buildDir}/${fullProdName}">
+                    <include name="**/*Test.java" />
+                    <exclude name="**/perf/*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
 
 
-			<test fork="yes" todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.BatchUpdateTest"/>
-			<test fork="yes" todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.ConnectionTest"/>
-			<test fork="yes" todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.DatabaseMetaDataTest"/>
-			<test fork="yes" todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.EscapeSyntaxTest"/>
-			<test fork="yes" todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.PreparedStatementTest"/>
-			<test fork="yes" todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.ResultSetMetadataTest"/>
-			<test fork="yes" todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.ResultSetTest"/>
-			<test fork="yes" todir="${junit.compliance.results}" 
-		    		name="com.mysql.jdbc.compliance.tests.StatementTest"/>
-		</junit>
+        <junitreport todir="${junit.unitregress.results}/report">
+            <fileset dir="${junit.unitregress.results}">
+                <include name="**/TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.unitregress.results}/report"/>
+        </junitreport>
+    </target>
 
-		<junitreport todir="${junit.compliance.results}/report">
-			<fileset dir="${junit.compliance.results}">
-				<include name="**/TEST-*.xml"/>
-			</fileset>
-			<report format="frames" todir="${junit.compliance.results}/report"/>
-		</junitreport>
-	</target>
+    <target name="test-coverage-compliance" depends="instrument">
+        <property name="com.mysql.jdbc.test.jvm" value="java"/>
+        <mkdir dir="${junit.results}"/>
+        <echo message="Running compliance tests against ${com.mysql.jdbc.compliance.url} with jvm ${com.mysql.jdbc.testsuite.jvm}"/>
 
-	<!-- Makes output directory hierarchy based on MySQL server version,
-	     os information and jvm version -->
+        <property name="junit.compliance.results" 
+                          value="${junit.results}/${test.result.prefix}/compliance"/>
 
-	<macrodef name="make-output-hier">
-		<attribute name="jvm" />
-		<attribute name="jdbcUrl" />
-		<attribute name="unitOrCompliance" />
-		<attribute name="junitOutput" />
-		<sequential>
-			<java fork="true" jvm="@{jvm}" classname="com.mysql.jdbc.util.VersionFSHierarchyMaker">
+        <mkdir dir="${junit.results}/${test.result.prefix}"/>
+        <mkdir dir="${junit.compliance.results}"/>
+        <mkdir dir="${junit.compliance.results}/report"/>
 
-				<jvmarg value="-Xmx128m" />
-				<jvmarg value="-Xverify:none" />
-				<!-- For java.sql.SavePoint on old JVMs -->
-				<jvmarg value="-Demma.coverage.out.file=${emma.coverage.dir}/coverage.emma" />
-				<jvmarg value="-Demma.coverage.out.merge=true" />
+        <junit printsummary="yes" jvm="${com.mysql.jdbc.testsuite.jvm}">
+            <jvmarg value="-Xmx128m"/>
+            <jvmarg value="-Xverify:none"/>
+            <!-- For java.sql.SavePoint on old JVMs -->
+            <jvmarg value="-Demma.coverage.out.file=${emma.coverage.dir}/coverage.emma" />
+            <jvmarg value="-Demma.coverage.out.merge=true" />
+            <sysproperty key="com.mysql.jdbc.compliance.url" value="${com.mysql.jdbc.compliance.url}"/>
+            <classpath>
+                <pathelement location="${buildDir}/${fullProdName}"/>
+                <fileset dir="${sourceDir}/lib-nodist">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="${buildDir}/${fullProdName}/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement path="${java.class.path}" />
+                <pathelement location="${jdbc-compliance-location}"/>
+                <pathelement location="${emma.dir}/emma.jar" />
+                <pathelement location="${emma.dir}/emma_ant.jar" />
+            </classpath>
 
-				<sysproperty key="com.mysql.jdbc.testsuite.url" value="@{jdbcUrl}" />
+            <formatter type="xml"/>
 
-				<classpath>
-					<fileset dir="${sourceDir}/lib-nodist">
-						<include name="**/*.jar" />
-					</fileset>
-					<fileset dir="${buildDir}/${fullProdName}/lib">
-						<include name="**/*.jar" />
-					</fileset>
-					<pathelement location="${buildDir}/${fullProdName}" />
-					<pathelement path="${java.class.path}" />
-					<pathelement location="${emma.dir}/emma.jar" />
-					<pathelement location="${emma.dir}/emma_ant.jar" />
-				</classpath>
-				<arg line="@{unitOrCompliance} @{junitOutput} @{junitOutput}/hier" />
-			</java>
-		</sequential>
-	</macrodef>
 
-	<!-- Runs compliance testsuite against multiple JVMs and 
-	     server configs, and produces coverage reports -->
+            <test fork="yes" todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.BatchUpdateTest"/>
+            <test fork="yes" todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.ConnectionTest"/>
+            <test fork="yes" todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.DatabaseMetaDataTest"/>
+            <test fork="yes" todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.EscapeSyntaxTest"/>
+            <test fork="yes" todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.PreparedStatementTest"/>
+            <test fork="yes" todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.ResultSetMetadataTest"/>
+            <test fork="yes" todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.ResultSetTest"/>
+            <test fork="yes" todir="${junit.compliance.results}" 
+                              name="com.mysql.jdbc.compliance.tests.StatementTest"/>
+        </junit>
 
-	<target name="test-coverage-multijvm" depends="instrument">
-		<for list="1,2,3,4,5,6,7,8" param="jvm.number">
-			<sequential>
-				<if>
-					<isset property="com.mysql.jdbc.testsuite.jvm.@{jvm.number}"/>
-					<then>
-						<for list="1,2,3,4,5,6,7,8" param="url.number">
-							<sequential>
-								<if>
-									<isset property="com.mysql.jdbc.testsuite.url.@{url.number}"/>
-									<then>
-										<make-output-hier 
-										jdbcUrl="${com.mysql.jdbc.testsuite.url.@{url.number}}" 
-										junitOutput="${junit.results}" 
-										jvm="${com.mysql.jdbc.testsuite.jvm.@{jvm.number}}" 
-										unitOrCompliance="unit" />
+        <junitreport todir="${junit.compliance.results}/report">
+            <fileset dir="${junit.compliance.results}">
+                <include name="**/TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.compliance.results}/report"/>
+        </junitreport>
+    </target>
 
-										<property name="test.coverage.multi.junitOut.@{url.number}" value="eraseMe" />
-										<var name="test.coverage.multi.junitOut.@{url.number}" unset="true" />
+    <!-- Makes output directory hierarchy based on MySQL server version,
+    os information and jvm version -->
 
-										<loadfile srcfile="${junit.results}/hier" 
-										property="test.coverage.multi.junitOut.@{url.number}" />
+    <macrodef name="make-output-hier">
+        <attribute name="jvm" />
+        <attribute name="jdbcUrl" />
+        <attribute name="unitOrCompliance" />
+        <attribute name="junitOutput" />
+        <sequential>
+            <java fork="true" jvm="@{jvm}" classname="com.mysql.jdbc.util.VersionFSHierarchyMaker">
 
-										<antcall target="test-coverage">
-											<param name="com.mysql.jdbc.testsuite.url" value="${com.mysql.jdbc.testsuite.url.@{url.number}}" />
-											<param name="test.result.prefix" value="/${test.coverage.multi.junitOut.@{url.number}}" />
-											<param name="com.mysql.jdbc.testsuite.jvm" value="${com.mysql.jdbc.testsuite.jvm.@{jvm.number}}"/>
-										</antcall>
-									</then>
-								</if>
-							</sequential>
-						</for>
-					</then>
-				</if>
-			</sequential>
-		</for>
-	</target>
+                <jvmarg value="-Xmx128m" />
+                <jvmarg value="-Xverify:none" />
+                <!-- For java.sql.SavePoint on old JVMs -->
+                <jvmarg value="-Demma.coverage.out.file=${emma.coverage.dir}/coverage.emma" />
+                <jvmarg value="-Demma.coverage.out.merge=true" />
 
-	<!-- Runs compliance testsuite against multiple JVMs and server configs, collecting
-	       coverage data -->
+                <sysproperty key="com.mysql.jdbc.testsuite.url" value="@{jdbcUrl}" />
 
-	<target name="test-coverage-compliance-multijvm" depends="instrument">
-		<for list="1,2,3,4,5,6,7,8" param="jvm.number"  xmlns:ac="antlib:net.sf.antcontrib">
-			<sequential>
-				<if>
-					<isset property="com.mysql.jdbc.testsuite.jvm.@{jvm.number}"/>
-					<then>
-						<for list="1,2,3,4,5,6,7,8" param="url.number">
-							<sequential>
-								<if>
-									<isset property="com.mysql.jdbc.compliance.url.@{url.number}"/>
-									<then>
-										<make-output-hier 
-											jdbcUrl="${com.mysql.jdbc.compliance.url.@{url.number}}" 
-											junitOutput="${junit.results}"
-											jvm="${com.mysql.jdbc.testsuite.jvm.@{jvm.number}}" 
-											unitOrCompliance="compliance"/>
+                <classpath>
+                    <fileset dir="${sourceDir}/lib-nodist">
+                        <include name="**/*.jar" />
+                    </fileset>
+                    <fileset dir="${buildDir}/${fullProdName}/lib">
+                        <include name="**/*.jar" />
+                    </fileset>
+                    <pathelement location="${buildDir}/${fullProdName}" />
+                    <pathelement path="${java.class.path}" />
+                    <pathelement location="${emma.dir}/emma.jar" />
+                    <pathelement location="${emma.dir}/emma_ant.jar" />
+                </classpath>
+                <arg line="@{unitOrCompliance} @{junitOutput} @{junitOutput}/hier" />
+            </java>
+        </sequential>
+    </macrodef>
 
-										<property name="test.coverage.compliance.multi.junitOut.@{url.number}" value="eraseMe" />
-										<var name="test.coverage.compliance.multi.junitOut.@{url.number}" unset="true" />
+    <!-- Runs compliance testsuite against multiple JVMs and 
+    server configs, and produces coverage reports -->
 
-										<loadfile srcfile="${junit.results}/hier" property="test.coverage.compliance.multi.junitOut.@{url.number}" />
+    <target name="test-coverage-multijvm" depends="instrument">
+        <for list="1,2,3,4,5,6,7,8" param="jvm.number">
+            <sequential>
+                <if>
+                    <isset property="com.mysql.jdbc.testsuite.jvm.@{jvm.number}"/>
+                    <then>
+                        <for list="1,2,3,4,5,6,7,8" param="url.number">
+                            <sequential>
+                                <if>
+                                    <isset property="com.mysql.jdbc.testsuite.url.@{url.number}"/>
+                                    <then>
+                                        <make-output-hier 
+                                            jdbcUrl="${com.mysql.jdbc.testsuite.url.@{url.number}}" 
+                                            junitOutput="${junit.results}" 
+                                            jvm="${com.mysql.jdbc.testsuite.jvm.@{jvm.number}}" 
+                                            unitOrCompliance="unit" />
 
-										<antcall target="test-coverage-compliance">
-											<param name="com.mysql.jdbc.compliance.url" value="${com.mysql.jdbc.compliance.url.@{url.number}}"/>
-											<param name="com.mysql.jdbc.testsuite.jvm" value="${com.mysql.jdbc.testsuite.jvm.@{jvm.number}}"/>
-											<param name="test.result.prefix" value="/${test.coverage.compliance.multi.junitOut.@{url.number}}"/>
-										</antcall>
-									</then>
-								</if>
-							</sequential>
-						</for>
-					</then>
-				</if>
-			</sequential>
-		</for>
-	</target>
+                                        <property name="test.coverage.multi.junitOut.@{url.number}" value="eraseMe" />
+                                        <var name="test.coverage.multi.junitOut.@{url.number}" unset="true" />
 
-	<!-- Builds and installs the driver jar into the local maven repository -->
+                                        <loadfile srcfile="${junit.results}/hier" 
+                                                                                          property="test.coverage.multi.junitOut.@{url.number}" />
 
-	<target name="install" depends="full-package">
-		<exec executable="mvn" osfamily="unix" failonerror="true" failifexecutionfails="true">
-			<arg line="install:install-file 
+                                        <antcall target="test-coverage">
+                                            <param name="com.mysql.jdbc.testsuite.url" value="${com.mysql.jdbc.testsuite.url.@{url.number}}" />
+                                            <param name="test.result.prefix" value="/${test.coverage.multi.junitOut.@{url.number}}" />
+                                            <param name="com.mysql.jdbc.testsuite.jvm" value="${com.mysql.jdbc.testsuite.jvm.@{jvm.number}}"/>
+                                        </antcall>
+                                    </then>
+                                </if>
+                            </sequential>
+                        </for>
+                    </then>
+                </if>
+            </sequential>
+        </for>
+    </target>
+
+    <!-- Runs compliance testsuite against multiple JVMs and server configs, collecting
+    coverage data -->
+
+    <target name="test-coverage-compliance-multijvm" depends="instrument">
+        <for list="1,2,3,4,5,6,7,8" param="jvm.number"  xmlns:ac="antlib:net.sf.antcontrib">
+            <sequential>
+                <if>
+                    <isset property="com.mysql.jdbc.testsuite.jvm.@{jvm.number}"/>
+                    <then>
+                        <for list="1,2,3,4,5,6,7,8" param="url.number">
+                            <sequential>
+                                <if>
+                                    <isset property="com.mysql.jdbc.compliance.url.@{url.number}"/>
+                                    <then>
+                                        <make-output-hier 
+                                            jdbcUrl="${com.mysql.jdbc.compliance.url.@{url.number}}" 
+                                            junitOutput="${junit.results}"
+                                            jvm="${com.mysql.jdbc.testsuite.jvm.@{jvm.number}}" 
+                                            unitOrCompliance="compliance"/>
+
+                                        <property name="test.coverage.compliance.multi.junitOut.@{url.number}" value="eraseMe" />
+                                        <var name="test.coverage.compliance.multi.junitOut.@{url.number}" unset="true" />
+
+                                        <loadfile srcfile="${junit.results}/hier" property="test.coverage.compliance.multi.junitOut.@{url.number}" />
+
+                                        <antcall target="test-coverage-compliance">
+                                            <param name="com.mysql.jdbc.compliance.url" value="${com.mysql.jdbc.compliance.url.@{url.number}}"/>
+                                            <param name="com.mysql.jdbc.testsuite.jvm" value="${com.mysql.jdbc.testsuite.jvm.@{jvm.number}}"/>
+                                            <param name="test.result.prefix" value="/${test.coverage.compliance.multi.junitOut.@{url.number}}"/>
+                                        </antcall>
+                                    </then>
+                                </if>
+                            </sequential>
+                        </for>
+                    </then>
+                </if>
+            </sequential>
+        </for>
+    </target>
+
+    <!-- Builds and installs the driver jar into the local maven repository -->
+
+    <target name="install" depends="full-package">
+        <exec executable="mvn" osfamily="unix" failonerror="true" failifexecutionfails="true">
+            <arg line="install:install-file 
 				-Dfile=${buildDir}/mysql-connector-java-${full.version}/mysql-connector-java-${full.version}-bin.jar
 				-DgroupId=mysql -DartifactId=mysql-connector-java -Dversion=${full.version}
 				-Dpackaging=jar -DgeneratePom=true" />
-		</exec>
-	</target>
+        </exec>
+    </target>
 
 </project>

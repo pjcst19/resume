@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.pitt.servlets;
 
 import edu.pitt.resumecore.User;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Sets various session properties for valid user
  *
  * @author jordanstevenfeldman
  */
@@ -38,34 +38,32 @@ public class login extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
+
             String emailAddress;
             String password;
             User user;
-            
-            if(!request.getParameter("txtEmailAddress").equals("") && !request.getParameter("txtPassword").equals("")){
+
+            if (!request.getParameter("txtEmailAddress").equals("") && !request.getParameter("txtPassword").equals("")) {
                 HttpSession session = request.getSession(true);
                 emailAddress = StringUtilities.cleanMySqlInsert(request.getParameter("txtEmailAddress"));
                 password = StringUtilities.cleanMySqlInsert(request.getParameter("txtPassword"));
-                
+
                 user = new User(emailAddress, password);
-                
-                if(user.getUserID() == null){
+
+                if (user.getUserID() == null) {
                     session.setAttribute("errorMessage", "Invalid Login");
                     response.sendRedirect("index.jsp");
-                }
-                else{
+                } else {
                     out.println("Valid Login");
                     session.setAttribute("authenticatedUser", user);
-                    session.setAttribute("authenticatedUserIP",request.getRemoteAddr());
+                    session.setAttribute("authenticatedUserIP", request.getRemoteAddr());
                     session.setAttribute("authenticatedUserBrowser", request.getHeader("User-Agent"));
-                    response.sendRedirect("menu.jsp");
+                    response.sendRedirect("pages/menu.jsp");
                 }
-            }
-            else{
+            } else {
                 out.println("You must provide credentials to login");
             }
-            
+
         }
     }
 

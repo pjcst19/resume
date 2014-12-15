@@ -2,23 +2,23 @@
  Copyright (c) 2002, 2012, Oracle and/or its affiliates. All rights reserved.
  
 
-  The MySQL Connector/J is licensed under the terms of the GPLv2
-  <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
-  There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
-  this software, see the FLOSS License Exception
-  <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
+ The MySQL Connector/J is licensed under the terms of the GPLv2
+ <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>, like most MySQL Connectors.
+ There are special exceptions to the terms and conditions of the GPLv2 as it is applied to
+ this software, see the FLOSS License Exception
+ <http://www.mysql.com/about/legal/licensing/foss-exception.html>.
 
-  This program is free software; you can redistribute it and/or modify it under the terms
-  of the GNU General Public License as published by the Free Software Foundation; version 2
-  of the License.
+ This program is free software; you can redistribute it and/or modify it under the terms
+ of the GNU General Public License as published by the Free Software Foundation; version 2
+ of the License.
 
-  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  See the GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ See the GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along with this
-  program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
-  Floor, Boston, MA 02110-1301  USA
+ You should have received a copy of the GNU General Public License along with this
+ program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth
+ Floor, Boston, MA 02110-1301  USA
 
 
 
@@ -30,240 +30,236 @@ import java.util.List;
 
 /**
  * Represents an in-memory result set
- * 
+ *
  * @author dgan
  * @version $Id$
  */
 public class RowDataStatic implements RowData {
-	private Field[] metadata;
-	
-	private int index;
 
-	ResultSetImpl owner;
+    private Field[] metadata;
 
-	private List<ResultSetRow> rows;
+    private int index;
 
-	/**
-	 * Creates a new RowDataStatic object.
-	 * 
-	 * @param rows
-	 *            DOCUMENT ME!
-	 */
-	public RowDataStatic(List<ResultSetRow> rows) {
-		this.index = -1;
-		this.rows = rows;
-	}
+    ResultSetImpl owner;
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param row
-	 *            DOCUMENT ME!
-	 */
-	public void addRow(ResultSetRow row) {
-		this.rows.add(row);
-	}
+    private List<ResultSetRow> rows;
 
-	/**
-	 * Moves to after last.
-	 */
-	public void afterLast() {
-		this.index = this.rows.size();
-	}
+    /**
+     * Creates a new RowDataStatic object.
+     *
+     * @param rows DOCUMENT ME!
+     */
+    public RowDataStatic(List<ResultSetRow> rows) {
+        this.index = -1;
+        this.rows = rows;
+    }
 
-	/**
-	 * Moves to before first.
-	 */
-	public void beforeFirst() {
-		this.index = -1;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param row DOCUMENT ME!
+     */
+    public void addRow(ResultSetRow row) {
+        this.rows.add(row);
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 */
-	public void beforeLast() {
-		this.index = this.rows.size() - 2;
-	}
+    /**
+     * Moves to after last.
+     */
+    public void afterLast() {
+        this.index = this.rows.size();
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 */
-	public void close() {
-	}
+    /**
+     * Moves to before first.
+     */
+    public void beforeFirst() {
+        this.index = -1;
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param atIndex
-	 *            DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public ResultSetRow getAt(int atIndex) throws SQLException {
-		if ((atIndex < 0) || (atIndex >= this.rows.size())) {
-			return null;
-		}
+    /**
+     * DOCUMENT ME!
+     */
+    public void beforeLast() {
+        this.index = this.rows.size() - 2;
+    }
 
-		return (this.rows.get(atIndex)).setMetadata(this.metadata);
-	}
+    /**
+     * DOCUMENT ME!
+     */
+    public void close() {
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public int getCurrentRowNumber() {
-		return this.index;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param atIndex DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public ResultSetRow getAt(int atIndex) throws SQLException {
+        if ((atIndex < 0) || (atIndex >= this.rows.size())) {
+            return null;
+        }
 
-	/**
-	 * @see com.mysql.jdbc.RowData#getOwner()
-	 */
-	public ResultSetInternalMethods getOwner() {
-		return this.owner;
-	}
+        return (this.rows.get(atIndex)).setMetadata(this.metadata);
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public boolean hasNext() {
-		boolean hasMore = (this.index + 1) < this.rows.size();
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public int getCurrentRowNumber() {
+        return this.index;
+    }
 
-		return hasMore;
-	}
+    /**
+     * @see com.mysql.jdbc.RowData#getOwner()
+     */
+    public ResultSetInternalMethods getOwner() {
+        return this.owner;
+    }
 
-	/**
-	 * Returns true if we got the last element.
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public boolean isAfterLast() {
-		return this.index >= this.rows.size();
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean hasNext() {
+        boolean hasMore = (this.index + 1) < this.rows.size();
 
-	/**
-	 * Returns if iteration has not occured yet.
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public boolean isBeforeFirst() {
-		return (this.index == -1) && (this.rows.size() != 0);
-	}
+        return hasMore;
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public boolean isDynamic() {
-		return false;
-	}
+    /**
+     * Returns true if we got the last element.
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean isAfterLast() {
+        return this.index >= this.rows.size();
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public boolean isEmpty() {
-		return this.rows.size() == 0;
-	}
+    /**
+     * Returns if iteration has not occured yet.
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean isBeforeFirst() {
+        return (this.index == -1) && (this.rows.size() != 0);
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public boolean isFirst() {
-		return this.index == 0;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean isDynamic() {
+        return false;
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public boolean isLast() {
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean isEmpty() {
+        return this.rows.size() == 0;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean isFirst() {
+        return this.index == 0;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public boolean isLast() {
 		//
-		// You can never be on the 'last' row of
-		// an empty result set
-		//
-		if (this.rows.size() == 0) {
-			return false;
-		}
+        // You can never be on the 'last' row of
+        // an empty result set
+        //
+        if (this.rows.size() == 0) {
+            return false;
+        }
 
-		return (this.index == (this.rows.size() - 1));
-	}
+        return (this.index == (this.rows.size() - 1));
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param rows
-	 *            DOCUMENT ME!
-	 */
-	public void moveRowRelative(int rowsToMove) {
-		this.index += rowsToMove;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param rows DOCUMENT ME!
+     */
+    public void moveRowRelative(int rowsToMove) {
+        this.index += rowsToMove;
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public ResultSetRow next() throws SQLException {
-		this.index++;
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public ResultSetRow next() throws SQLException {
+        this.index++;
 
-		if (this.index < this.rows.size()) {
-			ResultSetRow row = this.rows.get(this.index);
-			
-			return row.setMetadata(this.metadata);
-		}
+        if (this.index < this.rows.size()) {
+            ResultSetRow row = this.rows.get(this.index);
 
-		return null;
-	}
+            return row.setMetadata(this.metadata);
+        }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param atIndex
-	 *            DOCUMENT ME!
-	 */
-	public void removeRow(int atIndex) {
-		this.rows.remove(atIndex);
-	}
+        return null;
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param newIndex
-	 *            DOCUMENT ME!
-	 */
-	public void setCurrentRow(int newIndex) {
-		this.index = newIndex;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param atIndex DOCUMENT ME!
+     */
+    public void removeRow(int atIndex) {
+        this.rows.remove(atIndex);
+    }
 
-	/**
-	 * @see com.mysql.jdbc.RowData#setOwner(com.mysql.jdbc.ResultSetInternalMethods)
-	 */
-	public void setOwner(ResultSetImpl rs) {
-		this.owner = rs;
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @param newIndex DOCUMENT ME!
+     */
+    public void setCurrentRow(int newIndex) {
+        this.index = newIndex;
+    }
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	public int size() {
-		return this.rows.size();
-	}
+    /**
+     * @see
+     * com.mysql.jdbc.RowData#setOwner(com.mysql.jdbc.ResultSetInternalMethods)
+     */
+    public void setOwner(ResultSetImpl rs) {
+        this.owner = rs;
+    }
 
-	public boolean wasEmpty() {
-		return (this.rows != null && this.rows.size() == 0);
-	}
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    public int size() {
+        return this.rows.size();
+    }
 
-	public void setMetadata(Field[] metadata) {
-		this.metadata = metadata;
-	}
+    public boolean wasEmpty() {
+        return (this.rows != null && this.rows.size() == 0);
+    }
+
+    public void setMetadata(Field[] metadata) {
+        this.metadata = metadata;
+    }
 }

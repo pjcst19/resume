@@ -71,17 +71,18 @@ public class WorkExperience {
 
     /**
      * Creates an Education object from JSON
+     *
      * @param workExperience JSON object for an Education object
      */
-    public WorkExperience(JSONObject workExperience){
+    public WorkExperience(JSONObject workExperience) {
         try {
-            this.workExperienceID = workExperience.getString("workExperienceID"); 
+            this.workExperienceID = workExperience.getString("workExperienceID");
             setWorkExperienceFromJSON(workExperience);
         } catch (JSONException ex) {
             Logger.getLogger(WorkExperience.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void setAllWorkExperienceProperties(String workExperienceID) {
         this.workExperienceID = workExperienceID;
         db = new DbUtilities();
@@ -239,6 +240,11 @@ public class WorkExperience {
         return description;
     }
 
+    /**
+     * Creates a JSON Object representing a WorkExperience object
+     *
+     * @return JSON Object
+     */
     public JSONObject getWorkExperienceAsJson() {
 
         JSONObject workExperience = new JSONObject();
@@ -259,6 +265,11 @@ public class WorkExperience {
         return workExperience;
     }
 
+    /**
+     * Sets a workExperience objects properties given JSON
+     *
+     * @param workExperience JSON Object
+     */
     public final void setWorkExperienceFromJSON(JSONObject workExperience) {
 
         try {
