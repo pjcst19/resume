@@ -17,14 +17,32 @@
                     if (user.getRoles().contains("student")) {
                         out.print("<li><a href='listResumes.jsp?userID=" + user.getUserID() + "'>Your Resumes</a></li>");
                         out.print("<li><a href='personalInfo.jsp'>Enter a new Resume</a></li>");
+                        out.print("<li><a href='listPortfolios.jsp?userID=" + user.getUserID() + "'>Your Portfolio</a></li>");
+                        out.print("<li><a href='personalInfo.jsp'>Enter a new Portfolio</a></li>");
+                        out.print("<li><a href='listProjects.jsp?userID=" + user.getUserID() + "'>Your Projects</a></li>");
+                        out.print("<li><a href='personalInfo.jsp'>Enter a new Project</a></li>");
+                        out.print("<li><a href='listResearch.jsp?userID=" + user.getUserID() + "'>Your Research Papers</a></li>");
+                        out.print("<li><a href='personalInfo.jsp'>Enter a new Research Paper</a></li>");              
                     } else if (user.getRoles().contains("staff")) {
                         out.print("<li><a href='listResumes.jsp'>List all Resumes</a></li>");
                         out.print("<li><a href='searchResumes.jsp'>Search through Resumes</a></li>");
+                        out.print("<li><a href='listPortfolios.jsp'>List all Portfolios</a></li>");
+                        out.print("<li><a href='searchPortfolios.jsp'>Search through Portfolios</a></li>");
+                        out.print("<li><a href='listProjects.jsp'>List all Projects</a></li>");
+                        out.print("<li><a href='searchProjects.jsp'>Search through Projects</a></li>"); 
+                        out.print("<li><a href='listResearch.jsp'>List all Research Papers</a></li>");
+                        out.print("<li><a href='searchResearch.jsp'>Search through Research Papers</a></li>");                         
                         out.print("<li><a href='listUsers.jsp'>List Users</a></li>");
                         out.print("<li><a href='addUser.jsp'>Add User</a></li>");
                     } else if (user.getRoles().contains("employer")) {
-                        out.print("<li><a href='listResumes.jsp'>View all Resumes</a></li>");
-                        out.print("<li><a href='searchResumes.jsp'>Search through Resume</a></li>");
+                        out.print("<li><a href='listResumes.jsp'>List all Resumes</a></li>");
+                        out.print("<li><a href='searchResumes.jsp'>Search through Resumes</a></li>");
+                        out.print("<li><a href='listPortfolios.jsp'>List all Portfolios</a></li>");
+                        out.print("<li><a href='searchPortfolios.jsp'>Search through Portfolios</a></li>");
+                        out.print("<li><a href='listProjects.jsp'>List all Projects</a></li>");
+                        out.print("<li><a href='searchProjects.jsp'>Search through Projects</a></li>"); 
+                        out.print("<li><a href='listResearch.jsp'>List all Research Papers</a></li>");
+                        out.print("<li><a href='searchResearch.jsp'>Search through Research Papers</a></li>");                                                  
                     }
                 %>
             </ul>

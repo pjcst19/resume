@@ -3,9 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/jordansfeldman/Desktop/resume/src/java/edu/pitt/utilities/RedirectFilter.java</file>
-            <file>file:/Users/jordansfeldman/Desktop/resume/web/WEB-INF/web.xml</file>
-            <file>file:/Users/jordansfeldman/Desktop/resume/src/java/edu/pitt/rest/resumews.java</file>
+            <file>file:/C:/Users/pjcst19/Documents/GitHub/Resume/web/pages/menu.jsp</file>
+            <file>file:/C:/Users/pjcst19/Documents/GitHub/Resume/web/pages/searchProjects.jsp</file>
+            <file>file:/C:/Users/pjcst19/Documents/GitHub/Resume/web/pages/listPortfolios.jsp</file>
+            <file>file:/C:/Users/pjcst19/Documents/GitHub/Resume/web/js/searchProject.js</file>
+            <file>file:/C:/Users/pjcst19/Documents/GitHub/Resume/web/index.jsp</file>
+            <file>file:/C:/Users/pjcst19/Documents/GitHub/Resume/web/pages/listProjects.jsp</file>
+            <file>file:/C:/Users/pjcst19/Documents/GitHub/Resume/web/pages/viewPortfolioPersonal.jsp</file>
         </group>
     </open-files>
 </project-private>

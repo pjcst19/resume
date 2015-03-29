@@ -117,7 +117,7 @@ public class processPersonalInfo extends HttpServlet {
                 Address address = new Address(addressLine1, addressLine2, city, state, province, postalCode, country);
                 user.addAddress(address);
 
-                response.sendRedirect("pages/education.jsp");
+                response.sendRedirect("../pages/education.jsp");
 
             }
         }

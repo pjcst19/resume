@@ -66,7 +66,7 @@ public class Address {
         addressID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Address ";
-        sql += "(addressId,addressLine1,addressLine2,city,state,province";
+        sql += "(addressId,addressLine1,addressLine2,city,state,province, ";
         sql += "postalCode,country,created,modified) VALUES (";
         sql += "'" + addressID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(addressLine1) + "', ";
@@ -77,6 +77,7 @@ public class Address {
         sql += "'" + StringUtilities.cleanMySqlInsert(postalCode) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(country) + "',NULL,NULL);";
         try {
+            System.out.println(sql);
             db.executeQuery(sql);
         } catch (Exception ex) {
             ErrorLogger.log("An error has occurred in with the insert query inside of the Address constructor. " + ex.getMessage());

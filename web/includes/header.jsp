@@ -50,7 +50,7 @@
 
                     <!--Main Navigation-->
                     <ul class="nav navbar-nav" id="mainNavigation">
-                        <li><a href="menu.jsp">Home</a></li>
+                        <li><a href='menu.jsp'>Home</a></li>
                         <li><a href='personalInfo.jsp'>Create Resume</a></li>
                         <li><a href='listResumes.jsp?userID=<% out.print(user.getUserID());%>'>View/Edit Resumes</a></li>
                     </ul>
