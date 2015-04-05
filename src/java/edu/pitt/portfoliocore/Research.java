@@ -26,14 +26,15 @@ import org.json.JSONObject;
 public class Research {
 
     private String researchID;
-    private String businessName;
-    private String position;
-    private String startDate;
-    private String endDate;
-    private String description;
+    private String researchtype;
+    private String title;
+    private String summary;
+    private String journal;
+    private String submissionDate;
+    private String publishedDate;
+    private String publishlink;
     private String created;
     private String modified;
-    private int currentlyEmployed;
 
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -43,20 +44,21 @@ public class Research {
         setAllResearchProperties(StringUtilities.cleanMySqlInsert(researchID));
     }
 
-    public Research(String businessName, String position, String startDate, String endDate, int currentlyEmployed, String description) {
+    public Research(String researchtype, String title, String summary, String journal, String submissionDate, String publishedDate, String publishlink) {
         researchID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Research ";
 
-        sql += "(researchID,businessName,position,startDate,endDate,currentlyEmployed,description,created,modified)";
+        sql += "(researchID,title,summary,journal,submissionDate,publishedDate,researchtype,created,modified)";
         sql += " VALUES (";
         sql += "'" + this.researchID + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(businessName) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(position) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(startDate) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(endDate) + "', ";
-        sql += "" + currentlyEmployed + ", ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(description) + "',NULL,NULL);";
+        sql += "'" + StringUtilities.cleanMySqlInsert(researchtype) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(title) + "', ";        
+        sql += "'" + StringUtilities.cleanMySqlInsert(summary) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(journal) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(submissionDate) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(publishedDate) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(publishlink) + "',NULL,NULL);";
         System.out.println(sql);
         try {
             db.executeQuery(sql);
@@ -70,7 +72,7 @@ public class Research {
     }
 
     /**
-     * Creates an Education object from JSON
+     * Creates a Research object from JSON
      *
      * @param research JSON object for an Education object
      */
@@ -90,12 +92,13 @@ public class Research {
         try {
             ResultSet rs = db.getResultSet(sql);
             if (rs.next()) {
-                this.businessName = rs.getString("businessName");
-                this.position = rs.getString("position");
-                this.startDate = rs.getString("startDate");
-                this.endDate = rs.getString("endDate");
-                this.currentlyEmployed = rs.getInt("currentlyEmployed");
-                this.description = rs.getString("description");
+                this.researchtype = rs.getString("researchtype");
+                this.title = rs.getString("title");
+                this.summary = rs.getString("summary");
+                this.journal = rs.getString("Journal");
+                this.submissionDate = rs.getString("submissionDate");
+                this.publishedDate = rs.getString("publishedDate");
+                this.publishlink = rs.getString("publishlink");
                 this.created = rs.getTimestamp("created").toString();
                 this.modified = rs.getTimestamp("modified").toString();
             }
@@ -108,93 +111,93 @@ public class Research {
         }
     }
 
-    public void setBusinessName(String businessName) {
+    public void setResearchType(String researchtype) {
         db = new DbUtilities();
-        String sql = "UPDATE Research SET businessName = '" + StringUtilities.cleanMySqlInsert(businessName) + "' WHERE researchID = '" + this.researchID + "';";
+        String sql = "UPDATE Research SET researchtype = '" + StringUtilities.cleanMySqlInsert(researchtype) + "' WHERE researchID = '" + this.researchID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of setBusinessName. " + ex.getMessage());
+            ErrorLogger.log("An error has occurred in with the insert query inside of setResearchType. " + ex.getMessage());
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
         }
-        this.businessName = StringUtilities.cleanMySqlInsert(businessName);
+        this.researchtype = StringUtilities.cleanMySqlInsert(researchtype);
+        setModified();
+    }
+    
+    public void setTitle(String title) {
+        db = new DbUtilities();
+        String sql = "UPDATE Research SET title = '" + StringUtilities.cleanMySqlInsert(title) + "' WHERE researchID = '" + this.researchID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setTitle. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
+        }
+        this.title = StringUtilities.cleanMySqlInsert(title);
         setModified();
     }
 
-    public void setPosition(String position) {
+    public void setSummary(String summary) {
         db = new DbUtilities();
-        String sql = "UPDATE Research SET position = '" + StringUtilities.cleanMySqlInsert(position) + "' WHERE researchID = '" + this.researchID + "';";
+        String sql = "UPDATE Research SET summary = '" + StringUtilities.cleanMySqlInsert(summary) + "' WHERE researchID = '" + this.researchID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of setPosition. " + ex.getMessage());
+            ErrorLogger.log("An error has occurred in with the insert query inside of setSummary. " + ex.getMessage());
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
         }
-        this.position = StringUtilities.cleanMySqlInsert(position);
+        this.summary = StringUtilities.cleanMySqlInsert(summary);
         setModified();
     }
 
-    public void setStartDate(String startDate) {
+    public void setSubmissionDate(String submissionDate) {
         db = new DbUtilities();
-        String sql = "UPDATE Research SET startDate = '" + StringUtilities.cleanMySqlInsert(startDate) + "' WHERE researchID = '" + this.researchID + "';";
+        String sql = "UPDATE Research SET submissionDate = '" + StringUtilities.cleanMySqlInsert(submissionDate) + "' WHERE researchID = '" + this.researchID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of setStartDate. " + ex.getMessage());
+            ErrorLogger.log("An error has occurred in with the insert query inside of setSubmissionDate. " + ex.getMessage());
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
         }
-        this.startDate = StringUtilities.cleanMySqlInsert(startDate);
+        this.submissionDate = StringUtilities.cleanMySqlInsert(submissionDate);
         setModified();
     }
 
-    public void setEndDate(String endDate) {
+    public void setPublishedDate(String publishedDate) {
         db = new DbUtilities();
-        String sql = "UPDATE Research SET endDate = '" + StringUtilities.cleanMySqlInsert(endDate) + "' WHERE researchID = '" + this.researchID + "';";
+        String sql = "UPDATE Research SET publishedDate = '" + StringUtilities.cleanMySqlInsert(publishedDate) + "' WHERE researchID = '" + this.researchID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of setEndDate. " + ex.getMessage());
+            ErrorLogger.log("An error has occurred in with the insert query inside of setPublishedDate. " + ex.getMessage());
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
         }
-        this.endDate = StringUtilities.cleanMySqlInsert(endDate);
+        this.publishedDate = StringUtilities.cleanMySqlInsert(publishedDate);
         setModified();
     }
 
-    public void setCurrentlyEmployed(int currentlyEmployed) {
+    public void setPublishlink(String publishlink) {
         db = new DbUtilities();
-        String sql = "UPDATE Research SET currentlyEmployed = " + currentlyEmployed + " WHERE researchID = '" + this.researchID + "';";
+        String sql = "UPDATE Research SET publishlink = '" + StringUtilities.cleanMySqlInsert(publishlink) + "' WHERE researchID = '" + this.researchID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of setEndDate. " + ex.getMessage());
+            ErrorLogger.log("An error has occurred in with the insert query inside of setPublishlink. " + ex.getMessage());
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
         }
-        this.currentlyEmployed = currentlyEmployed;
-        setModified();
-    }
-
-    public void setDescription(String description) {
-        db = new DbUtilities();
-        String sql = "UPDATE Research SET description = '" + StringUtilities.cleanMySqlInsert(description) + "' WHERE researchID = '" + this.researchID + "';";
-        try {
-            db.executeQuery(sql);
-        } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of setDescription. " + ex.getMessage());
-            ErrorLogger.log(sql);
-        } finally {
-            db.closeMySQLConnection();
-        }
-        this.description = StringUtilities.cleanMySqlInsert(description);
+        this.publishlink = StringUtilities.cleanMySqlInsert(publishlink);
         setModified();
     }
 
@@ -216,30 +219,29 @@ public class Research {
         return researchID;
     }
 
-    public String getBusinessName() {
-        return businessName;
+    public String getResearchType() {
+        return researchtype;
+    }
+    
+    public String getTitle() {
+        return title;
     }
 
-    public String getPosition() {
-        return position;
+    public String getSummary() {
+        return summary;
+    }
+    
+    public String getJournal() {
+        return journal;
+    }
+    
+    public String getSubmissionDate() {
+        return submissionDate;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public String getPublishedDate() {
+        return publishedDate;
     }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public int currentlyEmployed() {
-        return currentlyEmployed;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     /**
      * Creates a JSON Object representing a Research object
      *
@@ -251,14 +253,14 @@ public class Research {
 
         try {
             research.put("researchID", this.researchID);
-            research.put("businessName", this.businessName);
-            research.put("position", this.position);
-            research.put("startDate", this.startDate);
-            research.put("endDate", this.endDate);
-            research.put("description", this.description);
+            research.put("researchtype", this.researchtype);
+            research.put("title", this.title);
+            research.put("summary", this.summary);
+            research.put("submissionDate", this.submissionDate);
+            research.put("publishedDate", this.publishedDate);
+            research.put("publishlink", this.publishlink);
             research.put("created", this.created);
             research.put("modified", this.modified);
-            research.put("currentlyEmployed", this.currentlyEmployed);
         } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within getResearchnAsJSON. " + ex.getMessage());
         }
@@ -273,12 +275,12 @@ public class Research {
     public final void setResearchFromJSON(JSONObject research) {
 
         try {
-            setBusinessName(research.getString("businessName"));
-            setPosition(research.getString("position"));
-            setStartDate(research.getString("startDate"));
-            setEndDate(research.getString("endDate"));
-            setDescription(research.getString("description"));
-            setCurrentlyEmployed(research.getInt("currentlyEmployed"));
+            setResearchType(research.getString("researchtype"));
+            setTitle(research.getString("title"));
+            setSummary(research.getString("summary"));
+            setSubmissionDate(research.getString("submissionDate"));
+            setPublishedDate(research.getString("publishedDate"));
+            setPublishlink(research.getString("publishlink"));
         } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within setResearchFromJSON. " + ex.getMessage());
         }

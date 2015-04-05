@@ -41,7 +41,7 @@ function submitRes() {
     $('form').each(function () {
         post_form_data($(this).serialize());
     });
-    window.location.href = 'workExperience.jsp';
+    window.location.href = 'menu.jsp';
 
 }
 ;

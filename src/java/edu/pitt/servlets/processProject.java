@@ -43,7 +43,7 @@ public class processProject extends HttpServlet {
             HttpSession session = request.getSession(true);
 
             User user = (User) session.getAttribute("authenticatedUser");
-            Portfolio portfolio = new Portfolio(user.getUserID(), 0);
+            Project project = new Project(user.getUserID(), 0);
             String projectName = "";
             String description = "";
             String startdate = "";
