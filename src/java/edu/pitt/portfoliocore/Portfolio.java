@@ -21,13 +21,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Creates a Resume object
+ * Creates a Portfolio object
  *
- * @author Jordan FeldmanStringUtilities.cleanMySqlInsert(
+ * @author Paul J Carroll
+ * String Utilities.cleanMySqlInsert(
  */
 public class Portfolio {
 
-    private String resumeID;
+    private String portfolioID;
     private int rating;
     private String created;
     private String modified;
@@ -40,13 +41,13 @@ public class Portfolio {
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
-     * Creates a Resume object based upon information obtained from database by
-     * providing resumeID
+     * Creates a Portfolio object based upon information obtained from database by
+     * providing portfolioID
      *
-     * @param resumeID
+     * @param portfolioID
      */
-    public Portfolio(String resumeID) {
-        setAllResumeProperties(resumeID);
+    public Portfolio(String portfolioID) {
+        setAllPortfolioProperties(portfolioID);
     }
 
     /**
@@ -57,81 +58,81 @@ public class Portfolio {
      * @param rating
      */
     public Portfolio(String userID, int rating) {
-        this.resumeID = UUID.randomUUID().toString();
+        this.portfolioID = UUID.randomUUID().toString();
         this.userID = StringUtilities.cleanMySqlInsert(userID);
         db = new DbUtilities();
-        String sql = "INSERT INTO rms.Resume ";
-        sql += "(resumeID,fk_userID,rating,created,modified)";
+        String sql = "INSERT INTO rms.Portfolio ";
+        sql += "(portfolioID,fk_userID,rating,created,modified)";
         sql += " VALUES (";
-        sql += "'" + this.resumeID + "', ";
+        sql += "'" + this.portfolioID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(this.userID) + "', ";
         sql += "'" + this.rating + "',NULL,NULL);";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in the insert query inside of the Resume constructor. " + ex.getMessage());
+            ErrorLogger.log("An error has occurred in the insert query inside of the Portfolio constructor. " + ex.getMessage());
             ErrorLogger.log(sql);
         } finally {
             db.closeMySQLConnection();
-            setAllResumeProperties(resumeID);
+            setAllPortfolioProperties(portfolioID);
         }
 
     }
 
     /**
-     * Creates an Resume object from JSON
+     * Creates an Portfolio object from JSON
      *
-     * @param resume JSON object for an Resume object
+     * @param portfolio JSON object for an Portfolio object
      */
-    public Portfolio(JSONObject resume) {
+    public Portfolio(JSONObject portfolio) {
         try {
-//            setAllResumeProperties(resume.getString("resumeID")); 
-            this.resumeID = resume.getString("resumeID");
-            //setResumeFromJSON(resume);
+//          setAllPortfolioProperties(portfolio.getString("portfolioID")); 
+            this.portfolioID = portfolio.getString("portfolioID");
+            //setPortfolioromJSON(portfolio);
         } catch (JSONException ex) {
             Logger.getLogger(Portfolio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void setAllResumeProperties(String resumeID) {
-        String sql1 = "SELECT * FROM rms.Resume R LEFT JOIN rms.ResumeAddress ON resumeID = fk_resumeID LEFT JOIN rms.Address ON fk_addressID = addressID WHERE R.resumeID = '" + StringUtilities.cleanMySqlInsert(resumeID) + "'";
+    private void setAllPortfolioProperties(String portfolioID) {
+        String sql1 = "SELECT * FROM rms.Portfolio R LEFT JOIN rms.ResumeAddress ON portfolioID = fk_portfolioID LEFT JOIN rms.Address ON fk_addressID = addressID WHERE R.portfolioID = '" + StringUtilities.cleanMySqlInsert(portfolioID) + "'";
         System.out.println(sql1);
         db = new DbUtilities();
         try {
             ResultSet rs = db.getResultSet(sql1);
             while (rs.next()) {
-                this.resumeID = rs.getString("resumeID");
+                this.portfolioID = rs.getString("portfolioID");
                 this.rating = rs.getInt("rating");
                 this.userID = rs.getString("fk_userID");
                 this.created = rs.getTimestamp("created").toString();
                 this.modified = rs.getTimestamp("modified").toString();
             }
         } catch (SQLException ex) {
-            ErrorLogger.log("An error has occurred in Resume(String resumeID) constructor of Resume class. " + ex.getMessage());
+            ErrorLogger.log("An error has occurred in Portfolio(String portfolioID) constructor of Portfolio class. " + ex.getMessage());
             ErrorLogger.log(sql1);
         } finally {
         }
 
-        String sql3 = "SELECT * FROM rms.ResumeProject WHERE fk_resumeID = '" + this.resumeID + "'";
+        String sql3 = "SELECT * FROM rms.Project WHERE fk_portfolioID = '" + this.portfolioID + "'";
         try {
             ResultSet rs3 = db.getResultSet(sql3);
             while (rs3.next()) {
                 this.projectList.add(new Project(rs3.getString("fk_projectID")));
             }
         } catch (SQLException ex) {
-            ErrorLogger.log("An error has occured in setAllResumeProperties() method of Resume class. " + ex.getMessage());
+            ErrorLogger.log("An error has occured in setAllPortfolioProperties() method of portfolio class. " + ex.getMessage());
             ErrorLogger.log(sql3);
 
         }
 
-        String sql4 = "SELECT * FROM rms.ResumeResearch WHERE fk_resumeID = '" + this.resumeID + "'";
+        String sql4 = "SELECT * FROM rms.Research WHERE fk_portfolioID = '" + this.portfolioID + "'";
         try {
             ResultSet rs4 = db.getResultSet(sql4);
             while (rs4.next()) {
                 this.researchList.add(new Research(rs4.getString("fk_researchID")));
             }
         } catch (SQLException ex) {
-            ErrorLogger.log("An error has occured in setAllResumeProperties() method of Resume class. " + ex.getMessage());
+            ErrorLogger.log("An error has occured in setAllPortfolioProperties() method of Resume class. " + ex.getMessage());
             ErrorLogger.log(sql4);
         }
         db.closeMySQLConnection();
@@ -140,8 +141,7 @@ public class Portfolio {
     public void addProject(Project project) {
         db = new DbUtilities();
         projectList.add(project);
-        String sql = "INSERT INTO rms.ResumeProject (fk_resumeID,fk_projectID) VALUES";
-        //sql += "('" + this.resumeID + "', '" + project.getProjectID() + "')";
+        String sql = "INSERT INTO rms.Project (fk_portfolioID,fk_projectID) VALUES";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -156,8 +156,8 @@ public class Portfolio {
     public void addResearch(Research research) {
         db = new DbUtilities();
         researchList.add(research);
-        String sql = "INSERT INTO rms.ResumeResearch (fk_resumeID,fk_researchID) VALUES";
-        sql += "('" + this.resumeID + "', '" + research.getResearchID() + "')";
+        String sql = "INSERT INTO rms.Research (fk_portfolioID,fk_researchID) VALUES";
+        sql += "('" + this.portfolioID + "', '" + research.getResearchID() + "')";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -174,7 +174,7 @@ public class Portfolio {
      */
     public void setRating(int rating) {
         db = new DbUtilities();
-        String sql = "UPDATE Resume SET rating = '" + rating + "' WHERE resumeID = '" + this.resumeID + "';";
+        String sql = "UPDATE Portfolio SET rating = '" + rating + "' WHERE portfolioID = '" + this.portfolioID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -190,7 +190,7 @@ public class Portfolio {
     private void setModified() {
         this.modified = DATE_FORMAT.format(Calendar.getInstance().getTime());
         db = new DbUtilities();
-        String sql = "UPDATE Resume SET modified = '" + this.modified + "' WHERE resumeID = '" + this.resumeID + "';";
+        String sql = "UPDATE Portfolio SET modified = '" + this.modified + "' WHERE portfolioID = '" + this.portfolioID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -202,10 +202,10 @@ public class Portfolio {
     }
 
     /**
-     * @return the resumeID
+     * @return the portfolioID
      */
-    public String getResumeID() {
-        return this.resumeID;
+    public String getPortfolioID() {
+        return this.portfolioID;
     }
 
     /**
@@ -227,7 +227,7 @@ public class Portfolio {
      */
     public void setUserID(String userID) {
         db = new DbUtilities();
-        String sql = "UPDATE Resume SET fk_userID = '" + StringUtilities.cleanMySqlInsert(userID) + "' WHERE resumeID = '" + this.resumeID + "';";
+        String sql = "UPDATE Portfolio SET fk_userID = '" + StringUtilities.cleanMySqlInsert(userID) + "' WHERE portfolioID = '" + this.portfolioID + "';";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -240,9 +240,9 @@ public class Portfolio {
     }
 
     /**
-     * Creates and returns a properly formated JSON representation of Resume
+     * Creates and returns a properly formated JSON representation of Portfolio
      *
-     * @return A properly formated JSON representation of Resume
+     * @return A properly formated JSON representation of Portfolio
      */
     public JSONObject getPortfolioAsJson() {
         JSONObject resume = new JSONObject();
@@ -250,7 +250,7 @@ public class Portfolio {
         JSONArray resumeResearchList = new JSONArray();
 
         try {
-            resume.put("portfolioID", this.resumeID);
+            resume.put("portfolioID", this.portfolioID);
             resume.put("userID", this.userID);
             resume.put("created", this.created);
             resume.put("modified", this.modified);
@@ -273,7 +273,7 @@ public class Portfolio {
                 resume.put("ResearchList", "");
             }
         } catch (JSONException ex) {
-            ErrorLogger.log("An error has occurred within getResumeAsJSON. " + ex.getMessage());
+            ErrorLogger.log("An error has occurred within getPortfolioAsJSON. " + ex.getMessage());
         }
         return resume;
     }
@@ -281,54 +281,35 @@ public class Portfolio {
     /**
      * Sets properties of a Resume given JSON
      *
-     * @param resume A properly formated JSON representation of Resume
+     * @param portfolio A properly formated JSON representation of Portfolio
      */
-    public final void setPortfolioFromJSON(JSONObject resume) {
+    public final void setPortfolioFromJSON(JSONObject portfolio) {
         try {
-            setUserID(resume.getString("userID"));
-            setRating(resume.getInt("rating"));
+            setUserID(portfolio.getString("userID"));
+            setRating(portfolio.getInt("rating"));
 
-            if (resume.has("addresses")) {
-                JSONArray resumeAddressList = resume.getJSONArray("addresses");
-                int addressListLength = resumeAddressList.length();
+            if (portfolio.has("ProjectList")) {
+                JSONArray ProjectList = portfolio.getJSONArray("ProjectList");
 
-                for (int i = 0; i < addressListLength; i++) {
-                    // Address address = new Address(resumeAddressList.getJSONObject(i));
-                }
-            }
-
-            if (resume.has("ProjectList")) {
-                JSONArray resumeProjectList = resume.getJSONArray("ProjectList");
-
-                int projectListLength = resumeProjectList.length();
+                int projectListLength = ProjectList.length();
 
                 for (int i = 0; i < projectListLength; i++) {
-                    Project project = new Project(resumeProjectList.getJSONObject(i));
+                    Project project = new Project(ProjectList.getJSONObject(i));
                 }
             }
 
-            if (resume.has("AwardList")) {
-                JSONArray resumeAwardList = resume.getJSONArray("AwardList");
+            if (portfolio.has("ResearchList")) {
+                JSONArray ResearchList = portfolio.getJSONArray("ResearchList");
 
-                int awardListLength = resumeAwardList.length();
-
-                for (int i = 0; i < awardListLength; i++) {
-                    //Award award = new Award(resumeAwardList.getJSONObject(i));
-                }
-            }
-
-            if (resume.has("ResearchList")) {
-                JSONArray resumeResearchList = resume.getJSONArray("ResearchList");
-
-                int researchLength = resumeResearchList.length();
+                int researchLength = ResearchList.length();
 
                 for (int i = 0; i < researchLength; i++) {
-                    Research research = new Research(resumeResearchList.getJSONObject(i));
+                    Research research = new Research(ResearchList.getJSONObject(i));
                 }
             }
 
         } catch (JSONException ex) {
-//            ErrorLogger.log("An error has occurred within getResumeAsJSON. " + ex.getMessage());
+//            ErrorLogger.log("An error has occurred within getPortfolioAsJSON. " + ex.getMessage());
             Logger.getLogger(Portfolio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

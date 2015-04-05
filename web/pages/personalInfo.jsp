@@ -11,7 +11,7 @@
 <div id="mainContainer" class="container theme-showcase" style="width:900px">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><strong>Create Your Resume</strong></h3>
+            <h3 class="panel-title"><strong>Create Your Resume or Portfolio</strong></h3>
         </div>
         <div class="panel-body">
             <div class="page-header">

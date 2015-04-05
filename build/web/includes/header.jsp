@@ -51,11 +51,11 @@
                     <!--Main Navigation-->
                     <ul class="nav navbar-nav" id="mainNavigation">
                         <li><a href='menu.jsp'>Home</a></li>
-                        <li><a href='personalInfo.jsp'>Create Resume</a></li>
+                        <li><a href='personalInfo.jsp'>Create Resume or Portfolio</a></li>
                         <li><a href='listResumes.jsp?userID=<% out.print(user.getUserID());%>'>View/Edit Resumes</a></li>
+                        <li><a href='listPortfolios.jsp?userID=<% out.print(user.getUserID());%>'>View/Edit Portfolios</a></li>
                     </ul>
-
-
+                    
                     <!--Logout Button-->
                     <ul class="nav navbar-nav navbar-right">
                         <li>

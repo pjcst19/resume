@@ -1,31 +1,24 @@
-package edu.pitt.servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
+package edu.pitt.rest;
 
 import edu.pitt.portfoliocore.Portfolio;
-import edu.pitt.portfoliocore.Project;
-import edu.pitt.resumecore.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
- * Processes creation of new Project object
+ * Given a portfolioID this class returns a portfolio as JSON
  *
- * @author Mandy
+ * @author Paul J Carroll
  */
-public class processProject extends HttpServlet {
+public class portfoliows extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,34 +31,18 @@ public class processProject extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+
         try (PrintWriter out = response.getWriter()) {
-            HttpSession session = request.getSession(true);
-
-            User user = (User) session.getAttribute("authenticatedUser");
-            Portfolio portfolio = new Portfolio(user.getUserID(), 0);
-            String projectName = "";
-            String description = "";
-            String startdate = "";
-            String enddate = "";
-            String externallink = "";
-
-            projectName = request.getParameter("txtProjectNameType");
-            description = request.getParameter("txtDescriptionType");
-            startdate = request.getParameter("txtStartdateType");
-            enddate = request.getParameter("txtEnddateType");
-            externallink = request.getParameter("txtExternallinkType");
-
-            Project project = new Project(projectName, description, startdate, enddate, externallink);
-            portfolio.addProject(project);
-
-            session.setAttribute("currentPortfolio", portfolio);
-
+            if (null != request.getParameter("portfolioID")) {
+                String portfolioID = request.getParameter("portfolioID");
+                Portfolio portfolio = new Portfolio(portfolioID);
+                out.print(portfolio.getPortfolioAsJson());
+            }
         }
-
     }
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

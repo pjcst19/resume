@@ -16,9 +16,8 @@
                 <%
                     if (user.getRoles().contains("student")) {
                         out.print("<li><a href='listResumes.jsp?userID=" + user.getUserID() + "'>Your Resumes</a></li>");
-                        out.print("<li><a href='personalInfo.jsp'>Enter a new Resume</a></li>");
+                        out.print("<li><a href='personalInfo.jsp'>Create a new Resume or Portfolio</a></li>");
                         out.print("<li><a href='listPortfolios.jsp?userID=" + user.getUserID() + "'>Your Portfolio</a></li>");
-                        out.print("<li><a href='personalInfo.jsp'>Enter a new Portfolio</a></li>");
                         out.print("<li><a href='listProjects.jsp?userID=" + user.getUserID() + "'>Your Projects</a></li>");
                         out.print("<li><a href='personalInfo.jsp'>Enter a new Project</a></li>");
                         out.print("<li><a href='listResearch.jsp?userID=" + user.getUserID() + "'>Your Research Papers</a></li>");
