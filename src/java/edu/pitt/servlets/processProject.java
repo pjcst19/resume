@@ -7,14 +7,12 @@ package edu.pitt.servlets;
  */
 
 
-
 import edu.pitt.portfoliocore.Portfolio;
 import edu.pitt.portfoliocore.Project;
 import edu.pitt.resumecore.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +21,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Processes creation of new Project object
  *
- * @author Mandy
+ * @author Paul J Carroll
  */
 public class processProject extends HttpServlet {
 
@@ -43,7 +41,7 @@ public class processProject extends HttpServlet {
             HttpSession session = request.getSession(true);
 
             User user = (User) session.getAttribute("authenticatedUser");
-            Project project = new Project(user.getUserID(), 0);
+            Portfolio portfolio = new Portfolio(user.getUserID(), 0);
             String projectName = "";
             String description = "";
             String startdate = "";

@@ -23,7 +23,7 @@
                 <div id="additionalResearch">
                 </div><!--End of Div additionalResearch-->
                 <br>
-                <button class="btn btn-lg btn-default" type="button" id="btnEducation" onclick="window.location.href = 'personalInfo.jsp'">Back</button>
+                <button class="btn btn-lg btn-default" type="button" id="btnResearch" onclick="window.location.href = 'portfolio.jsp'">Back</button>
                 <button class="btn btn-lg btn-default" type="button" id="btnAddEducation">Add Research</button>
                 <button class="btn btn-lg btn-default" type="submit" onclick="submitRes();" id="btnSubmit" name="btnSubmit">Next</button>
                 <br>

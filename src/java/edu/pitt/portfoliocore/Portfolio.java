@@ -279,7 +279,7 @@ public class Portfolio {
     }
 
     /**
-     * Sets properties of a Resume given JSON
+     * Sets properties of a Portfolio given JSON
      *
      * @param portfolio A properly formated JSON representation of Portfolio
      */
@@ -304,7 +304,7 @@ public class Portfolio {
                 int researchLength = ResearchList.length();
 
                 for (int i = 0; i < researchLength; i++) {
-                    Research research = new Research(ResearchList.getJSONObject(i));
+                    Object research = new Research(ResearchList.getJSONObject(i));
                 }
             }
 

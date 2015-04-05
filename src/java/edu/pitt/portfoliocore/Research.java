@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 /**
  *
- * @author Naveen
+ * @author Paul J Carroll
  */
 public class Research {
 
