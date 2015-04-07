@@ -16,7 +16,7 @@
         <div class="panel-body">
             <div class="page-header" align="center">
                 <button class="btn btn-lg btn-default" type="button" id="btnProject" onclick="window.location.href = '../pages/education.jsp'">Proceed to Resume</button><br><br>
-                <button class="btn btn-lg btn-default" type="button" id="btnAddProject" onclick="window.location.href = '../pages/project.jsp'">Proceed to Portfolio</button>
+                <button class="btn btn-lg btn-default" type="button" id="btnAddProject" onclick="window.location.href = '../pages/portfolio.jsp'">Proceed to Portfolio</button>
 
             </div>
         </div>

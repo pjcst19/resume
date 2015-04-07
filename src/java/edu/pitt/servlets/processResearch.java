@@ -8,8 +8,8 @@ package edu.pitt.servlets;
 
 
 import edu.pitt.portfoliocore.Portfolio;
-import edu.pitt.portfoliocore.Project;
-import edu.pitt.portfoliocore.User;
+import edu.pitt.portfoliocore.Research;
+import edu.pitt.resumecore.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Paul J Carroll
  */
-public class processProject extends HttpServlet {
+public class processResearch extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,22 +42,24 @@ public class processProject extends HttpServlet {
 
             User user = (User) session.getAttribute("authenticatedUser");
             Portfolio portfolio = new Portfolio(user.getUserID(), 0);
-            String projectName = "";
-            String description = "";
-            String ProjectMedia = "";
-            String startdate = "";
-            String enddate = "";
-           
+            String researchtype = "";
+            String title = "";
+            String summary = "";
+            String journal = "";
+            String submissiondate = "";
+            String publisheddate = "";
+            String publishlink = "";
 
-            projectName = request.getParameter("txtProjectName");
-            description = request.getParameter("txtDescription");
-            ProjectMedia = request.getParameter("txtProjectMedia");
-            startdate = request.getParameter("txtStartdateType");
-            enddate = request.getParameter("txtEnddateType");
+            researchtype = request.getParameter("researchtype");
+            title = request.getParameter("txtProjectNameType");
+            summary = request.getParameter("txtSummaryType");
+            journal = request.getParameter("txtJournalType");
+            submissiondate = request.getParameter("txtSubmissionDateType");
+            publisheddate = request.getParameter("txtPublishDateType");
+            publishlink = request.getParameter("txtPublishLinkType");
             
-
-            Project project = new Project(projectName, description, ProjectMedia, startdate, enddate);
-            portfolio.addProject(project);
+            Research research = new Research(researchtype, title, summary, journal, submissiondate, publisheddate, publishlink);
+            portfolio.addResearch(research);
 
             session.setAttribute("currentPortfolio", portfolio);
 

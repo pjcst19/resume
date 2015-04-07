@@ -1,5 +1,5 @@
 /* 
- * Functions for Create Portfolio - Project
+ * Functions for Create Portfolio(s)
  */
 
 //Datepicker

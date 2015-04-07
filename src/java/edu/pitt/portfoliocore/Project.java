@@ -26,12 +26,11 @@ import org.json.JSONObject;
 public class Project {
 
     private String projectID;
-    private String portfolioID;
     private String name;
     private String description;
     private String startdate;
     private String enddate;
-    private String externallink;
+    private String projectmedia;
     private String created;
     private String modified;
 
@@ -43,18 +42,18 @@ public class Project {
         setAllProjectProperties(projectID);
     }
 
-    public Project(String name, String description, String startdate, String enddate, String externlallink) {
+    public Project(String name, String description, String projectmedia, String startdate, String enddate) {
         projectID = UUID.randomUUID().toString();
         db = new DbUtilities();
         String sql = "INSERT INTO rms.Project ";
-        sql += "(projectID,name,description,startdate,enddate,externallink,created,modified)";
+        sql += "(projectID,name,description,projectmedia,startdate,enddate,created,modified)";
         sql += " VALUES (";
         sql += "'" + projectID + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(name) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(description) + "', ";
+        sql += "'" + StringUtilities.cleanMySqlInsert(projectmedia) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(startdate) + "', ";
         sql += "'" + StringUtilities.cleanMySqlInsert(enddate) + "', ";
-        sql += "'" + StringUtilities.cleanMySqlInsert(externallink) + "', ";
         try {
             db.executeQuery(sql);
         } catch (Exception ex) {
@@ -89,9 +88,9 @@ public class Project {
             if (rs.next()) {
                 this.name = rs.getString("name");
                 this.description = rs.getString("description");
+                this.projectmedia = rs.getString("projectmedia");
                 this.startdate = rs.getString("startdate");
                 this.enddate = rs.getString("enddate");
-                this.externallink = rs.getString("externallink");
                 this.created = rs.getTimestamp("created").toString();
                 this.modified = rs.getTimestamp("modified").toString();
             }
@@ -134,6 +133,21 @@ public class Project {
         setModified();
     }
 
+    public void setProjectMedia(String externallink) {
+        db = new DbUtilities();
+        String sql = "UPDATE Project SET externallink = '" + StringUtilities.cleanMySqlInsert(projectmedia) + "' WHERE projectID = '" + this.projectID + "';";
+        try {
+            db.executeQuery(sql);
+        } catch (Exception ex) {
+            ErrorLogger.log("An error has occurred in with the insert query inside of setProjectMedia. " + ex.getMessage());
+            ErrorLogger.log(sql);
+        } finally {
+            db.closeMySQLConnection();
+        }
+        this.projectmedia = StringUtilities.cleanMySqlInsert(projectmedia);
+        setModified();
+    }
+    
     public void setStartdate(String startdate) {
         db = new DbUtilities();
         String sql = "UPDATE Project SET startdate = '" + StringUtilities.cleanMySqlInsert(startdate) + "' WHERE projectID = '" + this.projectID + "';";
@@ -164,22 +178,7 @@ public class Project {
         setModified();
     }
 
-   public void setExternalLink(String externallink) {
-        db = new DbUtilities();
-        String sql = "UPDATE Project SET externallink = '" + StringUtilities.cleanMySqlInsert(externallink) + "' WHERE projectID = '" + this.projectID + "';";
-        try {
-            db.executeQuery(sql);
-        } catch (Exception ex) {
-            ErrorLogger.log("An error has occurred in with the insert query inside of setExternalLink. " + ex.getMessage());
-            ErrorLogger.log(sql);
-        } finally {
-            db.closeMySQLConnection();
-        }
-        this.externallink = StringUtilities.cleanMySqlInsert(externallink);
-        setModified();
-    }
-
-    private void setModified() {
+   private void setModified() {
         this.modified = DATE_FORMAT.format(Calendar.getInstance().getTime());
         db = new DbUtilities();
         String sql = "UPDATE Project SET modified = '" + this.modified + "' WHERE projectID = '" + this.projectID + "';";
@@ -205,16 +204,16 @@ public class Project {
         return description;
     }
 
-    public String getStartdate() {
+   public String getProjectMedia() {
+        return projectmedia;
+    }
+   
+   public String getStartdate() {
         return startdate;
     }
     
     public String getEnddate() {
         return enddate;
-    }
-    
-    public String getExternallink() {
-        return externallink;
     }
     
     /**
@@ -230,9 +229,9 @@ public class Project {
             project.put("projectID", this.projectID);
             project.put("name", this.name);
             project.put("description", this.description);
+            project.put("projectmedia", this.projectmedia);
             project.put("startdate", this.startdate);
-            project.put("enddate", this.enddate);
-            project.put("externallink", this.externallink);
+            project.put("enddate", this.enddate);            
             project.put("created", this.created);
             project.put("modified", this.modified);
 
@@ -252,10 +251,10 @@ public class Project {
         try {
             setName(project.getString("name"));
             setDescription(project.getString("description"));
+            setProjectMedia(project.getString("projectmedia"));
             setStartdate(project.getString("startdate"));
             setEnddate(project.getString("enddate"));
-            setExternalLink(project.getString("externallink"));
-        } catch (JSONException ex) {
+            } catch (JSONException ex) {
             ErrorLogger.log("An error occurred within setProjectFromJSON. " + ex.getMessage());
         }
     }

@@ -11,7 +11,7 @@
 <script>
     var portfolioID = "<%out.print(request.getParameter("portfolioID"));%>";
 </script>
-<script src="../js/editResumeFunctions.js"></script>
+<script src="../js/editPortfolioFunctions.js"></script>
 <script src="../js/koDatePickerBinding.js"></script>
 <script>
 

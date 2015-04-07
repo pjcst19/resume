@@ -1,0 +1,18 @@
+<script>
+    $(function () {
+        $(".datepicker").datepicker();
+    });
+</script>
+<form class="form-signin" method="post" action="../process/processResearch">
+    <label>Research</label>
+    <input type="text" class="form-control" id="txtTitle" name="txtTitle" placeholder="Title" required autofocus=""><br>
+    <input type="text" class="form-control" id="txtResearchType" name="txtResearchType" placeholder="Research Type" style="width:25%"><br>
+    <textarea class="form-control" id="txtSummary" name="txtSummary" placeholder="Summary" rows="5"></textarea><br>
+    <input type="text" class="form-control datepicker" name="txtSubmissionDate" placeholder="Submission Date" style="width:25%; display:inline">
+    <input type="text" class="form-control datepicker" name="txtpublishedDate" placeholder="Published Date" style="width:25%; display:inline">
+    <input type="text" class="form-control" id="txtPublisehdLink" name="txtPublishedLink" placeholder="Published Link" required style="width:48%; display:inline">
+    <br><br><br><br><br><br>
+    <br>
+    <br>
+</form>
+<br>

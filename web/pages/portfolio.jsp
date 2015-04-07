@@ -1,7 +1,7 @@
 <%-- 
-    Document   : education
-    Created on : Apr 15, 2014, 9:07:58 PM
-    Author     : Mandy
+    Document   : portfoilio
+    Created on : 
+    Author     : Paul J Carroll
 --%>
 
 <%@page import="edu.pitt.utilities.StringUtilities"%>
@@ -17,15 +17,15 @@
         </div>
         <div class="panel-body">
             <div class="page-header">
-                <h2 class="form-signin-heading">Education</h2><br>
+                <h2 class="form-signin-heading">Portfolio</h2><br>
                 <div id="portForm">
                 </div>
                 <div id="additionalPortfolio">
                 </div><!--End of Div additionalPortfolio-->
                 <br>
-                <button class="btn btn-lg btn-default" type="button" id="btnEducation" onclick="window.location.href = 'personalInfo.jsp'">Back</button>
-                <button class="btn btn-lg btn-default" type="button" id="btnAddEducation">Add Education</button>
-                <button class="btn btn-lg btn-default" type="submit" onclick="submitEdu();" id="btnSubmit" name="btnSubmit">Next</button>
+                <button class="btn btn-lg btn-default" type="button" id="btnPortfolio" onclick="window.location.href = 'personalInfo.jsp'">Back</button>
+                <button class="btn btn-lg btn-default" type="button" id="btnAddPortfolio">Add Portfolio</button>
+                <button class="btn btn-lg btn-default" type="submit" onclick="submitPort();" id="btnSubmit" name="btnSubmit">Next</button>
                 <br>
             </div><!--End of div page-header-->
         </div><!-- /container -->
